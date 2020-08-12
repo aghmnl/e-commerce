@@ -4,9 +4,15 @@ const { DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
   // defino el modelo
   sequelize.define('product', {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true
+    },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     price: {
       type: DataTypes.DECIMAL,
@@ -14,15 +20,15 @@ module.exports = (sequelize) => {
     },
     description:{
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: false
     },
     img: {
       type: DataTypes.BLOB,
-      allowNull: false,
+      allowNull: false
     },
     stock: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
   });
 };
