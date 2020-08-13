@@ -1,0 +1,9 @@
+#formulario {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 25px;
+}
+
+#checkbox {
+	transform: scale(1.5);
+}
