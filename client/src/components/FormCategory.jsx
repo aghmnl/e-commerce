@@ -1,12 +1,12 @@
 import React from 'react';
 import React, { useState } from 'react';
-export default function FormCategory(props){
+export default function FormCategory(){
     const [inputs, setInputs] = useState({
         name:"",
         description:""
     });
     function handleSubmit(e){
-        e.preventDefalut();
+        e.preventDefault();
         //fetch a la api :
     }
     return(
