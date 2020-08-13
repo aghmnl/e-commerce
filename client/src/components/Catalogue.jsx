@@ -1,12 +1,10 @@
 import React from "react";
 import ProductCard from "./ProductCard";
 
-export default function Catalogue(props){
+export default function Catalogue({products}){
     return(
     <div>
-       {props.forEach((element)=>{
-           <ProductCard product={element}/>
-       })}
+       {products.forEach(({name, price})=> <ProductCard name={name} price={price}/>)}
     </div>
     );
 }
