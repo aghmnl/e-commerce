@@ -6,7 +6,7 @@ export default function SearchBar(props) {
 
   return (
     <div>
-      <input type="text" placeholder="Ingrese texto..." value={inputText} onChange={(e) => setinputText(e)}></input>
+      <input type="text" placeholder="Ingrese texto..." value={inputText} onChange={(e) => setinputText(e.target.value)}></input>
       <button onClick={() => props.cb(inputText)}>Enviar</button>
     </div>
   )
