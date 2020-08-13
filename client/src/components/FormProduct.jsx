@@ -31,7 +31,15 @@ export default function FormProduct(props = null) {
 			});
 		}
 	}, []);
-
+	function getCategory(){
+		//fetch a la api:
+	}
+	function getCellar(){
+		//fetch a la api:
+	}
+	function getStrain(){
+		//fetch a la api:
+	}
 	function handleSubmit(e) {
 		e.preventDefault();
 		//fetch a la api :
@@ -50,21 +58,15 @@ export default function FormProduct(props = null) {
 			<input type="number" key="stock" placeholder="Cantidad" onChange={e => setInputs({ ...inputs, stock: e.target.value })} />
 			<label for="category">Categorías: </label>
 			<select id="category" onChange={e => setInputs({ ...inputs, category: e.target.value })}>
-				<option value="Cat1">Categoría 1</option>
-				<option value="Cat2">Categoría 2</option>
-				<option value="Cat3">Categoría 3</option>
+				{getCategory().map(category => <option value={category}></option>)}
 			</select>
 			<label for="cellar">Bodega: </label>
 			<select id="cellar">
-				<option value="cell1">Bodega 1</option>
-				<option value="cell2">Bodega 2</option>
-				<option value="cell3">Bodega 3</option>
+				{getCellar().map(cellar => <option value={cellar}></option>)}
 			</select>
 			<label for="strain">Bodega: </label>
 			<select id="strain">
-				<option value="strain1">Cepa 1</option>
-				<option value="strain2">Cepa 2</option>
-				<option value="strain3">Cepa 3</option>
+				{getStrain().map(strain => <option value={strain}></option>)}
 			</select>
 			<label>Estado de producto de tienda</label>
 			<input id="checkbox" type="checkbox" key="active" value="active_checkbox" onChange={e => setInputs({ ...inputs, active: e.target.value })} />
