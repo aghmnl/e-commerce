@@ -3,14 +3,27 @@ import "./App.css";
 import { Route } from "react-router-dom";
 import Catalogue from './components/Catalogue';
 import FormProduct from "./components/FormProduct";
-import NavBar from './components/navbar.jsx';
+import Product from "./components/Product";
+import FormCategory from "./components/FormCategory";
+import NavBar from './components/NavBar';
 function App() {
+	function filtrarProduct(id){
+		//fetch a la api
+		return {}
+	}
+	function getProductCards(){
+		//fetch a la api
+		//retorna array
+		return []
+	}
 	return (
 		
 		<div className="App">
 			<Route path="/" render={() => <NavBar/>}/>
-			<Route exact path="/catalogo" render={() => <Catalogue products={[]}/>}/>
-			<FormProduct></FormProduct>
+			<Route exact path="/catalogo" render={() => <Catalogue products={getProductCards()}/>}/>
+			<Route exact path="/Admin/FormProduct" component={FormProduct}/>
+			<Route exact path="/Admin/FormCategory" component={FormCategory}/>
+			<Route exact path="/product/:id"  render={({match})=> <Product id={match.params.id} filtrarProduct={filtrarProduct}/>} />
 		</div>
 	);	
 }
