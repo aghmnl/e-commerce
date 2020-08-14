@@ -8,14 +8,12 @@
 }
   body{
     /* The image used */
-    background-image: url("../images/imgFormsLow.jpg");
-  
+    background-image: var(--imgForm) ;
     /* Half height */
     height: 50%;
   
     /* Center and scale the image nicely */
-    background-position: center;
+    /*background-position: center;*/
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
   }
