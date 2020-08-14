@@ -1,24 +1,20 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-:root{
-  --color1: #2e1000;
-  --color2: #A36B52;
-  --color3: #734A40;
-  --color4: #F3BA7B;
-  --color5: #010000;
-  --color6: #800003;
-  --imgForm: url("https://i.ibb.co/sHhKmGv/img-Forms-Low.jpg");  
-
+:root {
+	--color1: #2e1000;
+	--color2: #a36b52;
+	--color3: #734a40;
+	--color4: #f3ba7b;
+	--color5: #010000;
+	--color6: #800003;
+	--imgForm: url("https://i.ibb.co/4S5gdSx/G1.jpg");
 }
