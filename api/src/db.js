@@ -7,7 +7,7 @@ const { DB_USER, DB_PASSWORD, DB_HOST, SYS } = process.env;
 
 const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/development`, {
 	logging: false, // set to console.log to see the raw SQL queries
-	native: SYS, // lets Sequelize know we can use pg-native for ~30% more speed
+	native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
 const basename = path.basename(__filename);
 
@@ -29,14 +29,14 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Product, Category, Cellar, Strain, User, PayMethod, Purchase, Review, PurchaseProduct } = sequelize.models;
+const { Product, Category, Cellar, Strain, User, Pay_method, Purchase, Review, Purchased_product } = sequelize.models;
 Cellar.hasMany(Product);
 Strain.hasMany(Product);
 Category.hasMany(Product);
 Category.hasMany(Strain);
 User.hasMany(Purchase);
-Purchase.BelongsToMany(Product, { through: PurchasedProduct });
-Product.BelongsToMany(Purchase, { through: PurchasedProduct });
+Purchase.belongsToMany(Product, { through: Purchased_product });
+Product.belongsToMany(Purchase, { through: Purchased_product });
 // FALTA COMPLETAR RELACIONES
 
 // Aca vendrian las relaciones

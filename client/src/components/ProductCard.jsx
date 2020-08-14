@@ -10,7 +10,7 @@ export default function ProductCard({ id, name, price, img }) {
 			<Card style={{ width: "18rem", margin: "100px" }}>
 				<Card.Img variant="top" src={"https://i.ibb.co/jhJXXRv/Botella-vino-1.jpg"} style={{ padding: "20px" }} />
 				<Card.Body>
-					<Card.Title>Vino Henry</Card.Title>
+					<Card.Title>Vino</Card.Title>
 					<ListGroupItem style={{ border: "0px", padding: "0px" }}>Bodeguita Sanjuanina</ListGroupItem>
 				</Card.Body>
 				<ListGroup className="list-group-flush">
