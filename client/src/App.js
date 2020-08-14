@@ -16,13 +16,18 @@ function App() {
 		//retorna array
 		return [];
 	}
+	// function Getproductos (){
+	// 	fethc -->llamada a la api
+	// 	.then(){
+	// 		return rta;
+	// 	}
+	// }
 	return (
 		<div className="App">
 			<Route path="/" render={() => <NavBar />} />
-			<Route exact path="/catalogo" render={() => <Catalogue products={getProductCards()} />} />
-			<Route exact path="/Admin/FormProduct" component={FormProduct} />
-			<Route exact path="/Admin/FormCategory" component={FormCategory} />
-
+			<Route exact path="/catalogue" render={() => <Catalogue products={getProductCards()} />} />
+			<Route exact path="/admin/formProduct" component={FormProduct} />
+			<Route exact path="/admin/formCategory" component={FormCategory} />
 			<Route exact path="/product/:id" render={({ match }) => <Product id={match.params.id} filtrarProduct={filtrarProduct} />} />
 		</div>
 	);
