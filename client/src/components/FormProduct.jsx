@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { matchPath } from "react-router-dom";
 import "../styles/FormProduct.css";
 export default function FormProduct(props = null) {
+	const [dates, setDates] = useState({
+		cellar :[],
+		strain: [],
+		category : []
+	});
 	const [inputs, setInputs] = useState({
 		name: "",
 		description: "",
@@ -31,18 +36,6 @@ export default function FormProduct(props = null) {
 			});
 		}
 	}, []);
-	function getCategory() {
-		//fetch a la api:
-		return [];
-	}
-	function getCellar() {
-		//fetch a la api:
-		return [];
-	}
-	function getStrain() {
-		//fetch a la api:
-		return [];
-	}
 	function handleSubmit(e) {
 		e.preventDefault();
 		//fetch a la api :
@@ -61,19 +54,19 @@ export default function FormProduct(props = null) {
 			<input type="number" key="stock" placeholder="Cantidad" onChange={e => setInputs({ ...inputs, stock: e.target.value })} />
 			<label for="category">Categorías: </label>
 			<select id="category" onChange={e => setInputs({ ...inputs, category: e.target.value })}>
-				{getCategory().map(category => (
+				{dates.category.map(category => (
 					<option value={category}></option>
 				))}
 			</select>
 			<label for="cellar">Bodega: </label>
 			<select id="cellar">
-				{getCellar().map(cellar => (
+				{dates.cellar.map(cellar => (
 					<option value={cellar}></option>
 				))}
 			</select>
 			<label for="strain">Bodega: </label>
 			<select id="strain">
-				{getStrain().map(strain => (
+				{dates.strain.map(strain => (
 					<option value={strain}></option>
 				))}
 			</select>

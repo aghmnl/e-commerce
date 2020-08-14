@@ -2,11 +2,10 @@ const { DataTypes } = require("sequelize");
 
 module.exports = sequelize => {
 	// defino el modelo
-	sequelize.define("purchase", {
-        date:{
-            type: DataTypes.DATE,
+	sequelize.define("pay_method", {
+        name :{
+            type: DataTypes.TEXT,
             allowNull:false
         }
-        
 	});
 };
