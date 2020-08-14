@@ -1,4 +1,5 @@
 const server = require("express").Router();
+
 const { Product } = require("../db.js");
 
 // Este get devuelve todos los productos para generar el catálogo
