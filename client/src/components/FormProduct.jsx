@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import { matchPath } from "react-router-dom";
 import "../styles/FormProduct.css";
 export default function FormProduct(props = null) {
@@ -21,6 +23,7 @@ export default function FormProduct(props = null) {
 	});
 	//var nombreBoton = "Agregar";
 	useEffect(() => {
+		
 		if (Object.values(props).length > 0) {
 			setInputs({
 				name: props.name,
@@ -41,39 +44,56 @@ export default function FormProduct(props = null) {
 		//fetch a la api :
 	}
 	return (
-		<form id="formulario" onSubmit={e => handleSubmit(e)}>
-			<label for="inputName">Nombre de producto: </label>
-			<input id="inputName" value={props.name} type="text" key="name" placeholder="Nombre" onChange={e => setInputs({ ...inputs, name: e.target.value })} />
-			<label for="inputPrice">Precio de producto: </label>
-			<input id="inputPrice" type="number" step="0.01" key="price" placeholder="Precio" onChange={e => setInputs({ ...inputs, price: e.target.value })} />
-			<label for="inputDescription">Descripción del producto: </label>
-			<textarea id="inputDescription" key="description" placeholder="Descripción" onChange={e => setInputs({ ...inputs, description: e.target.value })}></textarea>
-			<label for="archivo">Imagen</label>
-			<input id="archivo" accept="image/x-png,image/gif,image/jpeg" type="file" key="img" onChange={e => setInputs({ ...inputs, img: e.target.value })} />
-			<label for="number">Stock del producto: </label>
-			<input type="number" key="stock" placeholder="Cantidad" onChange={e => setInputs({ ...inputs, stock: e.target.value })} />
-			<label for="category">Categorías: </label>
-			<select id="category" onChange={e => setInputs({ ...inputs, category: e.target.value })}>
-				{dates.category.map(category => (
-					<option value={category}></option>
-				))}
-			</select>
-			<label for="cellar">Bodega: </label>
-			<select id="cellar">
-				{dates.cellar.map(cellar => (
-					<option value={cellar}></option>
-				))}
-			</select>
-			<label for="strain">Bodega: </label>
-			<select id="strain">
-				{dates.strain.map(strain => (
-					<option value={strain}></option>
-				))}
-			</select>
-			<label>Estado de producto de tienda</label>
-			<input id="checkbox" type="checkbox" key="active" value="active_checkbox" onChange={e => setInputs({ ...inputs, active: e.target.value })} />
-			<p></p>
-			<button>{inputs.nombreBoton}</button>
-		</form>
+		<Form  id="formulario" onSubmit={e => handleSubmit(e)}>
+			<Form.Group>
+				<Form.Label>Nombre de producto: </Form.Label>
+				<Form.Control value={props.name} placeholder="Nombre" onChange={e => setInputs({ ...inputs, name: e.target.value })} />
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>Precio de producto: </Form.Label>
+				<Form.Control type="number" step="0.01" placeholder="Precio" onChange={e => setInputs({ ...inputs, price: e.target.value })} />
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>Descripción del producto:</Form.Label>
+				<Form.Control as="textarea" placeholder="Descripción" onChange={e => setInputs({ ...inputs, description: e.target.value })}/>
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>Imagen</Form.Label>
+				<Form.Control placeholder="Link a Imagen" onChange={e => setInputs({ ...inputs, img: e.target.value })} />
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>Stock del producto: </Form.Label>
+				<Form.Control placeholder="Cantidad" onChange={e => setInputs({ ...inputs, stock: e.target.value })} />
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>Categorías: </Form.Label>
+				<Form.Control as="select" onChange={e => setInputs({ ...inputs, category: e.target.value })}>
+						{dates.category.map(category => (
+							<option value={category}></option>
+						))}
+				</Form.Control>
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>Bodega: </Form.Label>
+				<Form.Control as="select" onChange={e => setInputs({ ...inputs, cellar: e.target.value })}>
+					{dates.cellar.map(cellar => (
+						<option value={cellar}></option>
+					))}
+				</Form.Control>
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>Cepa: </Form.Label>
+				<Form.Control as="select" onChange={e => setInputs({ ...inputs, strain: e.target.value })}>
+					{dates.strain.map(strain => (
+						<option value={strain}></option>
+					))}
+				</Form.Control>
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>Estado de producto de tienda</Form.Label>
+				<Form.Check type="checkbox" value="active_checkbox" onChange={e => setInputs({ ...inputs, active: e.target.value })} />
+			</Form.Group>
+			<Button variant="primary" type="submit">{inputs.nombreBoton}</Button>
+		</Form>
 	);
 }
