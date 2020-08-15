@@ -49,20 +49,17 @@ server.post("/",(req, res)=>{
 	.then(() => res.sendStatus(200))
 	.catch(err => res.json(err));
 });
-// https://gist.github.com/zcaceres/83b554ee08726a734088d90d455bc566
-
-// Albums.findAll({
-// 	include: [{
-// 	  model: Artists,
-// 	  as: 'Singer',
-// 	  where: { name: 'Al Green' } //
-// 	}]
-//   })
-//   .then(albums => console.log(albums))
-//   .catch(console.error)
-
-// ruta de obtener todos los productos :: server/api/products/
-
+server.put("/:id",(req, res)=>{
+	delete req.body["nombreBoton"];
+	Product.update(req.body,{where:{id:parseInt(req.params.id)}})
+	.then(() => res.sendStatus(200))
+	.catch(err => res.json(err));
+});
+server.delete("/:id", (req, res) => {
+	Product.destroy({where:{id:parseInt(req.params.id)}})
+	.then(() => res.sendStatus(200))
+	.catch(err => res.json(err));
+})
 // ------------------
 // path="/catalogue" ---> Catalogue.jsx ->>> fetch a server/api/productos __> [] --> Catalogue --> ProductCard
 //  -----------------
