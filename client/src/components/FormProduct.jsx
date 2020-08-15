@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { matchPath } from "react-router-dom";
 import "../styles/FormProduct.css";
 export default function FormProduct(props = null) {
-	const [dates, setDates] = useState({
+	const [data, setData] = useState({
 		cellar :[],
 		strain: [],
 		category : []
@@ -22,8 +22,13 @@ export default function FormProduct(props = null) {
 		nombreBoton: "Agregar",
 	});
 	//var nombreBoton = "Agregar";
+
+	// Esto se ejecuta cuando se selecciona una categoría
+	useEffect(() =>{
+		//setData(/*cepas*/);
+	},[inputs.categoryId]);
 	useEffect(() => {
-		
+
 		if (Object.values(props).length > 0) {
 			setInputs({
 				name: props.name,
@@ -31,9 +36,9 @@ export default function FormProduct(props = null) {
 				price: props.price,
 				stock: props.stock,
 				img: props.img,
-				categoryId: props.categoryId,
-				cellarId: props.cellarId,
-				strainId: props.strainId,
+				categoryId: parseInt(props.categoryId),
+				cellarId: parseInt(props.cellarId),
+				strainId: parseInt(props.strainId),
 				active: props.active,
 				nombreBoton: "Actualizar",
 			});
@@ -42,9 +47,14 @@ export default function FormProduct(props = null) {
 	function handleSubmit(e) {
 		e.preventDefault();
 		//fetch a la api :
+		const url = "http://localhost:3000/products";
+		fetch(url,{method:"POST",body:inputs, headers: {"content-type" : "application/json"}})
+		.then(r => r.json())
+		.then(res => console.log("success",res))
+		.catch(err => console.log("error",err));
 	}
 	return (
-		<Form  id="formulario" onSubmit={e => handleSubmit(e)}>
+		<Form style={{width:'50rem', margin:'auto' }} id="formulario" onSubmit={e => handleSubmit(e)}>
 			<Form.Group>
 				<Form.Label>Nombre de producto: </Form.Label>
 				<Form.Control value={props.name} placeholder="Nombre" onChange={e => setInputs({ ...inputs, name: e.target.value })} />
@@ -66,25 +76,25 @@ export default function FormProduct(props = null) {
 				<Form.Control placeholder="Cantidad" onChange={e => setInputs({ ...inputs, stock: e.target.value })} />
 			</Form.Group>
 			<Form.Group>
-				<Form.Label>Categorías: </Form.Label>
+				<Form.Label>Categorías</Form.Label>
 				<Form.Control as="select" onChange={e => setInputs({ ...inputs, category: e.target.value })}>
-						{dates.category.map(category => (
+						{data.category.map(category => (
 							<option value={category}></option>
 						))}
 				</Form.Control>
 			</Form.Group>
 			<Form.Group>
-				<Form.Label>Bodega: </Form.Label>
+				<Form.Label>Bodega</Form.Label>
 				<Form.Control as="select" onChange={e => setInputs({ ...inputs, cellar: e.target.value })}>
-					{dates.cellar.map(cellar => (
+					{data.cellar.map(cellar => (
 						<option value={cellar}></option>
 					))}
 				</Form.Control>
 			</Form.Group>
 			<Form.Group>
-				<Form.Label>Cepa: </Form.Label>
+				<Form.Label>Cepa</Form.Label>
 				<Form.Control as="select" onChange={e => setInputs({ ...inputs, strain: e.target.value })}>
-					{dates.strain.map(strain => (
+					{data.strain.map(strain => (
 						<option value={strain}></option>
 					))}
 				</Form.Control>

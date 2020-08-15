@@ -37,7 +37,12 @@ Category.hasMany(Strain);
 User.hasMany(Purchase);
 Purchase.belongsToMany(Product, { through: Purchased_product });
 Product.belongsToMany(Purchase, { through: Purchased_product });
-// FALTA COMPLETAR RELACIONES
+// nuevas relaciones
+Pay_method.hasMany(Purchase);
+User.belongsToMany(Product, {through: Review});
+Product.belongsToMany(User, {through: Review});
+
+
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
