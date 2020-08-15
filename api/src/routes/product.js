@@ -19,13 +19,6 @@ server.get("/category/:categoryId", (req, res) => {
 	}).then(products => res.json(products));
 });
 
-// https://docs.google.com/document/d/11CLInK9TfZQkm1EzBkoUISLJiEV-aC9-di0agLrPWTM/edit?usp=sharing
-
-//   http://localhost:3000/datos?nombre=Agus&apellido=Minetto
-// app.get('/datos/', function(req, res) {
-// 	nombre = req.query.nombre;
-// 	res.json( req.query );
-// 	});
 
 // http://localhost:3000/products/search?query=agus
 server.get("/search/", (req, res) => {
@@ -45,7 +38,17 @@ server.get("/search/", (req, res) => {
 		],
 	}).then(products => res.json(products));
 });
-
+server.post("/",(req, res)=>{
+	/*const values = Object.values(req.body);
+	if(!values.length) return res.send("NOT DATA");
+	for(let value of values){
+		if(!value) return res.json({"error_en":value});
+	}*/
+	delete req.body["nombreBoton"];
+	Product.create(req.body)
+	.then(() => res.sendStatus(200))
+	.catch(err => res.json(err));
+});
 // https://gist.github.com/zcaceres/83b554ee08726a734088d90d455bc566
 
 // Albums.findAll({
