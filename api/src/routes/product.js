@@ -5,21 +5,21 @@ const { Product } = require("../db.js");
 server.get("/", (req, res) => {
 	Product.findAll({
 		where: { active: true },
-	})
-	.then(products => {
+	}).then(products => {
 		res.json(products);
 	});
 });
-server.get("/:categoryId", (req, res) =>{
+
+// http://localhost:3000/products/category/1
+server.get("/category/:categoryId", (req, res) => {
 	Product.findAll({
-		where:{
-			categoryId : req.params.categoryId
-		}
+		where: {
+			categoryId: req.params.categoryId,
+		},
 	}).then(products => res.json(products));
 });
 
-
-// https://docs.google.com/document/d/11CLInK9TfZQkm1EzBkoUISLJiEV-aC9-di0agLrPWTM/edit?usp=sharing 
+// https://docs.google.com/document/d/11CLInK9TfZQkm1EzBkoUISLJiEV-aC9-di0agLrPWTM/edit?usp=sharing
 
 //   http://localhost:3000/datos?nombre=Agus&apellido=Minetto
 // app.get('/datos/', function(req, res) {
@@ -27,28 +27,26 @@ server.get("/:categoryId", (req, res) =>{
 // 	res.json( req.query );
 // 	});
 
-	
-/* server.get("/search?:query", (req, res) =>{
-	const value = '%'+req.query.query+'%';
+// http://localhost:3000/products/search?query=agus
+server.get("/search/", (req, res) => {
+	const value = "%" + req.query.query + "%";
 	Product.findAll({
 		$or: [
 			{
-			  name: {
-				$like: {value}
-			  }
+				name: {
+					$like: { value },
+				},
 			},
 			{
-			  description: {
-				$like: {value}
-			  }
-			}
-		  ]
-	}).then(products => res.json(products))
-}); */
-
+				description: {
+					$like: { value },
+				},
+			},
+		],
+	}).then(products => res.json(products));
+});
 
 // https://gist.github.com/zcaceres/83b554ee08726a734088d90d455bc566
-
 
 // Albums.findAll({
 // 	include: [{

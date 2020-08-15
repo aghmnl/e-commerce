@@ -4,18 +4,18 @@ import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 import { NavLink } from "react-router-dom";
 
-export default function ProductCard({ id, name, price, img }) {
+export default function ProductCard({ id, name, cellar, price, img }) {
 	return (
 		<NavLink to={`/product/${id}`}>
 			<Card style={{ width: "18rem", margin: "100px" }}>
-				<Card.Img variant="top" src={"https://i.ibb.co/jhJXXRv/Botella-vino-1.jpg"} style={{ padding: "20px" }} />
+				<Card.Img variant="top" src={img} style={{ padding: "20px" }} />
 				<Card.Body>
-					<Card.Title>Vino</Card.Title>
-					<ListGroupItem style={{ border: "0px", padding: "0px" }}>Bodeguita Sanjuanina</ListGroupItem>
+					<Card.Title>{name}</Card.Title>
+					<ListGroupItem style={{ border: "0px", padding: "0px" }}>{cellar}</ListGroupItem>
 				</Card.Body>
 				<ListGroup className="list-group-flush">
 					<ListGroupItem>
-						<strong>4.000 USD</strong>
+						<strong>{price}</strong>
 					</ListGroupItem>
 				</ListGroup>
 			</Card>
