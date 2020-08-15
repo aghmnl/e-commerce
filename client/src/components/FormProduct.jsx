@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 import { matchPath } from "react-router-dom";
 import "../styles/FormProduct.css";
 export default function FormProduct(props = null) {
 	const [data, setData] = useState({
-		cellar :[],
+		cellar: [],
 		strain: [],
-		category : []
+		category: [],
 	});
 	const [inputs, setInputs] = useState({
 		name: "",
@@ -24,10 +24,24 @@ export default function FormProduct(props = null) {
 	//var nombreBoton = "Agregar";
 
 	// Esto se ejecuta cuando se selecciona una categoría
-	useEffect(() =>{
-		//setData(/*cepas*/);
-	},[inputs.categoryId]);
 	useEffect(() => {
+		fetch(`http://localhost:3000/strain/${inputs.categoryId}`)
+			.then(r => r.json())
+			.then(res => {
+				setData({ strain: res });
+			});
+	}, [inputs.categoryId]);
+	useEffect(() => {
+		fetch(`http://localhost:3000/category`)
+			.then(r => r.json())
+			.then(res => {
+				setData({ category: res });
+			});
+		fetch(`http://localhost:3000/cellar`)
+			.then(r => r.json())
+			.then(res => {
+				setData({ cellar: res });
+			});
 
 		if (Object.values(props).length > 0) {
 			setInputs({
@@ -48,13 +62,16 @@ export default function FormProduct(props = null) {
 		e.preventDefault();
 		//fetch a la api :
 		const url = "http://localhost:3000/products";
-		fetch(url,{method:"POST",body:inputs, headers: {"content-type" : "application/json"}})
-		.then(r => r.json())
-		.then(res => console.log("success",res))
-		.catch(err => console.log("error",err));
+		fetch(url, { method: "POST", body: inputs, headers: { "content-type": "application/json" } })
+			.then(r => r.json())
+			.then(res => {
+				console.log("success", res);
+				window.location.href = "/catalogue";
+			})
+			.catch(err => console.log("error", err));
 	}
 	return (
-		<Form style={{width:'50rem', margin:'auto' }} id="formulario" onSubmit={e => handleSubmit(e)}>
+		<Form style={{ width: "50rem", margin: "auto" }} id="formulario" onSubmit={e => handleSubmit(e)}>
 			<Form.Group>
 				<Form.Label>Nombre de producto: </Form.Label>
 				<Form.Control value={props.name} placeholder="Nombre" onChange={e => setInputs({ ...inputs, name: e.target.value })} />
@@ -65,7 +82,7 @@ export default function FormProduct(props = null) {
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>Descripción del producto:</Form.Label>
-				<Form.Control as="textarea" placeholder="Descripción" onChange={e => setInputs({ ...inputs, description: e.target.value })}/>
+				<Form.Control as="textarea" placeholder="Descripción" onChange={e => setInputs({ ...inputs, description: e.target.value })} />
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>Imagen</Form.Label>
@@ -78,16 +95,16 @@ export default function FormProduct(props = null) {
 			<Form.Group>
 				<Form.Label>Categorías</Form.Label>
 				<Form.Control as="select" onChange={e => setInputs({ ...inputs, category: e.target.value })}>
-						{data.category.map(category => (
-							<option value={category}></option>
-						))}
+					{data.category.map(category => (
+						<option value={category.id}>{category.name}</option>
+					))}
 				</Form.Control>
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>Bodega</Form.Label>
 				<Form.Control as="select" onChange={e => setInputs({ ...inputs, cellar: e.target.value })}>
 					{data.cellar.map(cellar => (
-						<option value={cellar}></option>
+						<option value={cellar.id}>{cellar.name}</option>
 					))}
 				</Form.Control>
 			</Form.Group>
@@ -95,7 +112,7 @@ export default function FormProduct(props = null) {
 				<Form.Label>Cepa</Form.Label>
 				<Form.Control as="select" onChange={e => setInputs({ ...inputs, strain: e.target.value })}>
 					{data.strain.map(strain => (
-						<option value={strain}></option>
+						<option value={strain.id}>{strain.name}</option>
 					))}
 				</Form.Control>
 			</Form.Group>
@@ -103,7 +120,9 @@ export default function FormProduct(props = null) {
 				<Form.Label>Estado de producto de tienda</Form.Label>
 				<Form.Check type="checkbox" value="active_checkbox" onChange={e => setInputs({ ...inputs, active: e.target.value })} />
 			</Form.Group>
-			<Button variant="primary" type="submit">{inputs.nombreBoton}</Button>
+			<Button variant="primary" type="submit">
+				{inputs.nombreBoton}
+			</Button>
 		</Form>
 	);
 }
