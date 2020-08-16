@@ -1,23 +1,33 @@
 import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
 export default function FormStrain() {
-	const [inputs, setInputs] = useState({
-		name: "",
-	});
 	const [category, setCategory] = useState([]);
 	useEffect(() => {
 		fetch("http://localhost:3000/category")
 			.then(r => r.json())
-			.then(category => setCategory(category));
+			.then(category => {
+				setInputs({ ...inputs, categoryId: category[0].id });
+				setCategory(category);
+			});
 	}, []);
+	const [inputs, setInputs] = useState({
+		name: "",
+		categoryId: "",
+	});
 	function handleSubmit(e) {
 		e.preventDefault();
 		//fetch a la api :
 		const url = "http://localhost:3000/strain";
-		fetch(url, { method: "POST", body: inputs, headers: { "content-type": "application/json" } })
-			.then(() => console.log("succes"))
+		axios
+			.post(url, inputs)
+			.then(res => alert("Cepa cargada"))
 			.catch(e => console.log(e));
+		setInputs({
+			name: "",
+			categoryId: "",
+		});
 	}
 	return (
 		<Form style={{ width: "50rem", margin: "auto" }} onSubmit={e => handleSubmit(e)}>
@@ -27,7 +37,7 @@ export default function FormStrain() {
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>Categorías</Form.Label>
-				<Form.Control as="select" onChange={e => setInputs({ ...inputs, category: e.target.value })}>
+				<Form.Control as="select" onChange={e => setInputs({ ...inputs, categoryId: parseInt(e.target.value) })}>
 					{category.map(category => (
 						<option value={category.id}>{category.name}</option>
 					))}
