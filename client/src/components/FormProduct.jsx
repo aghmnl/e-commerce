@@ -29,23 +29,32 @@ export default function FormProduct({ products, getProductos, filtrarProduct, id
 	useEffect(() => {
 		fetch("http://localhost:3000/strain/" + inputs.categoryId)
 			.then(r => r.json())
-			.then(strain => setStrain(strain));
+			.then(strain => {
+				setStrain(strain);
+				setInputs({ ...inputs, strainId: strain[0].id });
+			});
 	}, [inputs.categoryId]);
 	useEffect(() => {
 		fetch("http://localhost:3000/category")
 			.then(r => r.json())
-			.then(category => setCategory(category))
+			.then(category => {
+				setCategory(category);
+				setInputs({ ...inputs, categoryId: category[0].id });
+			})
 			.then(() =>
 				fetch("http://localhost:3000/cellar")
 					.then(r => r.json())
-					.then(cellar => setCellar(cellar))
+					.then(cellar => {
+						setCellar(cellar);
+						setInputs({ ...inputs, cellarId: cellar[0].id });
+					})
 			);
 		getProductos(null);
 	}, []);
 	useEffect(() => {
-		if (edit) setInputs(filtrarProduct(id));
+		if (edit) setInputs({ ...filtrarProduct(id), nombreBoton: "Actualizar" });
 	}, [id]);
-	function handleSubmit(e) {
+	function handleSubmit(e, edit, id) {
 		e.preventDefault();
 		//fetch a la api :
 		for (let prop in inputs) {
@@ -54,6 +63,15 @@ export default function FormProduct({ products, getProductos, filtrarProduct, id
 				alert(`${prop} is require`);
 				return;
 			}
+		}
+		if (edit) {
+			axios
+				.put(`http://localhost:3000/products/${id}`, inputs)
+				.then(() => {
+					window.location.href = "/admin/fromProducts";
+				})
+				.catch(err => console.log("error", err));
+			return;
 		}
 		const url = "http://localhost:3000/products";
 		axios
@@ -68,12 +86,14 @@ export default function FormProduct({ products, getProductos, filtrarProduct, id
 		if (window.confirm("Este producto sera eliminado. Esta seguro?"))
 			axios
 				.delete(`http://localhost:3000/products/${id}`)
-				.then(() => alert("se elimino"))
+				.then(() => {
+					window.location.href = "/admin/fromProducts";
+				})
 				.catch(err => console.log(err));
 	}
 	return (
 		<div>
-			<Form style={{ width: "60rem", margin: "1rem" }} id="formulario" onSubmit={e => handleSubmit(e)}>
+			<Form style={{ width: "60rem", margin: "1rem" }} id="formulario" onSubmit={e => handleSubmit(e, edit, id)}>
 				<Form.Group as={Row}>
 					<Form.Label column sm="4">
 						Nombre de producto:{" "}
@@ -147,7 +167,6 @@ export default function FormProduct({ products, getProductos, filtrarProduct, id
 					</Form.Label>
 					<Col sm="8">
 						<Form.Control as="select" id="strainId" onChange={e => setInputs({ ...inputs, strainId: parseInt(e.target.value) })}>
-							<option>selecione</option>
 							{(() => {
 								if (!strain.length) return <option>seleccione categoria</option>;
 								return strain.map(strain => (

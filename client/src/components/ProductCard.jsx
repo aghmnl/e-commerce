@@ -11,7 +11,7 @@ export default function ProductCard({ id, name, cellar, price, img }) {
 				<Card.Img variant="top" src={img} style={{ padding: "5px" }} />
 				<Card.Body>
 					<Card.Title>{name}</Card.Title>
-					<ListGroupItem style={{ border: "0px", padding: "0px" }}>{cellar}</ListGroupItem>
+					<ListGroupItem style={{ border: "0px", padding: "0px" }}>{cellar.name}</ListGroupItem>
 				</Card.Body>
 				<ListGroup className="list-group-flush">
 					<ListGroupItem>

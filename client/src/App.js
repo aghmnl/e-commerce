@@ -15,11 +15,13 @@ function App() {
 		return producto[0];
 	}
 	function getProductos(category) {
-		const url = !category ? "http://localhost:3000/products" : `http://localhost:3000/products/category/${category}`;
+		const url = "http://localhost:3000/products";
 		fetch(url)
 			.then(r => r.json())
 			.then(products => {
-				setProducts(products);
+				if (!category) return setProducts(products);
+				const productsCategory = products.filter(product => product.categoryId === parseInt(category));
+				setProducts(productsCategory);
 			});
 	}
 	return (

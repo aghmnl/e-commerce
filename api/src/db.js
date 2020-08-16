@@ -31,18 +31,22 @@ sequelize.models = Object.fromEntries(capsEntries);
 // Para relacionarlos hacemos un destructuring
 const { Product, Category, Cellar, Strain, User, Pay_method, Purchase, Review, Purchased_product } = sequelize.models;
 Cellar.hasMany(Product);
+Product.belongsTo(Cellar);
 Strain.hasMany(Product);
+Product.belongsTo(Strain);
 Category.hasMany(Product);
+Product.belongsTo(Category);
 Category.hasMany(Strain);
+Strain.belongsTo(Category);
 User.hasMany(Purchase);
+Purchase.belongsTo(User);
 Purchase.belongsToMany(Product, { through: Purchased_product });
 Product.belongsToMany(Purchase, { through: Purchased_product });
 // nuevas relaciones
 Pay_method.hasMany(Purchase);
-User.belongsToMany(Product, {through: Review});
-Product.belongsToMany(User, {through: Review});
-
-
+Purchase.belongsTo(Pay_method);
+User.belongsToMany(Product, { through: Review });
+Product.belongsToMany(User, { through: Review });
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
