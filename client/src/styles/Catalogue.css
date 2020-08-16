@@ -1,5 +1,5 @@
 .catalogue {
-	display: flex;
+	display: inline-flex;
 	justify-self: auto;
 }
 
