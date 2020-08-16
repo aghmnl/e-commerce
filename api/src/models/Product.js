@@ -4,12 +4,6 @@ const { DataTypes } = require("sequelize");
 module.exports = sequelize => {
 	// defino el modelo
 	sequelize.define("product", {
-		id: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-			autoIncrement: true,
-			primaryKey: true,
-		},
 		name: {
 			type: DataTypes.STRING,
 			allowNull: false,
@@ -24,15 +18,15 @@ module.exports = sequelize => {
 		},
 		img: {
 			type: DataTypes.STRING,
-			allowNull: false,
+			allowNull: true,
 		},
 		stock: {
 			type: DataTypes.INTEGER,
-			allowNull: false,
+			allowNull: true,
 		},
 		active: {
 			type: DataTypes.BOOLEAN,
-			allowNull: false,
+			allowNull: true,
 			default: true,
 		},
 	});

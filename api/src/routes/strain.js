@@ -11,7 +11,7 @@ server.delete("/:id", (req, res) => {
 server.post("/", (req, res) => {
 	Strain.create(req.body)
 		.then(() => res.sendStatus(200))
-		.catch(err => res.send(400).end(err));
+		.catch(err => res.json(err));
 });
 server.put("/:id", (req, res) => {
 	Strain.update(req.body, { where: parseInt(req.params.id) })

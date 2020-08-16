@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "../styles/FormCategory.css";
+import axios from "axios";
 export default function FormCategory() {
 	const [inputs, setInputs] = useState({
 		name: "",
@@ -11,10 +12,19 @@ export default function FormCategory() {
 		e.preventDefault();
 		//fetch a la api :
 		const url = "http://localhost:3000/category";
-		fetch(url, { method: "POST", body: inputs, headers: { "content-type": "application/json" } })
-			.then(r => r.json())
-			.then(() => (window.location.href = "/"))
-			.catch(e => console.log(e));
+		axios
+			.post(url, inputs)
+			// .then(() => (window.location.href = "/catalogue"))
+			.then(res => alert("Categoría cargada"))
+			.catch(err => alert(err));
+		// fetch(url, { method: "POST", body: inputs, headers: { "content-type": "application/json" } })
+		// 	.then(r => r.json())
+		// 	.then(() => (window.location.href = "/"))
+		// 	.catch(e => console.log(e));
+		setInputs({
+			name: "",
+			description: "",
+		});
 	}
 	return (
 		<Form style={{ width: "50rem", margin: "auto" }} onSubmit={e => handleSubmit(e)}>

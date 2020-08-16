@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
 export default function FormCellar() {
 	const [inputs, setInputs] = useState({
 		name: "",
@@ -9,9 +10,13 @@ export default function FormCellar() {
 		e.preventDefault();
 		//fetch a la api :
 		const url = "http://localhost:3000/cellar";
-		fetch(url, { method: "POST", body: inputs, headers: { "content-type": "application/json" } })
-			.then(() => console.log("succes"))
+		axios
+			.post(url, inputs)
+			.then(res => alert("Bodega cargada"))
 			.catch(e => console.log(e));
+		setInputs({
+			name: "",
+		});
 	}
 	return (
 		<Form style={{ width: "50rem", margin: "auto" }} onSubmit={e => handleSubmit(e)}>
