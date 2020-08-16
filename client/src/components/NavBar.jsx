@@ -28,7 +28,7 @@ export default function (props) {
 
 	return (
 		<Navbar bg="dark" variant="dark">
-			<Navbar.Brand href="catalogue">ToniWines</Navbar.Brand>
+			<Navbar.Brand href="/">ToniWines</Navbar.Brand>
 			<Nav className="mr-auto">
 				<Nav.Link href="/catalogue">Catálogo</Nav.Link>
 				<Nav.Link href="/admin/formProduct">Formulario Producto</Nav.Link>
