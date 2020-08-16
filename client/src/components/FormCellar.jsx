@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import { Form, Col, Button, Row } from "react-bootstrap";
 import axios from "axios";
 export default function FormCellar() {
 	const [inputs, setInputs] = useState({
@@ -19,10 +18,14 @@ export default function FormCellar() {
 		});
 	}
 	return (
-		<Form style={{ width: "50rem", margin: "auto" }} onSubmit={e => handleSubmit(e)}>
-			<Form.Group>
-				<Form.Label>Bodega</Form.Label>
-				<Form.Control value={inputs.name} onChange={e => setInputs({ ...inputs, name: e.target.value })} />
+		<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e)}>
+			<Form.Group as={Row}>
+				<Form.Label column sm="2">
+					Bodega
+				</Form.Label>
+				<Col sm="10">
+					<Form.Control value={inputs.name} onChange={e => setInputs({ ...inputs, name: e.target.value })} />
+				</Col>
 			</Form.Group>
 			<Button variant="primary" type="submit">
 				Agregar

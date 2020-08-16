@@ -1,16 +1,23 @@
 #formulario {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 25px;
-	color: var(--color4);
+	/* display: grid; */
+	/* grid-template-columns: 1fr 1fr; */
+	/* gap: 25px; */
+	color: #ffffff;
+}
+Label {
+	text-align-last: right !important;
+}
+
+#contenedor {
+	background-color: #ffffff;
+	color: #000000;
 }
 
 #checkbox {
-	transform: scale(1.5);
+	transform: scale(2);
 }
 
-
-body{
+body {
 	/* The image used */
-	background-image: var(--imgForm) 
+	background-image: var(--imgForm);
 }

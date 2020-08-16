@@ -1,5 +1,5 @@
-body{
+body {
 	/* The image used */
 	background-image: var(--imgForm);
-	color: var(--color4)
+	color: #ffffff;
 }
