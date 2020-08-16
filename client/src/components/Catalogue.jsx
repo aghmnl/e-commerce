@@ -10,7 +10,7 @@ export default function Catalogue({ products, getProductos, category }) {
 	];*/
 	useEffect(() => {
 		getProductos(category);
-	},[]);
+	}, []);
 	// FIN HARDCODEO
 
 	// ATENCIÓN, acá debería tomar todas las categorías y mostrarlas
@@ -18,6 +18,9 @@ export default function Catalogue({ products, getProductos, category }) {
 	return (
 		<div>
 			<Nav id="navegacion" activeKey="/catalogue/category/1">
+				<Nav.Item>
+					<Nav.Link href="/catalogue/">Todos</Nav.Link>
+				</Nav.Item>
 				<Nav.Item>
 					<Nav.Link href="/catalogue/category/1">Tintos</Nav.Link>
 				</Nav.Item>
@@ -43,8 +46,8 @@ export default function Catalogue({ products, getProductos, category }) {
 					</Form> */}
 				</div>
 				<div className="col-10 catalogue">
-					{products.map((product) => (
-						<ProductCard id={product.id} name={product.name} price={product.price} cellar={product.cellarId} img={product.img} />
+					{products.map(product => (
+						<ProductCard id={product.id} name={product.name} price={product.price} cellar={product.cellar} img={product.img} />
 					))}
 				</div>
 			</div>
