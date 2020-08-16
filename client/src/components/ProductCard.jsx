@@ -15,7 +15,7 @@ export default function ProductCard({ id, name, cellar, price, img }) {
 				</Card.Body>
 				<ListGroup className="list-group-flush">
 					<ListGroupItem>
-						<strong>{price}</strong>
+						<strong>{"$ "+price}</strong>
 					</ListGroupItem>
 				</ListGroup>
 			</Card>

@@ -9,7 +9,7 @@ import "../styles/Product.css";
 export default function Product({id, filtrarProduct}) {
 	const {name, description, img, price, stock, cellarId, categoryId, strainId} = filtrarProduct(id);
 	return (
-		<Card style={{width:'55rem', margin:'auto' }} >
+		<Card style={{width:'55rem', margin:'auto' }} className="mt-3">
 			<Container>
 			<Row>
 			<Col style={{alignSelf:'center'}}>
