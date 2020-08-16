@@ -9,7 +9,6 @@ server.get("/", (req, res) => {
 		res.json(products);
 	});
 });
-
 // http://localhost:3000/products/category/1
 server.get("/category/:categoryId", (req, res) => {
 	Product.findAll({
@@ -47,7 +46,7 @@ server.post("/",(req, res)=>{
 	delete req.body["nombreBoton"];
 	Product.create(req.body)
 	.then(() => res.sendStatus(200))
-	.catch(err => res.json(err));
+	.catch(err => console.log(err));
 });
 server.put("/:id",(req, res)=>{
 	delete req.body["nombreBoton"];

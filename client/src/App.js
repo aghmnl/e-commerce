@@ -11,22 +11,22 @@ import NavBar from "./components/NavBar";
 function App() {
 	const [products, setProducts] = useState([]);
 	function filtrarProduct(id) {
-		//fetch a la api
-		return {};
+		let producto = products.filter(product => product.id === parseInt(id));
+		return producto[0];
 	}
-	function Getproductos(category) {
+	function getProductos(category) {
 		const url = !category ? "http://localhost:3000/products" : `http://localhost:3000/products/category/${category}`;
 		fetch(url)
 			.then(r => r.json())
-			.then(Products => {
-				setProducts([...products, Products]);
+			.then(products => {
+				setProducts(products);
 			});
 	}
 	return (
 		<div className="App">
 			<Route path="/" render={() => <NavBar />} />
-			<Route exact path="/catalogue/category/:categoryId" render={({ match }) => <Catalogue products={products} getproductos={Getproductos} category={match.params.categoryId} />} />
-			<Route exact path="/catalogue" render={() => <Catalogue products={products} getproductos={Getproductos} category={null} />} />
+			<Route exact path="/catalogue/category/:categoryId" render={({ match }) => <Catalogue products={products} getProductos={getProductos} category={match.params.categoryId} />} />
+			<Route exact path="/catalogue" render={() => <Catalogue products={products} getProductos={getProductos} category={null} />} />
 			<Route exact path="/admin/formProduct" component={FormProduct} />
 			<Route exact path="/admin/formCategory" component={FormCategory} />
 			<Route exact path="/admin/formCellar" component={FormCellar} />

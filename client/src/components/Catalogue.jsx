@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import Nav from "react-bootstrap/Nav";
 import "../styles/Catalogue.css";
-export default function Catalogue({ products, getproductos, category }) {
+export default function Catalogue({ products, getProductos, category }) {
 	// ATENCIÓN ESTO ES HARDCODEO
-	var products = [
+	/*var products = [
 		{ id: 15, name: "Vino bueno", price: 15000, cellar: "Bodegas mendocinas", img: "https://i.ibb.co/jhJXXRv/Botella-vino-1.jpg" },
 		{ id: 16, name: "El mejor vino", price: 15000, cellar: "Bodegas sanjuaninas", img: "https://i.ibb.co/jhJXXRv/Botella-vino-1.jpg" },
-	];
+	];*/
 	useEffect(() => {
-		getproductos(category);
-	}, []);
+		getProductos(category);
+	},[]);
 	// FIN HARDCODEO
 
 	// ATENCIÓN, acá debería tomar todas las categorías y mostrarlas
@@ -43,8 +43,8 @@ export default function Catalogue({ products, getproductos, category }) {
 					</Form> */}
 				</div>
 				<div className="col-10 catalogue">
-					{products.map(({ id, name, price, cellar, img }) => (
-						<ProductCard id={id} name={name} price={price} cellar={cellar} img={img} />
+					{products.map((product) => (
+						<ProductCard id={product.id} name={product.name} price={product.price} cellar={product.cellarId} img={product.img} />
 					))}
 				</div>
 			</div>
