@@ -1,10 +1,24 @@
 const server = require("express").Router();
 
-const { Product } = require("../db.js");
+const { Product, Cellar, Strain, Category } = require("../db.js");
 // Este get devuelve todos los productos para generar el catálogo
 server.get("/", (req, res) => {
 	Product.findAll({
 		where: { active: true },
+		include: [
+			{
+				model: Cellar,
+				as: "cellar",
+			},
+			{
+				model: Strain,
+				as: "strain",
+			},
+			{
+				model: Category,
+				as: "category",
+			},
+		],
 	}).then(products => {
 		res.json(products);
 	});
@@ -13,7 +27,7 @@ server.get("/", (req, res) => {
 server.get("/category/:categoryId", (req, res) => {
 	Product.findAll({
 		where: {
-			categoryId: req.params.categoryId,
+			categoryId: parseInt(req.params.categoryId),
 		},
 	}).then(products => res.json(products));
 });

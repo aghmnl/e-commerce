@@ -5,7 +5,7 @@ import "../styles/NavBar.css";
 // import { cellars, strains, products } from "../data.js";
 
 export default function (props) {
-	// const [inputs, setInputs] = useState({
+	// const [inputs, setInputs] = use<Nav.Link href="/">ToniWines</Nav.Link>
 	// 	name: "",
 	// 	description: "",
 	// 	price: "",
@@ -28,7 +28,7 @@ export default function (props) {
 
 	return (
 		<Navbar bg="dark" variant="dark">
-			<Navbar.Brand href="#catalogue">ToniWines</Navbar.Brand>
+			<Navbar.Brand href="catalogue">ToniWines</Navbar.Brand>
 			<Nav className="mr-auto">
 				<Nav.Link href="/catalogue">Catálogo</Nav.Link>
 				<Nav.Link href="/admin/formProduct">Formulario Producto</Nav.Link>
