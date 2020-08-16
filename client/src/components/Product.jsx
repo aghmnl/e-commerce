@@ -10,7 +10,7 @@ export default function Product({ id, filtrarProduct }) {
 	const product = filtrarProduct(id);
 	if(!product) return window.location.href= "/catalogue";
 	return (
-		<Card style={{ width: "55rem", margin: "5rem" }}>
+		<Card style={{width:'55rem', margin:'auto' }} className="mt-3">
 			<Container>
 				<Row>
 					<Col style={{ alignSelf: "center" }}>
