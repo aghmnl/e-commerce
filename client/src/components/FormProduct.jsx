@@ -10,6 +10,17 @@ export default function FormProduct() {
 		strain: [],
 		category: [],
 	});
+
+	// Para que asigne el primer cellar por defecto. FALLA porque no encuentra data.cellar[0].id
+	// useEffect(() => {
+	// 	fetch("http://localhost:3000/cellar")
+	// 		.then(r => r.json())
+	// 		.then(cellar => {
+	// 			setInputs({ ...inputs, cellarId: data.cellar[0].id });
+	// 			setData({ ...data, cellar });
+	// 		});
+	// }, []);
+
 	const [inputs, setInputs] = useState({
 		name: "",
 		description: "",
@@ -17,19 +28,20 @@ export default function FormProduct() {
 		stock: "",
 		//img: "",
 		//categoryId: "",
-		//cellarId: "",
-		//strainId: "",
+		cellarId: "",
+		// strainId: "",
 		active: true,
 		//nombreBoton: "Agregar",
 	});
-	//var nombreBoton = "Agregar";
+	// var nombreBoton = "Agregar";
 
 	// Esto se ejecuta cuando se selecciona una categoría
 	useEffect(() => {
 		fetch("http://localhost:3000/strain")
 			.then(r => r.json())
 			.then(strain => setData({ ...data, strain }));
-	}, [inputs.categoryId]);
+		// }, [inputs.categoryId]);
+	}, []);
 	useEffect(() => {
 		fetch("http://localhost:3000/category")
 			.then(r => r.json())
@@ -82,17 +94,17 @@ export default function FormProduct() {
 			<Form.Group>
 				<Form.Label>Bodega</Form.Label>
 				<Form.Control as="select" onChange={e => setInputs({ ...inputs, cellarId: parseInt(e.target.value) })}>
-					{/*data.cellar.map(cellar => (
+					{data.cellar.map(cellar => (
 						<option value={cellar.id}>{cellar.name}</option>
-					))*/}
+					))}
 				</Form.Control>
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>Cepa</Form.Label>
 				<Form.Control as="select" onChange={e => setInputs({ ...inputs, strainId: parseInt(e.target.value) })}>
-					{/*data.strain.map(strain => (
+					{/* {data.strain.map(strain => (
 						<option value={strain.id}>{strain.name}</option>
-					))*/}
+					))} */}
 				</Form.Control>
 			</Form.Group>
 			<Form.Group>
