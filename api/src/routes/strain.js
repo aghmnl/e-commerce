@@ -1,7 +1,7 @@
 const server = require("express").Router();
 const { Strain } = require("../db.js");
-server.get("/:categoryId", (req, res) => {
-	Strain.findAll({ where: { categoryId: parseInt(req.params.categoryId) } }).then(strains => res.json(strains));
+server.get("/", (req, res) => {
+	Strain.findAll().then(strains => res.json(strains));
 });
 server.delete("/:id", (req, res) => {
 	Strain.destroy({

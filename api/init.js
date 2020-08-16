@@ -4,19 +4,19 @@ const { Cellar, Product, Category, Strain } = require("./src/db");
 //Cat = 1:Tinto, 2: Blanco, 3: Rose, 4: Espumante
 
 var Categories = [
-    {
-        name: "Tinto"
-    },
-    {
-        name : "Blanco"
-    },
-    {
-        name: "Rose"
-    },
-    {
-        name : "Espumante"
-    }
-]
+	{
+		name: "Tinto",
+	},
+	{
+		name: "Blanco",
+	},
+	{
+		name: "Rose",
+	},
+	{
+		name: "Espumante",
+	},
+];
 var cellars = [
 	{
 		name: "Alenna",
@@ -134,7 +134,7 @@ var products = [
 		img: "https://cdn.shopify.com/s/files/1/0042/8477/6517/products/amalaya-gran-corte-argentina-blend-salta-thibault-delmotte-vino-tinto-vinos-del-mundo_886_2000x.jpg?v=1545701211",
 		stock: 12,
 		active: true,
-		categoryId: 1,
+		categoryId: 2,
 		cellarId: 3,
 		strainId: 4,
 	},
@@ -145,7 +145,7 @@ var products = [
 		img: "https://cdn.shopify.com/s/files/1/0042/8477/6517/products/BodegonesdelSur-Tannat_e4d144c9-0bc8-453c-97aa-2db5c988919b_2000x.jpg?v=1562031541",
 		stock: 8,
 		active: true,
-		categoryId: 1,
+		categoryId: 2,
 		cellarId: 4,
 		strainId: 1,
 	},
@@ -157,7 +157,7 @@ var products = [
 		img: "https://cdn.shopify.com/s/files/1/0042/8477/6517/products/jano2013-VDM_2000x.jpg?v=1587433823",
 		stock: 15,
 		active: true,
-		categoryId: 1,
+		categoryId: 2,
 		cellarId: 5,
 		strainId: 3,
 	},
@@ -193,7 +193,7 @@ var products = [
 		img: "https://cdn.shopify.com/s/files/1/0042/8477/6517/products/amalaya-torrontes-argentina-salta-thibault-delmotte-vino-blanco-vinos-del-mundo_464_2000x.jpg?v=1545701213",
 		stock: 19,
 		active: true,
-		categoryId: 1,
+		categoryId: 2,
 		cellarId: 6,
 		strainId: 8,
 	},
@@ -204,7 +204,7 @@ var products = [
 		img: "https://cdn.shopify.com/s/files/1/0042/8477/6517/products/BodegonesdelSur-Viognier_2000x.jpg?v=1562031542",
 		stock: 25,
 		active: true,
-		categoryId: 1,
+		categoryId: 2,
 		cellarId: 4,
 		strainId: 9,
 	},
@@ -317,20 +317,20 @@ var products = [
 	},
 ];
 
-Categories.forEach((e)=>{
-    Category.create(e);
-})
+Categories.forEach(e => {
+	Category.create(e);
+});
 
-cellars.forEach((e)=>{
-    Cellar.create(e);
-})
+cellars.forEach(e => {
+	Cellar.create(e);
+});
 
-strains.forEach((e)=>{
-    Strain.create(e);
-})
+strains.forEach(e => {
+	Strain.create(e);
+});
 
-products.forEach((e)=>{
-    Product.create(e);
-})
+products.forEach(e => {
+	Product.create(e);
+});
 
 console.log("BD Cargada con éxito. Espere...");

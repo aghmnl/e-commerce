@@ -11,6 +11,9 @@ import NavBar from "./components/NavBar";
 import { CardGroup, Card, Nav } from "react-bootstrap";
 function App() {
 	const [products, setProducts] = useState([]);
+	const [categories, setCategories] = useState([]);
+	const [cellars, setCellars] = useState([]);
+	const [strains, setStrains] = useState([]);
 	function filtrarProduct(id) {
 		let producto = products.filter(product => product.id === parseInt(id));
 		return producto[0];
@@ -25,18 +28,74 @@ function App() {
 				setProducts(productsCategory);
 			});
 	}
+	function getCategories() {
+		fetch("http://localhost:3000/category")
+			.then(r => r.json())
+			.then(categories => {
+				setCategories(categories);
+			});
+	}
+	function getCellars() {
+		fetch("http://localhost:3000/cellar")
+			.then(r => r.json())
+			.then(cellars => {
+				setCellars(cellars);
+			});
+	}
+	function getStrains(category) {
+		fetch("http://localhost:3000/strain")
+			.then(r => r.json())
+			.then(strains => {
+				const strainsCat = strains.filter(strain => strain.categoryId === parseInt(category));
+				setStrains(strainsCat);
+			});
+	}
 	return (
 		<div className="App">
 			<Route path="/" render={() => <NavBar />} />
 			<Route exact path="/catalogue/category/:categoryId" render={({ match }) => <Catalogue products={products} getProductos={getProductos} category={match.params.categoryId} />} />
 			<Route exact path="/catalogue" render={() => <Catalogue products={products} getProductos={getProductos} category={null} />} />
-			<Route exact path="/admin/formProduct" render={() => <FormProduct products={products} getProductos={getProductos} filtrarProduct={null} id={null} edit={false} />} />
+			<Route 
+				exact 
+				path="/admin/formProduct" 
+				render={() => 
+				<FormProduct 
+					products={products} 
+					getProductos={getProductos}
+					getCategories={getCategories}
+					getCellars={getCellars}
+					getStrains={getStrains}
+					categories={categories}
+					cellars={cellars}
+					strains={strains}
+					filtrarProduct={null} 
+					id={null} 
+					edit={false} 
+				/>} 
+			/>
 			<Route
 				exact
 				path="/admin/formProduct/edit/:id"
-				render={({ match }) => <FormProduct products={products} getProductos={getProductos} filtrarProduct={filtrarProduct} id={match.params.id} edit={true} />}
+				render={({ match }) => 
+				<FormProduct 
+					products={products} 
+					getProductos={getProductos} 
+					filtrarProduct={filtrarProduct}
+					getProductos={getProductos}
+					getCategories={getCategories}
+					getCellars={getCellars}
+					getStrains={getStrains}
+					categories={categories}
+					cellars={cellars}
+					strains={strains}
+					id={match.params.id} 
+					edit={true} 
+				/>}
 			/>
-			<Route exact path="/admin/formCategory" component={FormCategory} />
+			<Route exact path="/admin/formCategory" render={() => 
+					<FormCategory getCategories={getCategories} categories={categories} 
+				/>} 
+			/>
 			<Route exact path="/admin/formCellar" component={FormCellar} />
 			<Route exact path="/admin/formStrain" component={FormStrain} />
 			<Route exact path="/product/:id" render={({ match }) => <Product id={match.params.id} filtrarProduct={filtrarProduct} />} />

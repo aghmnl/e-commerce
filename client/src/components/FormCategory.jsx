@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Col, Button, Row } from "react-bootstrap";
 import "../styles/FormCategory.css";
 import axios from "axios";
-export default function FormCategory() {
+export default function FormCategory(getCategoies, categories) {
 	const [inputs, setInputs] = useState({
 		name: "",
 		description: "",
