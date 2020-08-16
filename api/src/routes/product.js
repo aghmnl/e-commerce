@@ -18,7 +18,6 @@ server.get("/category/:categoryId", (req, res) => {
 	}).then(products => res.json(products));
 });
 
-
 // http://localhost:3000/products/search?query=agus
 server.get("/search/", (req, res) => {
 	const value = "%" + req.query.query + "%";
@@ -37,7 +36,7 @@ server.get("/search/", (req, res) => {
 		],
 	}).then(products => res.json(products));
 });
-server.post("/",(req, res)=>{
+server.post("/", (req, res) => {
 	/*const values = Object.values(req.body);
 	if(!values.length) return res.send("NOT DATA");
 	for(let value of values){
@@ -45,20 +44,20 @@ server.post("/",(req, res)=>{
 	}*/
 	delete req.body["nombreBoton"];
 	Product.create(req.body)
-	.then(() => res.sendStatus(200))
-	.catch(err => console.log(err));
+		.then(() => res.sendStatus(200))
+		.catch(err => console.log(err));
 });
-server.put("/:id",(req, res)=>{
+server.put("/:id", (req, res) => {
 	delete req.body["nombreBoton"];
-	Product.update(req.body,{where:{id:parseInt(req.params.id)}})
-	.then(() => res.sendStatus(200))
-	.catch(err => res.json(err));
+	Product.update(req.body, { where: { id: parseInt(req.params.id) } })
+		.then(() => res.sendStatus(200))
+		.catch(err => res.json(err));
 });
 server.delete("/:id", (req, res) => {
-	Product.destroy({where:{id:parseInt(req.params.id)}})
-	.then(() => res.sendStatus(200))
-	.catch(err => res.json(err));
-})
+	Product.destroy({ where: { id: parseInt(req.params.id) } })
+		.then(() => res.sendStatus(200))
+		.catch(err => res.json(err));
+});
 // ------------------
 // path="/catalogue" ---> Catalogue.jsx ->>> fetch a server/api/productos __> [] --> Catalogue --> ProductCard
 //  -----------------

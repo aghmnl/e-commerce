@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import { Form, Col, Button, Row } from "react-bootstrap";
 import "../styles/FormCategory.css";
 import axios from "axios";
 export default function FormCategory() {
@@ -27,14 +26,22 @@ export default function FormCategory() {
 		});
 	}
 	return (
-		<Form style={{ width: "50rem", margin: "auto" }} onSubmit={e => handleSubmit(e)}>
-			<Form.Group>
-				<Form.Label>Categoría</Form.Label>
-				<Form.Control value={inputs.name} onChange={e => setInputs({ ...inputs, name: e.target.value })} />
+		<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e)}>
+			<Form.Group as={Row}>
+				<Form.Label column sm="2">
+					Categoría
+				</Form.Label>
+				<Col sm="10">
+					<Form.Control value={inputs.name} onChange={e => setInputs({ ...inputs, name: e.target.value })} />
+				</Col>
 			</Form.Group>
-			<Form.Group>
-				<Form.Label>Descripción</Form.Label>
-				<Form.Control as="textarea" rows="3" value={inputs.description} onChange={e => setInputs({ ...inputs, description: e.target.value })} />
+			<Form.Group as={Row}>
+				<Form.Label column sm="2">
+					Descripción
+				</Form.Label>
+				<Col sm="10">
+					<Form.Control as="textarea" rows="3" value={inputs.description} onChange={e => setInputs({ ...inputs, description: e.target.value })} />
+				</Col>
 			</Form.Group>
 			<Button variant="primary" type="submit">
 				Agregar

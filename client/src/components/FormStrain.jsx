@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import { Form, Col, Button, Row } from "react-bootstrap";
 import axios from "axios";
 export default function FormStrain() {
 	const [category, setCategory] = useState([]);
@@ -30,18 +29,26 @@ export default function FormStrain() {
 		});
 	}
 	return (
-		<Form style={{ width: "50rem", margin: "auto" }} onSubmit={e => handleSubmit(e)}>
-			<Form.Group>
-				<Form.Label>Cepa</Form.Label>
-				<Form.Control value={inputs.name} onChange={e => setInputs({ ...inputs, name: e.target.value })} />
+		<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e)}>
+			<Form.Group as={Row}>
+				<Form.Label column sm="2">
+					Cepa
+				</Form.Label>
+				<Col sm="10">
+					<Form.Control value={inputs.name} onChange={e => setInputs({ ...inputs, name: e.target.value })} />
+				</Col>
 			</Form.Group>
-			<Form.Group>
-				<Form.Label>Categorías</Form.Label>
-				<Form.Control as="select" onChange={e => setInputs({ ...inputs, categoryId: parseInt(e.target.value) })}>
-					{category.map(category => (
-						<option value={category.id}>{category.name}</option>
-					))}
-				</Form.Control>
+			<Form.Group as={Row}>
+				<Form.Label column sm="2">
+					Categorías
+				</Form.Label>
+				<Col sm="10">
+					<Form.Control as="select" onChange={e => setInputs({ ...inputs, categoryId: parseInt(e.target.value) })}>
+						{category.map(category => (
+							<option value={category.id}>{category.name}</option>
+						))}
+					</Form.Control>
+				</Col>
 			</Form.Group>
 			<Button variant="primary" type="submit">
 				Agregar

@@ -2,14 +2,14 @@
 	background-color: var(--color1) !important;
 }
 
-body{
-  /* The image used */
-  background-image: var(--imgPrinc) ;
-  /* Half height */
-  height: 50%;
+body {
+	/* The image used */
+	background-image: var(--imgPrinc);
+	/* Half height */
+	height: 50%;
 
-  /* Center and scale the image nicely */
-  /*background-position: center;*/
-  background-repeat: no-repeat;
-  background-size: cover;
+	/* Center and scale the image nicely */
+	/*background-position: center;*/
+	background-repeat: no-repeat;
+	background-size: cover;
 }

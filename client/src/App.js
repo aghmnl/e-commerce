@@ -27,7 +27,12 @@ function App() {
 			<Route path="/" render={() => <NavBar />} />
 			<Route exact path="/catalogue/category/:categoryId" render={({ match }) => <Catalogue products={products} getProductos={getProductos} category={match.params.categoryId} />} />
 			<Route exact path="/catalogue" render={() => <Catalogue products={products} getProductos={getProductos} category={null} />} />
-			<Route exact path="/admin/formProduct" component={FormProduct} />
+			<Route exact path="/admin/formProduct" render={() => <FormProduct products={products} getProductos={getProductos} filtrarProduct={null} id={null} edit={false} />} />
+			<Route
+				exact
+				path="/admin/formProduct/edit/:id"
+				render={({ match }) => <FormProduct products={products} getProductos={getProductos} filtrarProduct={filtrarProduct} id={match.params.id} edit={true} />}
+			/>
 			<Route exact path="/admin/formCategory" component={FormCategory} />
 			<Route exact path="/admin/formCellar" component={FormCellar} />
 			<Route exact path="/admin/formStrain" component={FormStrain} />
