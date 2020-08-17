@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Form, Col, Button, Row, Container, Nav } from "react-bootstrap";
+import { Form, Col, Button, Row, Container } from "react-bootstrap";
 import axios from "axios";
-import {Link} from "react-router-dom";
-export default function FormCellar({
-	cellars,
-	getCellars,
-	filtrarCellar,
-	id,
-	edit
-}) {
+import { Link } from "react-router-dom";
+export default function FormCellar({ cellars, getCellars, filtrarCellar, id, edit }) {
 	const [inputs, setInputs] = useState({
 		name: "",
-		nombreBoton : "Agregar"
+		nombreBoton: "Agregar",
 	});
 
 	// Cuando monta el componente, trae todos los celars.
@@ -24,14 +18,13 @@ export default function FormCellar({
 		if (edit) setInputs({ ...filtrarCellar(id), nombreBoton: "Actualizar" });
 	}, [id]);
 
-
-	function handleSubmit(e) {
+	function handleSubmit(e, edit, id) {
 		e.preventDefault();
 		if (edit) {
 			axios
 				.put(`http://localhost:3000/cellar/${id}`, inputs)
 				.then(() => {
-					window.location.href = "/admin/formCellars";
+					window.location.href = "/admin/formCellar";
 				})
 				.catch(err => console.log("error", err));
 			return;
@@ -39,41 +32,49 @@ export default function FormCellar({
 		const url = "http://localhost:3000/cellar";
 		axios
 			.post(url, inputs)
-			.then(res => alert("Bodega cargada"))
+			.then(res => (window.location.href = "/admin/formCellar"))
 			.catch(e => console.log(e));
 		setInputs({
 			name: "",
+			nombreBoton: "Agregar",
 		});
 	}
 
 	function eliminar(e, id) {
 		e.preventDefault();
-		if (window.confirm("Este producto será eliminado. ¿Está seguro?"))
+		if (window.confirm("Esta bodega será eliminada. ¿Confirma?"))
 			axios
 				.delete(`http://localhost:3000/cellar/${id}`)
 				.then(() => {
 					window.location.href = "/admin/formCellar";
 				})
 				.catch(err => console.log(err));
+		setInputs({
+			name: "",
+			nombreBoton: "Agregar",
+		});
 	}
 
 	return (
 		<div>
-		<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e)}>
-			<Form.Group as={Row}>
-				<Form.Label column sm="2">
-					Bodega
-				</Form.Label>
-				<Col sm="10">
-					<Form.Control value={inputs.name} onChange={e => setInputs({ ...inputs, name: e.target.value })} />
-				</Col>
-			</Form.Group>
-			<Button variant="primary" type="submit">
-			{inputs.nombreBoton}
-			</Button>
-		</Form>
-		<Container id="contenedor">
-			{cellars.map(cellar => (
+			<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e, edit, id)}>
+				<Form.Group as={Row}>
+					<Form.Label column sm="2">
+						Bodega
+					</Form.Label>
+					<Col sm="10">
+						<Form.Control
+							value={inputs.name}
+							onChange={e => setInputs({ ...inputs, name: e.target.value })}
+						/>
+					</Col>
+				</Form.Group>
+				<Button variant="primary" type="submit">
+					{inputs.nombreBoton}
+				</Button>
+			</Form>
+			<Container id="contenedor">
+				{cellars.map(cellar => (
 					<Row>
 						<Col>{cellar.name}</Col>
 						<Col>
@@ -88,7 +89,7 @@ export default function FormCellar({
 						</Col>
 					</Row>
 				))}
-		</Container>
+			</Container>
 		</div>
 	);
 }

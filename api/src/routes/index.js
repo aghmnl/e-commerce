@@ -9,7 +9,7 @@ const router = Router();
 // load each router on a route
 // i.e: router.use('/auth', authRouter);
 // router.use('/auth', authRouter);
-router.use("/products", productRouter);
+router.use("/product", productRouter);
 router.use("/category", categoryRouter);
 router.use("/strain", strainRouter);
 router.use("/cellar", cellarRouter);

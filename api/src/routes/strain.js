@@ -9,12 +9,14 @@ server.delete("/:id", (req, res) => {
 	}).then(() => res.sendstatus(200));
 });
 server.post("/", (req, res) => {
+	delete req.body["nombreBoton"];
 	Strain.create(req.body)
 		.then(() => res.sendStatus(200))
 		.catch(err => res.json(err));
 });
 server.put("/:id", (req, res) => {
-	Strain.update(req.body, { where: parseInt(req.params.id) })
+	delete req.body["nombreBoton"];
+	Strain.update(req.body, { where: { id: parseInt(req.params.id) } })
 		.then(() => res.sendStatus(200))
 		.catch(err => res.json(err));
 });
