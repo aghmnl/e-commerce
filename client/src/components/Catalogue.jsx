@@ -2,20 +2,11 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import Nav from "react-bootstrap/Nav";
 import "../styles/Catalogue.css";
-export default function Catalogue({ products, getProductos, category, getCategories, 
-	categories }) {
-	// ATENCIÓN ESTO ES HARDCODEO
-	/*var products = [
-		{ id: 15, name: "Vino bueno", price: 15000, cellar: "Bodegas mendocinas", img: "https://i.ibb.co/jhJXXRv/Botella-vino-1.jpg" },
-		{ id: 16, name: "El mejor vino", price: 15000, cellar: "Bodegas sanjuaninas", img: "https://i.ibb.co/jhJXXRv/Botella-vino-1.jpg" },
-	];*/
+export default function Catalogue({ products, getProductos, category, getCategories, categories }) {
 	useEffect(() => {
 		getCategories();
 		getProductos(category);
 	}, []);
-	// FIN HARDCODEO
-
-	// ATENCIÓN, acá debería tomar todas las categorías y mostrarlas
 
 	return (
 		<div>
@@ -23,13 +14,13 @@ export default function Catalogue({ products, getProductos, category, getCategor
 				<Nav.Item>
 					<Nav.Link href="/catalogue/">Todos</Nav.Link>
 				</Nav.Item>
-				{categories.map(category => 
+				{categories.map(category => (
 					<Nav.Item>
 						<Nav.Link href={`/catalogue/category/${category.id}`}>{category.name}</Nav.Link>
 					</Nav.Item>
-				)}
+				))}
 			</Nav>
-			<div className="row" style={{overflow:"scroll"}}>
+			<div className="row" style={{ overflow: "scroll" }}>
 				<div className="col-2">
 					{/* Acá va a selececcionar las cepas
 					<Form>
