@@ -46,6 +46,14 @@ export default function App() {
 				setProducts(productsCategory);
 			});
 	}
+	function SearchProductos(query) {
+		const url = "http://localhost:3000/product/search?query="+query;
+		fetch(url)
+			.then(r => r.json())
+			.then(products => {
+				setProducts(products);
+			});
+	}
 	function getCategories() {
 		fetch("http://localhost:3000/category")
 			.then(r => r.json())
@@ -71,7 +79,7 @@ export default function App() {
 	}
 	return (
 		<div className="App">
-			<Route path="/" render={() => <NavBar />} />
+			<Route path="/" render={() => <NavBar cb={SearchProductos} />} />
       <Route exact path="/" render={() => <Home categories={categories} getCategories={getCategories}/>} />
 			<Route exact path="/" render={() => <CarouselSlider products={products} getProductos={getProductos} />} />
   			

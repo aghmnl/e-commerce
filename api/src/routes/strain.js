@@ -6,7 +6,7 @@ server.get("/", (req, res) => {
 server.delete("/:id", (req, res) => {
 	Strain.destroy({
 		where: { id: parseInt(req.params.id) },
-	}).then(() => res.sendstatus(200));
+	}).then(() => res.sendStatus(200));
 });
 server.post("/", (req, res) => {
 	delete req.body["nombreBoton"];

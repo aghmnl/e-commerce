@@ -21,11 +21,16 @@ export default function FormCategory({ categories, getCategories, filtrarCategor
 
 	function handleSubmit(e, edit, id) {
 		e.preventDefault();
+		if(!inputs.name){
+			alert("name is required !");
+			document.querySelector("#name").focus();
+			return;
+		}
 		if (edit) {
 			axios
 				.put(`http://localhost:3000/category/${id}`, inputs)
 				.then(() => {
-					window.location.href = "/admin/formCategory";
+					getCategories();
 				})
 				.catch(err => console.log("error", err));
 			return;
@@ -33,7 +38,7 @@ export default function FormCategory({ categories, getCategories, filtrarCategor
 		const url = "http://localhost:3000/category";
 		axios
 			.post(url, inputs)
-			.then(() => (window.location.href = "/admin/formCategory"))
+			.then(() => getCategories())
 			.catch(e => console.log(e));
 		setInputs({
 			name: "",
@@ -46,7 +51,7 @@ export default function FormCategory({ categories, getCategories, filtrarCategor
 			axios
 				.delete(`http://localhost:3000/category/${id}`)
 				.then(() => {
-					window.location.href = "/admin/formCategory";
+					getCategories();
 				})
 				.catch(err => console.log(err));
 	}
@@ -60,6 +65,7 @@ export default function FormCategory({ categories, getCategories, filtrarCategor
 					<Col sm="10">
 						<Form.Control
 							value={inputs.name}
+							id="name"
 							onChange={e => setInputs({ ...inputs, name: e.target.value })}
 						/>
 					</Col>
