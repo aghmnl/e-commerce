@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/FormProduct.css";
 import { Nav, Button, Form, Container, Row, Col } from "react-bootstrap";
+import {Link} from "react-router-dom";
 import axios from "axios";
 export default function FormProduct({ 
 	products, 
@@ -186,7 +187,7 @@ export default function FormProduct({
 						
 						<Col>{product.name}</Col>
 						<Col>
-							<Nav.Link href={`/admin/formProduct/edit/${product.id}`}>Editar</Nav.Link>
+							<Link to={`/admin/formProduct/edit/${product.id}`}>Editar</Link>
 						</Col>
 						<Col>
 							<Form onSubmit={e => eliminar(e, product.id)}>

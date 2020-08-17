@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Col, Button, Row, Container, Nav } from "react-bootstrap";
 import axios from "axios";
+import {Link} from "react-router-dom";
 export default function FormCellar({
 	cellars,
 	getCellars,
@@ -16,13 +17,10 @@ export default function FormCellar({
 	// Cuando monta el componente, trae todos los celars.
 	useEffect(() => {
 		getCellars();
-		alert("lo hago")
 	}, []);
 
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
-
-		if (edit) alert(filtrarCellar(id));
 		if (edit) setInputs({ ...filtrarCellar(id), nombreBoton: "Actualizar" });
 	}, [id]);
 
@@ -79,7 +77,7 @@ export default function FormCellar({
 					<Row>
 						<Col>{cellar.name}</Col>
 						<Col>
-							<Nav.Link href={`/admin/formCellar/edit/${cellar.id}`}>Editar</Nav.Link>
+							<Link to={`/admin/formCellar/edit/${cellar.id}`}>Editar</Link>
 						</Col>
 						<Col>
 							<Form onSubmit={e => eliminar(e, cellar.id)}>
