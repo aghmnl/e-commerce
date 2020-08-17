@@ -9,6 +9,7 @@ import FormCellar from "./components/FormCellar";
 import FormStrain from "./components/FormStrain";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
+import CarouselSlider from "./components/CarouselSlider";
 import Admin from "./components/Admin";
 
 function App() {
@@ -69,8 +70,26 @@ function App() {
 				path="/catalogue/category/:categoryId"
 				render={({ match }) => <Catalogue products={products} getProductos={getProductos} category={match.params.categoryId} getCategories={getCategories} categories={categories} />}
 			/>
+			<Route exact path="/" render={() => <Home categories={categories} getCategories={getCategories}/>} />
+			<Route exact path="/" render={() => <CarouselSlider products={products} getProductos={getProductos} />} />
+			<Route 
+				exact 
+				path="/admin/formProduct" 
+				render={() => 
+				<FormProduct 
+					products={products} 
+					getProductos={getProductos}
+					getCategories={getCategories}
+					getCellars={getCellars}
+					getStrains={getStrains}
+					categories={categories}
+					cellars={cellars}
+					strains={strains}
+					filtrarProduct={null} 
+					id={null} 
+					edit={false} 
+				/>} 
 			<Route exact path="/catalogue" render={() => <Catalogue products={products} getProductos={getProductos} category={null} getCategories={getCategories} categories={categories} />} />
-			<Route exact path="/" render={() => <Home categories={categories} getCategories={getCategories} />} />
 			<Route
 				exact
 				path="/admin/formProduct"
