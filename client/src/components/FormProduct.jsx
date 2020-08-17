@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import "../styles/FormProduct.css";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { Link } from "react-router-dom";
+import { Nav, Button, Form, Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
 export default function FormProduct({ 
 	products, 
@@ -75,7 +70,7 @@ export default function FormProduct({
 	}
 	function eliminar(e, id) {
 		e.preventDefault();
-		if (window.confirm("Este producto sera eliminado. Esta seguro?"))
+		if (window.confirm("Este producto será eliminado. ¿Está seguro?"))
 			axios
 				.delete(`http://localhost:3000/products/${id}`)
 				.then(() => {
@@ -188,10 +183,10 @@ export default function FormProduct({
 			<Container id="contenedor">
 				{products.map(product => (
 					<Row>
-						<Col>{product.id}</Col>
+						
 						<Col>{product.name}</Col>
 						<Col>
-							<Link to={`/admin/formProduct/edit/${product.id}`}>Editar</Link>
+							<Nav.Link href={`/admin/formProduct/edit/${product.id}`}>Editar</Nav.Link>
 						</Col>
 						<Col>
 							<Form onSubmit={e => eliminar(e, product.id)}>
