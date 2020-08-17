@@ -9,6 +9,7 @@ import FormCellar from "./components/FormCellar";
 import FormStrain from "./components/FormStrain";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
+import Admin from "./components/Admin";
 
 function App() {
 	const [products, setProducts] = useState([]);
@@ -62,56 +63,55 @@ function App() {
 	return (
 		<div className="App">
 			<Route path="/" render={() => <NavBar />} />
-			<Route exact path="/catalogue/category/:categoryId" render={({ match }) =>
-					<Catalogue products={products} getProductos={getProductos} category={match.params.categoryId} 
-					getCategories={getCategories} 
-					categories={categories} 
-				/>} 
+			<Route path="/admin" render={() => <Admin />} />
+			<Route
+				exact
+				path="/catalogue/category/:categoryId"
+				render={({ match }) => <Catalogue products={products} getProductos={getProductos} category={match.params.categoryId} getCategories={getCategories} categories={categories} />}
 			/>
-			<Route exact path="/catalogue" render={() => 
-					<Catalogue products={products} getProductos={getProductos} category={null}
-					getCategories={getCategories} 
-					categories={categories} 
-				/>} 
-			/>
-			<Route exact path="/" render={() => <Home categories={categories} getCategories={getCategories}/>} />
-			<Route 
-				exact 
-				path="/admin/formProduct" 
-				render={() => 
-				<FormProduct 
-					products={products} 
-					getProductos={getProductos}
-					getCategories={getCategories}
-					getCellars={getCellars}
-					getStrains={getStrains}
-					categories={categories}
-					cellars={cellars}
-					strains={strains}
-					filtrarProduct={null} 
-					id={null} 
-					edit={false} 
-				/>} 
+			<Route exact path="/catalogue" render={() => <Catalogue products={products} getProductos={getProductos} category={null} getCategories={getCategories} categories={categories} />} />
+			<Route exact path="/" render={() => <Home categories={categories} getCategories={getCategories} />} />
+			<Route
+				exact
+				path="/admin/formProduct"
+				render={() => (
+					<FormProduct
+						products={products}
+						getProductos={getProductos}
+						getCategories={getCategories}
+						getCellars={getCellars}
+						getStrains={getStrains}
+						categories={categories}
+						cellars={cellars}
+						strains={strains}
+						filtrarProduct={null}
+						id={null}
+						edit={false}
+					/>
+				)}
 			/>
 			<Route
 				exact
 				path="/admin/formProduct/edit/:id"
-				render={({ match }) => 
-				<FormProduct 
-					products={products} 
-					getProductos={getProductos} 
-					filtrarProduct={filtrarProduct}
-					getProductos={getProductos}
-					getCategories={getCategories}
-					getCellars={getCellars}
-					getStrains={getStrains}
-					categories={categories}
-					cellars={cellars}
-					strains={strains}
-					id={match.params.id} 
-					edit={true} 
-				/>}
+				render={({ match }) => (
+					<FormProduct
+						products={products}
+						getProductos={getProductos}
+						filtrarProduct={filtrarProduct}
+						getProductos={getProductos}
+						getCategories={getCategories}
+						getCellars={getCellars}
+						getStrains={getStrains}
+						categories={categories}
+						cellars={cellars}
+						strains={strains}
+						id={match.params.id}
+						edit={true}
+					/>
+				)}
 			/>
+
+
 			<Route exact path="/admin/formCategory" 
 					render={() => 
 						<FormCategory 
@@ -121,7 +121,8 @@ function App() {
 							id={null} 
 							edit={false} 
 						/>} 
-			/>
+			/>			
+
 			<Route exact path="/admin/formCategory/edit/:id" 
 					render={({ match }) => 
 					<FormCategory 
@@ -132,27 +133,10 @@ function App() {
 						edit={true} 
 				/>} 
 			/>
-			<Route exact path="/admin/formCellar" 
-				render={() => 
-				<FormCellar 
-					cellars={cellars} 
-					getCellars={getCellars}
-					filtrarCellar={null} 
-					id={null} 
-					edit={false} 
-				/>} 
-			
-			/>
-			<Route exact path="/admin/formCellar/edit/:id" 
-				render={({ match }) => 
-					<FormCellar 
-						cellars={cellars} 
-						getCellars={getCellars}
-						filtrarCellar={filtrarCellar} 
-						id={match.params.id} 
-						edit={true} 
-				/>} 
-			/>
+
+
+      <Route exact path="/admin/formCellar" render={() => <FormCellar cellars={cellars} getCellars={getCellars} filtrarCellar={null} id={null} edit={false} />} />
+			<Route exact path="/admin/formCellar/edit/:id" render={({ match }) => <FormCellar cellars={cellars} getCellars={getCellars} filtrarCellar={filtrarCellar} id={match.params.id} edit={true} />} />
 			<Route exact path="/admin/formStrain" component={FormStrain} />
 			<Route exact path="/product/:id" render={({ match }) => <Product id={match.params.id} filtrarProduct={filtrarProduct} />} />
 		</div>
