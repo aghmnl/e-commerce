@@ -9,6 +9,7 @@ import FormCellar from "./components/FormCellar";
 import FormStrain from "./components/FormStrain";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
+import CarouselSlider from "./components/CarouselSlider";
 
 function App() {
 	const [products, setProducts] = useState([]);
@@ -71,6 +72,7 @@ function App() {
 				/>} 
 			/>
 			<Route exact path="/" render={() => <Home categories={categories} getCategories={getCategories}/>} />
+			<Route exact path="/" render={() => <CarouselSlider products={products} getProductos={getProductos} />} />
 			<Route 
 				exact 
 				path="/admin/formProduct" 
