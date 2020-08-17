@@ -9,6 +9,7 @@ import FormCellar from "./components/FormCellar";
 import FormStrain from "./components/FormStrain";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
+import CarouselSlider from "./components/CarouselSlider";
 import Admin from "./components/Admin";
 
 export default function App() {
@@ -71,6 +72,9 @@ export default function App() {
 	return (
 		<div className="App">
 			<Route path="/" render={() => <NavBar />} />
+      <Route exact path="/" render={() => <Home categories={categories} getCategories={getCategories}/>} />
+			<Route exact path="/" render={() => <CarouselSlider products={products} getProductos={getProductos} />} />
+  			
 			<Route path="/admin" render={() => <Admin />} />
 			<Route
 				exact
@@ -85,7 +89,9 @@ export default function App() {
 					/>
 				)}
 			/>
-			<Route
+		
+  
+  <Route
 				exact
 				path="/catalogue"
 				render={() => (
@@ -98,11 +104,8 @@ export default function App() {
 					/>
 				)}
 			/>
-			<Route
-				exact
-				path="/"
-				render={() => <Home categories={categories} getCategories={getCategories} />}
-			/>
+
+
 			<Route
 				exact
 				path="/admin/formProduct"
