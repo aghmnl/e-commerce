@@ -31,12 +31,18 @@ export default function FormStrain({
 
 	function handleSubmit(e) {
 		e.preventDefault();
-
+		for(let prop in inputs){
+			if(!inputs[prop]){
+				alert("this field is required !");
+				document.querySelector(`#${prop}`).focus();
+				return;
+			}
+		}
 		if (edit) {
 			axios
 				.put(`http://localhost:3000/strain/${id}`, inputs)
 				.then(() => {
-					window.location.href = "/admin/formStrain";
+					getStrains(null);
 				})
 				.catch(err => console.log("error", err));
 			return;
@@ -45,7 +51,7 @@ export default function FormStrain({
 		const url = "http://localhost:3000/strain";
 		axios
 			.post(url, inputs)
-			.then(res => alert("Cepa cargada"))
+			.then(res => getStrains(null))
 			.catch(e => console.log(e));
 		setInputs({
 			name: "",
@@ -59,7 +65,7 @@ export default function FormStrain({
 			axios
 				.delete(`http://localhost:3000/strain/${id}`)
 				.then(() => {
-					alert("Cepa actualizada");
+					getStrains(null);
 				})
 				.catch(err => console.log(err));
 	}
@@ -74,6 +80,7 @@ export default function FormStrain({
 					<Col sm="10">
 						<Form.Control
 							value={inputs.name}
+							id="name"
 							onChange={e => setInputs({ ...inputs, name: e.target.value })}
 						/>
 					</Col>
@@ -85,6 +92,7 @@ export default function FormStrain({
 					<Col sm="10">
 						<Form.Control
 							as="select"
+							id="categoryId"
 							onChange={e => setInputs({ ...inputs, categoryId: parseInt(e.target.value) })}
 						>
 							<option>seleccione categoría</option>

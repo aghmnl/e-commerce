@@ -20,7 +20,7 @@ export default function Catalogue({ products, getProductos, category, getCategor
 					</Nav.Item>
 				))}
 			</Nav>
-			<div className="row" style={{ overflow: "scroll" }}>
+			<div className="row">
 				<div className="col-2">
 					{/* Acá va a selececcionar las cepas
 					<Form>

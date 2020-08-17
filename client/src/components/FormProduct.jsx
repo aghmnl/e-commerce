@@ -56,7 +56,7 @@ export default function FormProduct({
 			axios
 				.put(`http://localhost:3000/product/${id}`, inputs)
 				.then(() => {
-					window.location.href = "/admin/formProduct";
+					getProductos(null);
 				})
 				.catch(err => console.log("error", err));
 			return;
@@ -65,7 +65,7 @@ export default function FormProduct({
 		axios
 			.post(url, inputs)
 			.then(() => {
-				window.location.href = "/admin/formProduct";
+				getProductos(null);
 			})
 			.catch(err => console.log("error", err));
 	}
@@ -75,7 +75,7 @@ export default function FormProduct({
 			axios
 				.delete(`http://localhost:3000/product/${id}`)
 				.then(() => {
-					window.location.href = "/admin/formProduct";
+					getProductos(null);
 				})
 				.catch(err => console.log(err));
 	}
