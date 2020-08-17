@@ -35,7 +35,8 @@ export default function Home({ getCategories, categories }) {
 	return (
 		<div>
 			<Card id="logo">
-				<Card.Img variant="top" src="https://i.ibb.co/sJKD7q1/Sin-t-tulo-2.png " />
+				<Card.Img variant="top" src="https://i.ibb.co/k9pSWmx/default-removebg-preview.png" />
+				<Card.Img variant="top" src="https://i.ibb.co/gMbh6ZK/toni-Black.png" />
 			</Card>
 			<CardGroup id="categorias">
 				{cats.map(cat => (
