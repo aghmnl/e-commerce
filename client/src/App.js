@@ -23,6 +23,10 @@ function App() {
 		let bodega = cellars.filter(cellar => cellar.id === parseInt(id));
 		return bodega[0];
 	}
+	function filtrarCategory(id) {
+		let categoria = categories.filter(category => category.id === parseInt(id));
+		return categoria[0];
+	}
 	function getProductos(category) {
 		const url = "http://localhost:3000/products";
 		fetch(url)
@@ -108,8 +112,24 @@ function App() {
 					edit={true} 
 				/>}
 			/>
-			<Route exact path="/admin/formCategory" render={() => 
-					<FormCategory getCategories={getCategories} categories={categories} 
+			<Route exact path="/admin/formCategory" 
+					render={() => 
+						<FormCategory 
+							getCategories={getCategories}
+							categories={categories}
+							filtrarCategory = {null}
+							id={null} 
+							edit={false} 
+						/>} 
+			/>
+			<Route exact path="/admin/formCategory/edit/:id" 
+					render={({ match }) => 
+					<FormCategory 
+						getCategories={getCategories}
+						categories={categories}  
+						filtrarCategory = {filtrarCategory}
+						id={match.params.id} 
+						edit={true} 
 				/>} 
 			/>
 			<Route exact path="/admin/formCellar" 
