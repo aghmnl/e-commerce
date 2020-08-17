@@ -1,0 +1,14 @@
+#logo {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 25rem;
+	margin-top: 10rem;
+	background-color: transparent;
+	border: transparent;
+}
+
+#categorias {
+	background-color: transparent !important;
+	margin-top: 15rem;
+}
