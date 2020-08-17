@@ -1,5 +1,32 @@
-const server = require("express").Router();
+// const server = require("express").Router();
 const { Cellar, Product, Category, Strain } = require("./src/db");
+const servidor = require("./src/app.js");
+const { conn } = require("./src/db.js");
+
+// Syncing all the models at once.
+conn.sync({ force: true }).then(() => {
+	Categories.forEach(e => {
+		Category.create(e);
+	});
+
+	cellars.forEach(e => {
+		Cellar.create(e);
+	});
+
+	strains.forEach(e => {
+		Strain.create(e);
+	});
+
+	products.forEach(e => {
+		Product.create(e);
+	});
+
+	console.log("BD Cargada con éxito. Espere...");
+
+	// servidor.listen(3000, () => {
+	// 	console.log("%s listening at 3000"); // eslint-disable-line no-console
+	// });
+});
 
 //Cat = 1:Tinto, 2: Blanco, 3: Rose, 4: Espumante
 
@@ -58,36 +85,55 @@ var cellars = [
 var strains = [
 	{
 		name: "Cabernet Franc",
+		categoryId: 1,
 	},
 	{
 		name: "Tempranillo",
+		categoryId: 1,
 	},
 	{
 		name: "Tannat",
+		categoryId: 1,
 	},
 	{
 		name: "Malbec",
+		categoryId: 1,
 	},
 	{
 		name: "Merlot",
+		categoryId: 1,
 	},
 	{
 		name: "Blend",
+		categoryId: 3,
 	},
 	{
 		name: "Chardonnay",
+		categoryId: 2,
 	},
 	{
 		name: "Torrentés",
+		categoryId: 2,
 	},
 	{
 		name: "Viognier",
+		categoryId: 4,
 	},
 	{
 		name: "Cinsault",
+		categoryId: 4,
 	},
 	{
 		name: "Asti",
+		categoryId: 4,
+	},
+	{
+		name: "Malbec",
+		categoryId: 3,
+	},
+	{
+		name: "Blend",
+		categoryId: 4,
 	},
 ];
 var products = [
@@ -134,7 +180,7 @@ var products = [
 		img: "https://cdn.shopify.com/s/files/1/0042/8477/6517/products/amalaya-gran-corte-argentina-blend-salta-thibault-delmotte-vino-tinto-vinos-del-mundo_886_2000x.jpg?v=1545701211",
 		stock: 12,
 		active: true,
-		categoryId: 2,
+		categoryId: 1,
 		cellarId: 3,
 		strainId: 4,
 	},
@@ -145,7 +191,7 @@ var products = [
 		img: "https://cdn.shopify.com/s/files/1/0042/8477/6517/products/BodegonesdelSur-Tannat_e4d144c9-0bc8-453c-97aa-2db5c988919b_2000x.jpg?v=1562031541",
 		stock: 8,
 		active: true,
-		categoryId: 2,
+		categoryId: 1,
 		cellarId: 4,
 		strainId: 1,
 	},
@@ -157,7 +203,7 @@ var products = [
 		img: "https://cdn.shopify.com/s/files/1/0042/8477/6517/products/jano2013-VDM_2000x.jpg?v=1587433823",
 		stock: 15,
 		active: true,
-		categoryId: 2,
+		categoryId: 1,
 		cellarId: 5,
 		strainId: 3,
 	},
@@ -198,7 +244,7 @@ var products = [
 		strainId: 8,
 	},
 	{
-		name: "LIMITED EDITION VIOGNIER",
+		name: "Limited Edition Viogonier",
 		price: 568.0,
 		description: "S/D",
 		img: "https://cdn.shopify.com/s/files/1/0042/8477/6517/products/BodegonesdelSur-Viognier_2000x.jpg?v=1562031542",
@@ -209,7 +255,7 @@ var products = [
 		strainId: 9,
 	},
 	{
-		name: "AMALAYA ROSÉ",
+		name: "Amalaya Rosé",
 		price: 710.0,
 		description:
 			"Capacidad: 750 ml Región: Valle Clachaqui, Salta Cosecha: 2017 Enólogo: Thibault Delmotte Rosa salmón delicado y brillante. Ataque floral muy sutil con dejos de azahares que provienen del Torrontés y notas a cereza y frutilla, típicas del malbec",
@@ -221,7 +267,7 @@ var products = [
 		strainId: 4,
 	},
 	{
-		name: "ANDELUNA 1300",
+		name: "Andeluna 1300",
 		price: 1100.0,
 		description:
 			"Capacidad: 750 ml Región: Valle Clachaqui, Salta Cosecha: 2017 Enólogo: Thibault Delmotte Rosa salmón delicado y brillante. Ataque floral muy sutil con dejos de azahares que provienen del Torrontés y notas a cereza y frutilla, típicas del malbec",
@@ -230,10 +276,10 @@ var products = [
 		active: true,
 		cellarId: 1,
 		categoryId: 3,
-		strainId: 4,
+		strainId: 12,
 	},
 	{
-		name: "DE MARTINO GALLARDIA",
+		name: "De Martino Gallardia",
 		price: 1203.0,
 		description:
 			"Gallardía es un vino fresco y elegante, que destaca por su gran carácter floral. Su nombre deriva de una flor rústica y vivaz que crece naturalmente en nuestros viñedos y que los llena de aromas y colores. Gallardía le rinde honor a su nombre soportando el implacable clima del Valle del Itata, en el sur de Chile.",
@@ -245,7 +291,7 @@ var products = [
 		strainId: 10,
 	},
 	{
-		name: "KAIKEN",
+		name: "Kaiken",
 		price: 828.0,
 		description:
 			"Presenta un color rojo cereza, límpido y de gran intensidad. Con aromas frutales, de frutillas maceradas y elegantes notas de violetas que aumentan su complejidad. En boca es un vino con cuerpo, en perfecta armonía con su delicada acidez. Se muestra fresco, delicado y seductor, un perfecto compañero para diversos tipos de comidas. Este es un vino que combina de manera única el frescor de los mejores rosados con el cuerpo y suavidad única de nuestros más queridos malbecs. es un vino fresco y elegante, que destaca por su gran carácter floral. Su nombre deriva de una flor rústica y vivaz que crece naturalmente en nuestros viñedos y que los llena de aromas y colores.",
@@ -254,10 +300,10 @@ var products = [
 		active: true,
 		cellarId: 8,
 		categoryId: 3,
-		strainId: 4,
+		strainId: 12,
 	},
 	{
-		name: "MONTES CHERUB",
+		name: "Montes Cherub",
 		price: 1580.0,
 		description:
 			"Montes Cherub es el resultado de años de experimentación con el Syrah, con el que fuimos pioneros en el Valle de Colchagua. Es un vino seco, seductor y elegante, con un brillante color rosado. Es una excelente expresión de su terroir. En nariz y paladar se muestra el carácter distintivo del Syrah, con notas de frutillas, rosas y naranja. De gran concentración frutal, muestra su riqueza de textura en el paladar con un largo y delicioso final. Posee un fuerte soporte de acidez y una pequeña presencia de taninos que le dan una estructura muy definida.Montes Cherub es un vino seco, seductor y elegante, con un brillante color rosado. Es una excelente expresión de su terroir. En nariz y paladar se muestra el carácter distintivo del Syrah, con notas de frutillas, rosas y naranja.",
@@ -266,10 +312,10 @@ var products = [
 		active: true,
 		cellarId: 9,
 		categoryId: 3,
-		strainId: 4,
+		strainId: 12,
 	},
 	{
-		name: "ALMANEGRA",
+		name: "Almanegra",
 		price: 1969.0,
 		description:
 			"En nariz intensidad aromática, frutal y con notas a tostados. En boca es envolvente, con una acidez ligera que le brinda frescura. Su estructura es muy buena con taninos suaves y redondos y con un complejo y agradable final.",
@@ -278,10 +324,10 @@ var products = [
 		active: true,
 		cellarId: 10,
 		categoryId: 4,
-		strainId: 6,
+		strainId: 13,
 	},
 	{
-		name: "BANFI VIGNE",
+		name: "Banfi Vigne",
 		price: 1601.0,
 		description:
 			"Castello Banfi es propietario de una histórica finca de 45 hectáreas en Strevi - Piamonte, llamado Banfi Piemonte. sus viñedos están situados entre las localidades de Novi Ligure y Acqui Terme, en una zona con pasión dedicada a la producción de los famosos vinos tradicionales de Piamonte. La bodega, fundada en Strevi en 1860, fue comprado por Banfi a finales de 1970 para completar su finca Piamonte. La cartera Banfi Piemonte cuenta con una amplia gama de productos que incluye vinos únicos brillantes, blancos y rojos, todos ellos teniendo las prestigiosas denominaciones de Piamonte Intenso y frutal con una expresión elegante de aromas típicos Moscato, salvia y flor de durazno. Dulce, crujiente, aromático y armoniosamente delicado en el paladar.",
@@ -293,7 +339,7 @@ var products = [
 		strainId: 11,
 	},
 	{
-		name: "DANTE ROBINO",
+		name: "Dante Robino",
 		price: 741.0,
 		description:
 			"Espumante joven y actual, elaborado bajo método Charmat (o segunda fermentación en tanque). Los vinos expresan los aromas varietales de la fruta. Su estilo es atractivamente fresco, bebible, y versátil para la gastronomía. Ideal para cócteles o mezclas con jugos de fruta. La línea integra el Extra Brut, recomendado de aperitivo o para platos entrantes.",
@@ -302,10 +348,10 @@ var products = [
 		active: true,
 		cellarId: 10,
 		categoryId: 4,
-		strainId: 6,
+		strainId: 13,
 	},
 	{
-		name: "MOET IMPERIAL",
+		name: "Moet Imperial",
 		price: 3900.0,
 		description: "Vibrante, generoso, seductor. El Champagne más amado del mundo. El ícono de la casa Moet & Chandon desde 1869.",
 		img: "https://cdn.shopify.com/s/files/1/0042/8477/6517/products/MoetImperial-VDM_2000x.jpg?v=1590499583",
@@ -313,24 +359,6 @@ var products = [
 		active: true,
 		cellarId: 12,
 		categoryId: 4,
-		strainId: 6,
+		strainId: 13,
 	},
 ];
-
-Categories.forEach(e => {
-	Category.create(e);
-});
-
-cellars.forEach(e => {
-	Cellar.create(e);
-});
-
-strains.forEach(e => {
-	Strain.create(e);
-});
-
-products.forEach(e => {
-	Product.create(e);
-});
-
-console.log("BD Cargada con éxito. Espere...");
