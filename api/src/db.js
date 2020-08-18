@@ -3,7 +3,7 @@ const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 const { userInfo } = require("os");
-const { DB_USER, DB_PASSWORD, DB_HOST, SYS } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
 
 const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/development`, {
 	logging: false, // set to console.log to see the raw SQL queries
@@ -29,7 +29,17 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Product, Category, Cellar, Strain, User, Pay_method, Purchase, Review, Purchased_product } = sequelize.models;
+const {
+	Product,
+	Category,
+	Cellar,
+	Strain,
+	User,
+	Pay_method,
+	Purchase,
+	Review,
+	Purchased_product,
+} = sequelize.models;
 Cellar.hasMany(Product);
 Product.belongsTo(Cellar);
 Strain.hasMany(Product);
@@ -42,14 +52,11 @@ User.hasMany(Purchase);
 Purchase.belongsTo(User);
 Purchase.belongsToMany(Product, { through: Purchased_product });
 Product.belongsToMany(Purchase, { through: Purchased_product });
-// nuevas relaciones
 Pay_method.hasMany(Purchase);
 Purchase.belongsTo(Pay_method);
 User.belongsToMany(Product, { through: Review });
 Product.belongsToMany(User, { through: Review });
 
-// Aca vendrian las relaciones
-// Product.hasMany(Reviews);
 module.exports = {
 	...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
 	conn: sequelize, // para importart la conexión { conn } = require('./db.js');
