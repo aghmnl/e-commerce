@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import store from "../store";
 import {addProduct} from "../store/actions";
+import {useSelector, useDispatch} from "react-redux";
 import {Button, Col, Row, Container, Card, ListGroup, ListGroupItem} from "react-bootstrap"
 import "../styles/Product.css";
 export default function Product({ id, filtrarProduct }) {
