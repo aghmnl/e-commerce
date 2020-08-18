@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Card from "react-bootstrap/Card";
-import ListGroup from "react-bootstrap/ListGroup";
-import ListGroupItem from "react-bootstrap/ListGroupItem";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import store from "../store";
+import {addProduct} from "../store/actions";
+import {Button, Col, Row, Container, Card, ListGroup, ListGroupItem} from "react-bootstrap"
 import "../styles/Product.css";
 export default function Product({ id, filtrarProduct }) {
+	const [state, setState] = useState();
+	useEffect(()=>{
+		store.subscribe(()=>{});
+	},[])
 	const product = filtrarProduct(id);
 	if(!product) return window.location.href= "/catalogue";
 	return (
@@ -37,6 +38,7 @@ export default function Product({ id, filtrarProduct }) {
 								<ListGroupItem>{product.strain.name}</ListGroupItem>
 								<ListGroupItem>Productos disponibles: {product.stock}</ListGroupItem>
 							</ListGroup>
+							<Button onClick={() => {store.dispatch(addProduct(product, 1))}}>Añadir al carrito</Button>
 						</Card.Body>
 					</Col>
 				</Row>
