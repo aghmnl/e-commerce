@@ -8,9 +8,9 @@ import "../styles/NavBar.css";
 export default function (props) {
 	return (
 		<Navbar bg="dark" variant="dark">
-			<Navbar.Brand href="/">ToniWines</Navbar.Brand>
+			<Link to="/"><Navbar.Brand href="/">ToniWines</Navbar.Brand></Link>
 			<Nav className="mr-auto">
-				<Nav.Link href="/catalogue">Catálogo</Nav.Link>
+				<Link to="/catalogue">Catálogo</Link>
 			</Nav>
 			<SearchBar cb={props.cb}/>
 		</Navbar>
