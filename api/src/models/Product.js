@@ -9,7 +9,7 @@ module.exports = sequelize => {
 			allowNull: false,
 		},
 		price: {
-			type: DataTypes.DECIMAL,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 		description: {
