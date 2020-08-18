@@ -38,7 +38,7 @@ server.get("/:id/purchase/", (req, res) => {
 				model: Purchase,
 				as: "purchase",
 				where: {
-					idStatus: 0,
+					idStatus: 1,
 				},
 			},
 			{
