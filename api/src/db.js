@@ -39,6 +39,7 @@ const {
 	Purchase,
 	Review,
 	Purchased_product,
+	Status,
 } = sequelize.models;
 Cellar.hasMany(Product);
 Product.belongsTo(Cellar);
@@ -56,6 +57,8 @@ Pay_method.hasMany(Purchase);
 Purchase.belongsTo(Pay_method);
 User.belongsToMany(Product, { through: Review });
 Product.belongsToMany(User, { through: Review });
+Status.hasMany(Purchase);
+Purchase.belongsTo(Status);
 
 module.exports = {
 	...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
