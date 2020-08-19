@@ -1,5 +1,5 @@
 const server = require("express").Router();
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const { Product, Cellar, Strain, Category } = require("../db.js");
 const Op = Sequelize.Op;
 // Este get devuelve todos los productos para generar el catálogo
@@ -38,19 +38,19 @@ server.get("/search?:query", (req, res) => {
 	const value = "%" + req.query.query + "%";
 	console.log(value);
 	Product.findAll({
-		where:{
-			[Op.or] : [
+		where: {
+			[Op.or]: [
 				{
-					name:{
-						[Op.like] : value
-					}
+					name: {
+						[Op.like]: value,
+					},
 				},
 				{
-					description:{
-						[Op.like] : value
-					}
+					description: {
+						[Op.like]: value,
+					},
 				},
-			]
+			],
 		},
 		include: [
 			{
@@ -66,8 +66,9 @@ server.get("/search?:query", (req, res) => {
 				as: "category",
 			},
 		],
-	}).then(products => res.json(products))
-	.catch(err => res.json(err));
+	})
+		.then(products => res.json(products))
+		.catch(err => res.json(err));
 });
 server.post("/", (req, res) => {
 	/*const values = Object.values(req.body);
@@ -91,8 +92,5 @@ server.delete("/:id", (req, res) => {
 		.then(() => res.sendStatus(200))
 		.catch(err => res.json(err));
 });
-// ------------------
-// path="/catalogue" ---> Catalogue.jsx ->>> fetch a server/api/productos __> [] --> Catalogue --> ProductCard
-//  -----------------
 
 module.exports = server;
