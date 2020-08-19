@@ -25,23 +25,21 @@ conn.sync({ force: true }).then(() => {
 		User.create(e);
 	});
 
-	// purchases.forEach(e =>{
-	// 	Purchase.create(e);
-	// });
-
-	// purchased_products.forEach(e =>{
-	// 	Purchased_product.create(e);
-	// });
-
 	pay_methods.forEach(e =>{
 		Pay_method.create(e);
 	});
 
+	purchases.forEach(e =>{
+		Purchase.create(e);
+	});
 
+	purchased_products.forEach(e =>{
+		Purchased_product.create(e);
+	});
 
-	// reviews.forEach(e =>{
-	// 	Review.create(e);
-	// });
+	reviews.forEach(e =>{
+		Review.create(e);
+	});
 
 	status.forEach(e =>{
 		Status.create(e);
@@ -410,17 +408,18 @@ var products = [
 ];
 var purchased_products = [
 	{
-		purchaseId:19,
+		purchaseId:1,
 		productId:5,	
 		priceProduct:3900,
 		quantity:5,
+		// purchased_productId: 1,
 	}
 	];
 
 var purchases = [
 	{
 		// purchaseId:1,
-		date:0,
+		date:'2020-08-19',
 		userId: 1,
 		payMethodId:1,
 		idStatus:1,
@@ -428,23 +427,23 @@ var purchases = [
 
 var status = [
 	{
-	// idStatus:1,
-	name:"activa",
+	// statusId:1,
+	name:"carrito",
 	},
 	{
-		// idStatus:2,
+		// statusId:2,
 		name:"pagada",
 	},
 	{
-		// idStatus:3,
+		// statusId:3,
 		name:"entregada",
 	},
 	{
-		// idStatus:4,
+		// statusId:4,
 		name:"cancelada",
 	},
 	{
-		// idStatus:5,
+		// statusId:5,
 		name:"rechazada",
 	}
 ];
@@ -462,12 +461,12 @@ var users = [
 ];
 var reviews = [
 	{
-		// reviewsId:1,
+		// reviewId:1,
 		productId:1,
 		userId:1,
 		stars:1,
 		description:"",
-		date:0,
+		date:'2020-08-19',
 	}
 ];
 var pay_methods = [{
