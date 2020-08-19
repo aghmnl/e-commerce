@@ -8,3 +8,13 @@ server.post("/", (req, res) => {
 		.then(() => res.sendStatus(200))
 		.catch(err => console.log(err));
 });
+
+// S41 : Crear Ruta para editar las cantidades del carrito
+// ATENCIÓN, el trello pedía PUT /users/:idUser/cart
+server.post("/:id", (req, res) => {
+	Purchased_product.update(req.body, { where: { id: parseInt(req.params.id) } })
+		.then(() => res.sendStatus(200))
+		.catch(err => console.log(err));
+});
+
+module.exports = server;
