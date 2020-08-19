@@ -1,11 +1,11 @@
 // const server = require("express").Router();
-const { Cellar, Product, Category, Strain } = require("./src/db");
-const servidor = require("./src/app.js");
+const { Cellar, Product, Category, Strain, Purchased_product, User, Pay_method, Purchase, Review, Status } = require("./src/db");
+// const servidor = require("./src/app.js");
 const { conn } = require("./src/db.js");
 
 // Syncing all the models at once.
 conn.sync({ force: true }).then(() => {
-	Categories.forEach(e => {
+	categories.forEach(e => {
 		Category.create(e);
 	});
 
@@ -21,16 +21,43 @@ conn.sync({ force: true }).then(() => {
 		Product.create(e);
 	});
 
+	users.forEach(e =>{
+		User.create(e);
+	});
+
+	// purchases.forEach(e =>{
+	// 	Purchase.create(e);
+	// });
+
+	// purchased_products.forEach(e =>{
+	// 	Purchased_product.create(e);
+	// });
+
+	pay_methods.forEach(e =>{
+		Pay_method.create(e);
+	});
+
+
+
+	// reviews.forEach(e =>{
+	// 	Review.create(e);
+	// });
+
+	status.forEach(e =>{
+		Status.create(e);
+	});
+
+
+	
+
 	console.log("BD Cargada con éxito. Espere...");
 
-	// servidor.listen(3000, () => {
-	// 	console.log("%s listening at 3000"); // eslint-disable-line no-console
-	// });
+
 });
 
 //Cat = 1:Tinto, 2: Blanco, 3: Rose, 4: Espumante
 
-var Categories = [
+var categories = [
 	{
 		name: "Tinto",
 	},
@@ -148,6 +175,7 @@ var products = [
 		categoryId: 1,
 		cellarId: 1,
 		strainId: 4,
+		// productId: 1,
 	},
 	{
 		name: "El enemigo Cabernet Franc",
@@ -159,6 +187,7 @@ var products = [
 		categoryId: 1,
 		cellarId: 1,
 		strainId: 1,
+		// productId: 2,
 	},
 	{
 		name: "Pesquera Crianza",
@@ -171,6 +200,7 @@ var products = [
 		categoryId: 1,
 		cellarId: 2,
 		strainId: 2,
+		// productId: 3,
 	},
 	{
 		name: "Gran Corte",
@@ -183,6 +213,7 @@ var products = [
 		categoryId: 1,
 		cellarId: 3,
 		strainId: 4,
+		// productId: 4,
 	},
 	{
 		name: "Tanat Limited Edition",
@@ -194,6 +225,7 @@ var products = [
 		categoryId: 1,
 		cellarId: 4,
 		strainId: 1,
+		// productId: 5,
 	},
 	{
 		name: "Jano Tannat 2013",
@@ -206,6 +238,7 @@ var products = [
 		categoryId: 1,
 		cellarId: 5,
 		strainId: 3,
+		// productId: 6,
 	},
 	{
 		name: "Los Vascos Le Dix",
@@ -218,6 +251,7 @@ var products = [
 		categoryId: 1,
 		cellarId: 6,
 		strainId: 6,
+		// productId: 7,
 	},
 	{
 		name: "El Enemigo Chardonanay",
@@ -230,6 +264,7 @@ var products = [
 		categoryId: 2,
 		cellarId: 1,
 		strainId: 7,
+		// productId: 8,
 	},
 	{
 		name: "Amalaya Torrentés",
@@ -242,6 +277,7 @@ var products = [
 		categoryId: 2,
 		cellarId: 6,
 		strainId: 8,
+		// productId: 9,
 	},
 	{
 		name: "Limited Edition Viogonier",
@@ -253,6 +289,7 @@ var products = [
 		categoryId: 2,
 		cellarId: 4,
 		strainId: 9,
+		// productId: 10,
 	},
 	{
 		name: "Amalaya Rosé",
@@ -265,6 +302,7 @@ var products = [
 		cellarId: 1,
 		categoryId: 3,
 		strainId: 4,
+		// productId: 11,
 	},
 	{
 		name: "Andeluna 1300",
@@ -277,6 +315,7 @@ var products = [
 		cellarId: 1,
 		categoryId: 3,
 		strainId: 12,
+		// productId: 12,
 	},
 	{
 		name: "De Martino Gallardia",
@@ -289,6 +328,7 @@ var products = [
 		cellarId: 7,
 		categoryId: 3,
 		strainId: 10,
+		// productId: 13,
 	},
 	{
 		name: "Kaiken",
@@ -301,6 +341,7 @@ var products = [
 		cellarId: 8,
 		categoryId: 3,
 		strainId: 12,
+		// productId: 14,
 	},
 	{
 		name: "Montes Cherub",
@@ -313,6 +354,7 @@ var products = [
 		cellarId: 9,
 		categoryId: 3,
 		strainId: 12,
+		// productId: 15,
 	},
 	{
 		name: "Almanegra",
@@ -325,6 +367,7 @@ var products = [
 		cellarId: 10,
 		categoryId: 4,
 		strainId: 13,
+		// productId: 16,
 	},
 	{
 		name: "Banfi Vigne",
@@ -337,6 +380,7 @@ var products = [
 		cellarId: 11,
 		categoryId: 4,
 		strainId: 11,
+		// productId: 17,
 	},
 	{
 		name: "Dante Robino",
@@ -349,6 +393,7 @@ var products = [
 		cellarId: 10,
 		categoryId: 4,
 		strainId: 13,
+		// productId: 18,
 	},
 	{
 		name: "Moet Imperial",
@@ -360,5 +405,72 @@ var products = [
 		cellarId: 12,
 		categoryId: 4,
 		strainId: 13,
+		// productId: 19,
 	},
 ];
+var purchased_products = [
+	{
+		purchaseId:19,
+		productId:5,	
+		priceProduct:3900,
+		quantity:5,
+	}
+	];
+
+var purchases = [
+	{
+		// purchaseId:1,
+		date:0,
+		userId: 1,
+		payMethodId:1,
+		idStatus:1,
+	}];
+
+var status = [
+	{
+	// idStatus:1,
+	name:"activa",
+	},
+	{
+		// idStatus:2,
+		name:"pagada",
+	},
+	{
+		// idStatus:3,
+		name:"entregada",
+	},
+	{
+		// idStatus:4,
+		name:"cancelada",
+	},
+	{
+		// idStatus:5,
+		name:"rechazada",
+	}
+];
+
+var users = [
+	{
+		// userId:1,
+		name:"Leo",
+		last_name:"Rufino",
+		email:"rufino_138@hotmail.com",
+		password:"1234",
+		phone:121312132,
+		admin:true,
+	}
+];
+var reviews = [
+	{
+		// reviewsId:1,
+		productId:1,
+		userId:1,
+		stars:1,
+		description:"",
+		date:0,
+	}
+];
+var pay_methods = [{
+	// payMethodId:1,
+	name:"efectivo",
+}];
