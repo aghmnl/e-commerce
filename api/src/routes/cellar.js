@@ -3,9 +3,12 @@ const { Cellar } = require("../db.js");
 server.get("/", (req, res) => {
 	Cellar.findAll().then(cellars => res.json(cellars));
 });
+server.get("/one/:id", (req, res) => {
+	Cellar.findOne({where : {id : parseInt(req.params.id)}}).then(cellar => res.json(cellar));
+});
 server.delete("/:id", (req, res) => {
 	Cellar.destroy({
-		where: { id: req.params.id },
+		where: { id: parseInt(req.params.id) },
 	}).then(() => res.sendStatus(200));
 });
 server.post("/", (req, res) => {

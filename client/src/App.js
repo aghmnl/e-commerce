@@ -10,160 +10,50 @@ import FormStrain from "./components/FormStrain";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import CarouselSlider from "./components/CarouselSlider";
+import {getCategories, getProducts, getStrains, getCellars, searchProduct} from "./store/actions/index";
 import Admin from "./components/Admin";
+import {connect} from "react-redux";
 
-export default function App() {
-	const [products, setProducts] = useState([]);
-	const [categories, setCategories] = useState([]);
-	const [cellars, setCellars] = useState([]);
-	const [strains, setStrains] = useState([]);
-	function filtrarProduct(id) {
-		let producto = products.filter(product => product.id === parseInt(id));
-		return producto[0];
-	}
-	function filtrarCellar(id) {
-		let bodegas = cellars.filter(cellar => cellar.id === parseInt(id));
-		return bodegas[0];
-	}
-	function filtrarCategory(id) {
-		let categorias = categories.filter(category => category.id === parseInt(id));
-		return categorias[0];
-	}
-	function filtrarStrain(id) {
-		let cepas = strains.filter(strain => strain.id === parseInt(id));
-		return cepas[0];
-	}
-
-	function getProductos(category) {
-		const url = "http://localhost:3000/product";
-		fetch(url)
-			.then(r => r.json())
-			.then(products => {
-				if (!category) return setProducts(products);
-				const productsCategory = products.filter(
-					product => product.categoryId === parseInt(category)
-				);
-				setProducts(productsCategory);
-			});
-	}
-	function SearchProductos(query) {
-		const url = "http://localhost:3000/product/search?query="+query;
-		fetch(url)
-			.then(r => r.json())
-			.then(products => {
-				setProducts(products);
-			});
-	}
-	function getCategories() {
-		fetch("http://localhost:3000/category")
-			.then(r => r.json())
-			.then(categories => {
-				setCategories(categories);
-			});
-	}
-	function getCellars() {
-		fetch("http://localhost:3000/cellar")
-			.then(r => r.json())
-			.then(cellars => {
-				setCellars(cellars);
-			});
-	}
-	function getStrains(category) {
-		fetch("http://localhost:3000/strain")
-			.then(r => r.json())
-			.then(strains => {
-				const strainsCat = strains.filter(strain => strain.categoryId === parseInt(category));
-				if (!category) return setStrains(strains);
-				setStrains(strainsCat);
-			});
-	}
+function App({getProducts, getCategories, getStrains, getCellars, searchProduct}) {
+	useEffect(()=>{
+		getProducts();
+		getCategories();
+		getStrains();
+		getCellars();
+	},[])
 	return (
 		<div className="App">
-			<Route path="/" render={() => <NavBar cb={SearchProductos} />} />
-      <Route exact path="/" render={() => <Home categories={categories} getCategories={getCategories}/>} />
-			<Route exact path="/" render={() => <CarouselSlider products={products} getProductos={getProductos} />} />
-  			
-			<Route path="/admin" render={() => <Admin />} />
+			<Route path="/" render={() => <NavBar cb={searchProduct} />} />
+			<Route exact path="/" component={Home} />
+			<Route exact path="/" component={CarouselSlider} />
+			<Route path="/admin" component={Admin} />
 			<Route
 				exact
 				path="/catalogue/category/:categoryId"
-				render={({ match }) => (
-					<Catalogue
-						products={products}
-						getProductos={getProductos}
-						category={match.params.categoryId}
-						getCategories={getCategories}
-						categories={categories}
-					/>
-				)}
+				render={({ match }) => (<Catalogue category={match.params.categoryId}/>)}
 			/>
-		
-  
-  <Route
+  			<Route
 				exact
 				path="/catalogue"
-				render={() => (
-					<Catalogue
-						products={products}
-						getProductos={getProductos}
-						category={null}
-						getCategories={getCategories}
-						categories={categories}
-					/>
-				)}
+				render={() => (<Catalogue/>)}
 			/>
-
-
 			<Route
 				exact
 				path="/admin/formProduct"
-				render={() => (
-					<FormProduct
-						products={products}
-						getProductos={getProductos}
-						getCategories={getCategories}
-						getCellars={getCellars}
-						getStrains={getStrains}
-						categories={categories}
-						cellars={cellars}
-						strains={strains}
-						filtrarProduct={null}
-						id={null}
-						edit={false}
-					/>
-				)}
+				component={FormProduct}
 			/>
 			<Route
 				exact
 				path="/admin/formProduct/edit/:id"
 				render={({ match }) => (
-					<FormProduct
-						products={products}
-						getProductos={getProductos}
-						filtrarProduct={filtrarProduct}
-						getProductos={getProductos}
-						getCategories={getCategories}
-						getCellars={getCellars}
-						getStrains={getStrains}
-						categories={categories}
-						cellars={cellars}
-						strains={strains}
-						id={match.params.id}
-						edit={true}
-					/>
+					<FormProduct id={match.params.id}/>
 				)}
 			/>
 			<Route
 				exact
 				path="/admin/formCategory"
 				render={() => (
-					<FormCategory
-						getCategories={getCategories}
-						categories={categories}
-						filtrarCategory={null}
-						id={null}
-						edit={false}
-					/>
+					<FormCategory/>
 				)}
 			/>
 			<Route
@@ -171,9 +61,6 @@ export default function App() {
 				path="/admin/formCategory/edit/:id"
 				render={({ match }) => (
 					<FormCategory
-						getCategories={getCategories}
-						categories={categories}
-						filtrarCategory={filtrarCategory}
 						id={match.params.id}
 						edit={true}
 					/>
@@ -184,11 +71,7 @@ export default function App() {
 				path="/admin/formCellar"
 				render={() => (
 					<FormCellar
-						cellars={cellars}
-						getCellars={getCellars}
-						filtrarCellar={null}
-						id={null}
-						edit={false}
+						
 					/>
 				)}
 			/>
@@ -197,9 +80,7 @@ export default function App() {
 				path="/admin/formCellar/edit/:id"
 				render={({ match }) => (
 					<FormCellar
-						cellars={cellars}
-						getCellars={getCellars}
-						filtrarCellar={filtrarCellar}
+						
 						id={match.params.id}
 						edit={true}
 					/>
@@ -210,13 +91,7 @@ export default function App() {
 				path="/admin/formStrain"
 				render={() => (
 					<FormStrain
-						getStrains={getStrains}
-						getCategories={getCategories}
-						categories={categories}
-						strains={strains}
-						filtrarStrain={null}
-						id={null}
-						edit={false}
+						
 					/>
 				)}
 			/>
@@ -226,11 +101,7 @@ export default function App() {
 				path="/admin/formStrain/edit/:id"
 				render={({ match }) => (
 					<FormStrain
-						getStrains={getStrains}
-						getCategories={getCategories}
-						categories={categories}
-						strains={strains}
-						filtrarStrain={filtrarStrain}
+						
 						id={match.params.id}
 						edit={true}
 					/>
@@ -240,8 +111,16 @@ export default function App() {
 			<Route
 				exact
 				path="/product/:id"
-				render={({ match }) => <Product id={match.params.id} filtrarProduct={filtrarProduct} />}
+				render={({ match }) => <Product id={match.params.id}/>}
 			/>
 		</div>
 	);
 }
+export default connect(null, 
+	{
+		getCategories, 
+		getProducts, 
+		getStrains, 
+		getCellars,
+		searchProduct
+	})(App);

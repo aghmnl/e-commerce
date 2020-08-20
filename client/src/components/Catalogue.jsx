@@ -1,24 +1,39 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
+import {connect, useDispatch} from "react-redux";
+import {getCategories, getProducts} from "../store/actions/index";
 import Nav from "react-bootstrap/Nav";
 import {NavLink} from "react-router-dom";
 import "../styles/Catalogue.css";
-export default function Catalogue({ products, getProductos, category, getCategories, categories }) {
+function Catalogue({ category, products, categories, getProducts, getCategories}) {
 	useEffect(() => {
-		getCategories();
-		getProductos(category);
-	}, []);
+		async function fetchData(){
+			await getProducts(category);
+		}
+		fetchData();
+	}, [category]);
+	useEffect(() =>{
+		async function fetchData(){
+			await getCategories();
+		}
+		fetchData();
+		return () =>{
+			
+		}
+	},[])
 	return (
 		<div>
 			<Nav id="navegacion" activeKey="/catalogue/category/1">
 				<Nav.Item>
-					<NavLink to="/catalogue"><Nav.Link>Todos</Nav.Link></NavLink>
+				<Nav.Link><NavLink to="/catalogue">Todos</NavLink></Nav.Link>
 				</Nav.Item>
 				{categories.map(category => (
 					<Nav.Item>
+						<Nav.Link>
 						<NavLink to={`/catalogue/category/${category.id}`}>
-							<Nav.Link>{category.name}</Nav.Link>
+							{category.name}
 						</NavLink>
+						</Nav.Link>
 					</Nav.Item>
 				))}
 			</Nav>
@@ -42,3 +57,9 @@ export default function Catalogue({ products, getProductos, category, getCategor
 		</div>
 	);
 }
+export default connect((state) =>{
+	return {
+		products : state.products,
+		categories : state.categories
+	}
+},{getCategories,getProducts})(Catalogue)

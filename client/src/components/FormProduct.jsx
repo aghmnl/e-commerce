@@ -2,20 +2,23 @@ import React, { useState, useEffect } from "react";
 import "../styles/FormProduct.css";
 import { Nav, Button, Form, Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import {connect} from "react-redux";
+import {getProduct, getStrainsBy, getProducts, getCategories, getCellars} from "../store/actions/index";
 import axios from "axios";
-export default function FormProduct({
+function FormProduct({
+	productDetail,
 	products,
-	getProductos,
-	getCategories,
-	getCellars,
-	getStrains,
 	categories,
 	cellars,
-	strains,
-	filtrarProduct,
+	strains_by,
 	id,
-	edit,
+	getProducts,
+	getProduct,
+	getStrainsBy,
+	getCategories,
+	getCellars,
 }) {
+	const [handle, setHandle] = useState("add");
 	const [inputs, setInputs] = useState({
 		name: "",
 		description: "",
@@ -31,18 +34,30 @@ export default function FormProduct({
 	// var nombreBoton = "Agregar";
 
 	// Esto se ejecuta cuando se selecciona una categoría
+	function handleStrains(catid){
+		setInputs({...inputs, categoryId: catid})
+		getStrainsBy(catid);
+	}
 	useEffect(() => {
-		getStrains(inputs.categoryId);
-	}, [inputs.categoryId]);
-	useEffect(() => {
-		getCategories();
-		getCellars();
-		getProductos(null);
+		async function fetchData(){
+			await getProducts();
+			await getCategories();
+			await getCellars();
+		}
+		fetchData();
 	}, []);
 	useEffect(() => {
-		if (edit) setInputs({ ...filtrarProduct(id), nombreBoton: "Actualizar" });
+		getProduct(id).then(() =>{
+			setHandle("edit");
+		})
 	}, [id]);
-	function handleSubmit(e, edit, id) {
+	useEffect(() =>{
+		let nombreBoton = ""
+		if(handle === "edit") nombreBoton = "Actualizar";
+		else{nombreBoton = "Agragar"}
+		setInputs({...productDetail, nombreBoton });
+	},[handle, productDetail])
+	function handleSubmit(e, id) {
 		e.preventDefault();
 		// Acá manda mensaje del dato que falta y hace foco en el mismo (sitúa el cursor en ese campo)
 		for (let prop in inputs) {
@@ -52,11 +67,11 @@ export default function FormProduct({
 				return;
 			}
 		}
-		if (edit) {
+		if (!!id) {
 			axios
 				.put(`http://localhost:3000/product/${id}`, inputs)
 				.then(() => {
-					getProductos(null);
+					getProducts();
 				})
 				.catch(err => console.log("error", err));
 			return;
@@ -65,7 +80,7 @@ export default function FormProduct({
 		axios
 			.post(url, inputs)
 			.then(() => {
-				getProductos(null);
+				getProducts();
 			})
 			.catch(err => console.log("error", err));
 	}
@@ -75,7 +90,7 @@ export default function FormProduct({
 			axios
 				.delete(`http://localhost:3000/product/${id}`)
 				.then(() => {
-					getProductos(null);
+					getProducts();
 				})
 				.catch(err => console.log(err));
 	}
@@ -84,7 +99,7 @@ export default function FormProduct({
 			<Form
 				style={{ width: "60rem", margin: "1rem" }}
 				id="formulario"
-				onSubmit={e => handleSubmit(e, edit, id)}
+				onSubmit={e => handleSubmit(e, id)}
 			>
 				<Form.Group as={Row}>
 					<Form.Label column sm="4">
@@ -163,11 +178,15 @@ export default function FormProduct({
 						<Form.Control
 							as="select"
 							id="categoryId"
-							onChange={e => setInputs({ ...inputs, categoryId: parseInt(e.target.value) })}
+							onChange={e => handleStrains(parseInt(e.target.value))}
 						>
 							<option>seleccione categoria</option>
 							{categories.map(category => (
-								<option value={category.id}>{category.name}</option>
+								<option value={category.id}
+									selected={category.id === inputs.categoryId ? "selected" : ""}
+								>
+									{category.name}
+								</option>
 							))}
 						</Form.Control>
 					</Col>
@@ -184,7 +203,11 @@ export default function FormProduct({
 						>
 							<option>seleccione bodega</option>
 							{cellars.map(cellar => (
-								<option value={cellar.id}>{cellar.name}</option>
+								<option value={cellar.id}
+								selected={cellar.id === inputs.cellarId ? "selected" : ""}
+								>
+									{cellar.name}
+								</option>
 							))}
 						</Form.Control>
 					</Col>
@@ -201,8 +224,8 @@ export default function FormProduct({
 						>
 							<option>seleccione cepa</option>
 							{(() => {
-								if (!strains.length) return <option>seleccione categoria</option>;
-								return strains.map(strain => (
+								if (!strains_by) return <option>seleccione categoria</option>;
+								return strains_by.map(strain => (
 									<option
 										value={strain.id}
 										selected={strain.id === inputs.strainId ? "selected" : ""}
@@ -222,7 +245,7 @@ export default function FormProduct({
 						<Form.Check
 							type="checkbox"
 							checked={inputs.active}
-							onChange={e => setInputs({ ...inputs, active: e.target.value })}
+							onChange={e => setInputs({ ...inputs, active: !inputs.active })}
 						/>
 					</Col>
 				</Form.Group>
@@ -250,3 +273,20 @@ export default function FormProduct({
 		</div>
 	);
 }
+export default connect(({
+	productDetail,
+	products,
+	categories,
+	cellars,
+	strains,
+	strains_by
+})=>{
+	return {
+		productDetail,
+		products,
+		categories,
+		cellars,
+		strains,
+		strains_by
+	}
+},{getProduct, getStrainsBy, getProducts, getCategories, getCellars})(FormProduct)

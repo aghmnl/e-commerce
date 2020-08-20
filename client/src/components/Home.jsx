@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { CardGroup, Card, Nav } from "react-bootstrap";
 import "../styles/Home.css";
-
-export default function Home({ getCategories, categories }) {
+import {connect} from "react-redux";
+import {Link} from "react-router-dom";
+import {getCategories} from "../store/actions/index";
+function Home({ categories, getCategories}) {
 	const [cats, setCats] = useState([]);
-	useEffect(() => {
-		getCategories();
-	}, []);
+	useEffect(() =>{
+		async function fetchData(){
+			await getCategories();
+		}
+		fetchData();
+	},[])
 	useEffect(() => {
 		setCats(
 			categories.map(category => {
@@ -41,11 +46,13 @@ export default function Home({ getCategories, categories }) {
 			<CardGroup id="categorias">
 				{cats.map(cat => (
 					<Card>
-						<Nav.Link href={`/catalogue/category/${cat.id}`}>
+						<Nav.Link>
+							<Link to={`/catalogue/category/${cat.id}`}>
 							<Card.Img variant="top" src={cat.img} />
 							<Card.Body>
 								<Card.Title>{cat.name}</Card.Title>
 							</Card.Body>
+							</Link>
 						</Nav.Link>
 					</Card>
 				))}
@@ -53,3 +60,4 @@ export default function Home({ getCategories, categories }) {
 		</div>
 	);
 }
+export default connect(({categories}) => ({categories}),{getCategories})(Home);
