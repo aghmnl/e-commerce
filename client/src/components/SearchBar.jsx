@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Form, Button, Nav, FormControl } from "react-bootstrap";
+import { Form, Button, Nav, Navbar, FormControl } from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 export default function SearchBar(props) {
   // acá va tu código
@@ -11,11 +11,11 @@ export default function SearchBar(props) {
         e.preventDefault();
         props.cb(inputText)
         }} >
-				<Nav.Link>
-          <NavLink to="/admin">
+        <NavLink to="/admin">
+          <Navbar.Brand>
             Admin
-          </NavLink>
-        </Nav.Link>
+          </Navbar.Brand>
+        </NavLink>
 				<FormControl type="text" placeholder="Search" className="mr-sm-2" value={inputText} onChange={(e) => setinputText(e.target.value)} />
 				<Button variant="outline-info" type="submit">Search</Button>
 			</Form>

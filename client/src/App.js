@@ -13,6 +13,7 @@ import CarouselSlider from "./components/CarouselSlider";
 import {getCategories, getProducts, getStrains, getCellars, searchProduct} from "./store/actions/index";
 import Admin from "./components/Admin";
 import {connect} from "react-redux";
+import Cart from "./components/Cart";
 
 function App({getProducts, getCategories, getStrains, getCellars, searchProduct}) {
 	useEffect(()=>{
@@ -27,6 +28,7 @@ function App({getProducts, getCategories, getStrains, getCellars, searchProduct}
 			<Route exact path="/" component={Home} />
 			<Route exact path="/" component={CarouselSlider} />
 			<Route path="/admin" component={Admin} />
+			<Route exact path="/cart" component={Cart}/>
 			<Route
 				exact
 				path="/catalogue/category/:categoryId"

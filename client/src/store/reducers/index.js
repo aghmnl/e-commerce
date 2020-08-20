@@ -1,6 +1,8 @@
 import {
     ADD_PRODUCT,
     EDIT_PRODUCT,
+    INCRESE_PRODUCT,
+    DECRESE_PRODUCT,
     EMPTY_CART,
     DELETE_PRODUCT,
     GET_PRODUCTS,
@@ -33,24 +35,42 @@ const initialState = {
 export default (state = initialState, action) =>{
     switch(action.type){
         case ADD_PRODUCT:
-            var {id, price} = action.product;
+            var {id, price, name, img} = action.product;
             var {purchased_products, total} = state;
-            var index = purchased_products.findIndex(pp => pp.productId === id);
+            var index = purchased_products.findIndex(pp => pp.id === id);
             if(index < 0) return {
                 ...state,
                 total : total + price,
-                purchased_products: purchased_products.concat({productId: id, quantity: action.quantity , price: price})
+                purchased_products: purchased_products.concat({id: id, quantity: 1 , price: price, img, name})
             }
-            purchased_products[index].quantity = purchased_products[index].quantity + action.quantity; 
+            //purchased_products[index].quantity = purchased_products[index].quantity + action.quantity; 
+            return {
+                ...state
+            };
+        case INCRESE_PRODUCT:
+            var {id, price} = action.product;
+            var {purchased_products, total} = state;
+            var index = purchased_products.findIndex(pp => pp.id === id);
+            purchased_products[index].quantity = purchased_products[index].quantity + 1; 
             return {
                 ...state,
-                total : total + price * action.quantity,
+                total : total + price,
+                purchased_products
+            };
+        case DECRESE_PRODUCT:
+            var {id, price} = action.product;
+            var {purchased_products, total} = state;
+            var index = purchased_products.findIndex(pp => pp.id === id);
+            purchased_products[index].quantity = purchased_products[index].quantity - 1;
+            return {
+                ...state,
+                total : total - price,
                 purchased_products
             };
          case  EDIT_PRODUCT:
             var {id, price} = action.product;
             var {purchased_products} = state;
-            var index = state.purchased_products.findIndex(pp => pp.productId === id);
+            var index = state.purchased_products.findIndex(pp => pp.id === id);
             var cantInicial = state.purchased_products[index].quantity;
             state.purchased_products[index].quantity = cantInicial + action.quantity; 
             return  {
@@ -68,10 +88,9 @@ export default (state = initialState, action) =>{
             var {purchased_products} = state;
             var index = purchased_products.findIndex(pp => pp.productId === id);
             var totalProducto = purchased_products[index].quantity * purchased_products[index].price;
-
             return {
                 ...state,
-                purchased_products: purchased_products.filter( producto => producto.productId !== id ),
+                purchased_products: purchased_products.filter( producto => producto.id !== id ),
                 total: state.total - totalProducto,
             }
         case GET_PRODUCTS:

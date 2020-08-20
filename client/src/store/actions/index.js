@@ -2,6 +2,8 @@ export const ADD_PRODUCT = "ADD_PRODUCT";
 export const EDIT_PRODUCT = "EDIT_PRODUCT";
 export const EMPTY_CART = "EMPTY_CART";
 export const DELETE_PRODUCT = "DELETE_PRODUCT";
+export const INCRESE_PRODUCT = "INCERSE_PRODUCT";
+export const DECRESE_PRODUCT = "DECERSE_PRODUCT";
 export const GET_PRODUCTS = "GET_PRODUCTS";
 export const GET_PRODUCT_DETAIL = "GET_PRODUCT_DETAIL";
 export const GET_CATEGORIES = "GET_CATEGORIES";
@@ -110,7 +112,14 @@ export const addProduct = (product, quantity) => ({
     product : product,
     quantity : parseInt(quantity),
 })
-
+export const increseProduct = (product) => ({
+        type: INCRESE_PRODUCT,
+        product : product,
+})
+export const decreseProduct = (product) => ({
+        type: DECRESE_PRODUCT,
+        product : product,
+})
 export const deleteProduct = (product) => {
 	return {
         type: DELETE_PRODUCT,
