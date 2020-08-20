@@ -20,6 +20,7 @@ function FormCellar({
 
 	// Cuando monta el componente, trae todos los celars.
 	useEffect(() => {
+		if(!id) return;
 		getCellar(id)
 	}, [id]);
 	useEffect(() => {

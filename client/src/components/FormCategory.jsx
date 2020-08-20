@@ -13,6 +13,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 	});
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
+		if(!id) return;
 		getCategory(id)
 	}, [id]);
 	useEffect(() => {

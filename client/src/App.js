@@ -70,9 +70,7 @@ function App({getProducts, getCategories, getStrains, getCellars, searchProduct}
 				exact
 				path="/admin/formCellar"
 				render={() => (
-					<FormCellar
-						
-					/>
+					<FormCellar/>
 				)}
 			/>
 			<Route
@@ -80,7 +78,6 @@ function App({getProducts, getCategories, getStrains, getCellars, searchProduct}
 				path="/admin/formCellar/edit/:id"
 				render={({ match }) => (
 					<FormCellar
-						
 						id={match.params.id}
 						edit={true}
 					/>

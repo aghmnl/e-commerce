@@ -21,6 +21,7 @@ function FormStrain({
 
 	// Cuando monta el componente, trae todos los strains.
 	useEffect(() => {
+		if(!id) return;
 		getStrain(id)
 	}, [id]);
 	useEffect(() => {
