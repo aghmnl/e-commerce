@@ -3,6 +3,14 @@ const { Strain } = require("../db.js");
 server.get("/", (req, res) => {
 	Strain.findAll().then(strains => res.json(strains));
 });
+server.get("/one/:id", (req, res) => {
+	Strain.findOne({where : {id : parseInt(req.params.id)}}).then(strain => res.json(strain));
+});
+server.get("/category/:categoryId", (req, res) => {
+	Strain.findAll({
+		where : {categoryId : parseInt(req.params.categoryId)}
+	}).then(strains => res.json(strains));
+});
 server.delete("/:id", (req, res) => {
 	Strain.destroy({
 		where: { id: parseInt(req.params.id) },
@@ -20,4 +28,5 @@ server.put("/:id", (req, res) => {
 		.then(() => res.sendStatus(200))
 		.catch(err => res.json(err));
 });
+
 module.exports = server;

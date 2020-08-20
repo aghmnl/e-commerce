@@ -2,16 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Form, Col, Button, Row, Container } from "react-bootstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
-export default function FormStrain({
+import {getStrains, getStrain, getStrainsBy, getCategories} from "../store/actions/index";
+import {connect} from "react-redux";
+function FormStrain({
+	strain,
 	strains,
 	getStrains,
+	getStrain,
 	getCategories,
 	categories,
-	filtrarStrain,
 	id,
-	edit,
 }) {
-	const [category, setCategory] = useState([]);
 	const [inputs, setInputs] = useState({
 		name: "",
 		categoryId: "",
@@ -20,14 +21,19 @@ export default function FormStrain({
 
 	// Cuando monta el componente, trae todos los strains.
 	useEffect(() => {
-		getCategories();
-		getStrains(null);
+		getStrain(id)
+	}, [id]);
+	useEffect(() => {
+		async function fetchData(){
+			await getCategories();
+			await getStrains();
+		}
+		fetchData();
 	}, []);
-
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
-		if (edit) setInputs({ ...filtrarStrain(id), nombreBoton: "Actualizar" });
-	}, [id]);
+		setInputs({ ...strain, nombreBoton: "Actualizar" });
+	}, [strain]);
 
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -38,11 +44,11 @@ export default function FormStrain({
 				return;
 			}
 		}
-		if (edit) {
+		if (!!id) {
 			axios
 				.put(`http://localhost:3000/strain/${id}`, inputs)
 				.then(() => {
-					getStrains(null);
+					getStrains();
 				})
 				.catch(err => console.log("error", err));
 			return;
@@ -51,7 +57,7 @@ export default function FormStrain({
 		const url = "http://localhost:3000/strain";
 		axios
 			.post(url, inputs)
-			.then(res => getStrains(null))
+			.then(res => getStrains())
 			.catch(e => console.log(e));
 		setInputs({
 			name: "",
@@ -59,13 +65,13 @@ export default function FormStrain({
 		});
 	}
 
-	function eliminar(e, id) {
+	function eliminar(e) {
 		e.preventDefault();
 		if (window.confirm("Esta cepa será eliminada. ¿Confirma?"))
 			axios
 				.delete(`http://localhost:3000/strain/${id}`)
 				.then(() => {
-					getStrains(null);
+					getStrains();
 				})
 				.catch(err => console.log(err));
 	}
@@ -127,3 +133,5 @@ export default function FormStrain({
 		</div>
 	);
 }
+export default connect(({strains, strain, categories}) => ({strains, strain, categories}),
+{getStrains, getStrain, getCategories})(FormStrain);

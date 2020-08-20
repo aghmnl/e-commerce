@@ -3,30 +3,35 @@ import { Form, Col, Button, Row, Container, Nav } from "react-bootstrap";
 import "../styles/FormCategory.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
-export default function FormCategory({ categories, getCategories, filtrarCategory, id, edit }) {
+import {connect} from "react-redux";
+import {getCategories, getCategory} from "../store/actions/index";
+function FormCategory({ categories, category, getCategory, getCategories, id }) {
 	const [inputs, setInputs] = useState({
 		name: "",
 		description: "",
 		nombreBoton: "Agregar",
 	});
-	// Cuando monta el componente, trae todos las categories.
-	useEffect(() => {
-		getCategories();
-	}, []);
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
-		if (edit) setInputs({ ...filtrarCategory(id), nombreBoton: "Actualizar" });
+		getCategory(id)
 	}, [id]);
-
-	function handleSubmit(e, edit, id) {
+	useEffect(() => {
+		async function fetchData(){
+			await getCategories();
+		}
+		fetchData();
+	}, []);
+	useEffect(()=>{
+		setInputs({...category, nombreBoton:"Actualizar"})
+	},[category])
+	function handleSubmit(e, id) {
 		e.preventDefault();
 		if(!inputs.name){
 			alert("name is required !");
 			document.querySelector("#name").focus();
 			return;
 		}
-		if (edit) {
+		if (!!id) {
 			axios
 				.put(`http://localhost:3000/category/${id}`, inputs)
 				.then(() => {
@@ -57,7 +62,7 @@ export default function FormCategory({ categories, getCategories, filtrarCategor
 	}
 	return (
 		<div>
-			<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e, edit, id)}>
+			<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e, id)}>
 				<Form.Group as={Row}>
 					<Form.Label column sm="2">
 						Categoría
@@ -108,3 +113,9 @@ export default function FormCategory({ categories, getCategories, filtrarCategor
 		</div>
 	);
 }
+export default connect(({category, categories})=>{
+	return{
+		categories,
+		category 
+	}
+},{getCategories, getCategory})(FormCategory)

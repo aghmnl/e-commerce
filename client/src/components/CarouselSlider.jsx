@@ -2,12 +2,16 @@ import React, { useEffect } from "react";
 //import Carousel from 'react-bootstrap/Carousel'
 import ProductCardCarousel from "./ProductCardCarousel";
 import Carousel from "react-multi-carousel";
+import {connect} from "react-redux";
 import "react-multi-carousel/lib/styles.css";
 import "../styles/CarouselSlider.css";
-
-export default function ControlledCarousel({ products, getProductos }) {
+import {getProducts} from "../store/actions/index";
+function ControlledCarousel({ products, getProducts }) {
 	useEffect(() => {
-		getProductos();
+		async function fetchData(){
+			await getProducts();
+		}
+		fetchData();
 	}, []);
 
 	const responsive = {
@@ -61,7 +65,11 @@ export default function ControlledCarousel({ products, getProductos }) {
 		</div>
 	);
 }
-
+export default connect(function ({products}){
+  return {
+    products
+  }
+},{getProducts})(ControlledCarousel)
 /*     const [index, setIndex] = useState(0);
   
     const handleSelect = (selectedIndex, e) => {

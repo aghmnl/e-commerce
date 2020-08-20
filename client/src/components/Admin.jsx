@@ -5,16 +5,24 @@ export default function Admin() {
 	return (
 		<Nav id="navegacion">
 			<Nav.Item>
-				<NavLink to="/admin/formProduct">Formulario Producto</NavLink>
+				<Nav.Link>
+					<NavLink to="/admin/formProduct">Producto</NavLink>
+				</Nav.Link>
 			</Nav.Item>
 			<Nav.Item>
-				<NavLink to="/admin/formCategory">Formulario Categoría</NavLink>
+				<Nav.Link>
+					<NavLink to="/admin/formCategory">Categorias</NavLink>
+				</Nav.Link>
 			</Nav.Item>
 			<Nav.Item>
-				<NavLink to="/admin/formCellar">Formulario Bodegas</NavLink>
+				<Nav.Link>
+					<NavLink to="/admin/formCellar">Bodegas</NavLink>
+				</Nav.Link>
 			</Nav.Item>
 			<Nav.Item>
-				<NavLink to="/admin/formStrain">Formulario Cepas</NavLink>
+				<Nav.Link>
+					<NavLink to="/admin/formStrain">Cepas</NavLink>
+				</Nav.Link>
 			</Nav.Item>
 		</Nav>
 	);

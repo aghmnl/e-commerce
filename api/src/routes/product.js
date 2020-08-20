@@ -5,7 +5,31 @@ const Op = Sequelize.Op;
 // Este get devuelve todos los productos para generar el catálogo
 server.get("/", (req, res) => {
 	Product.findAll({
+		include: [
+			{
+				model: Cellar,
+				as: "cellar",
+			},
+			{
+				model: Strain,
+				as: "strain",
+			},
+			{
+				model: Category,
+				as: "category"
+			},
+		],
 		where: { active: true },
+	}).then(products => {
+		res.json(products);
+	});
+});
+server.get("/detail/:id", (req, res) => {
+	Product.findOne({
+		where:{
+			active:true,
+			id:parseInt(req.params.id)
+		},
 		include: [
 			{
 				model: Cellar,
@@ -23,10 +47,24 @@ server.get("/", (req, res) => {
 	}).then(products => {
 		res.json(products);
 	});
-});
+})
 // http://localhost:3000/products/category/1
 server.get("/category/:categoryId", (req, res) => {
 	Product.findAll({
+		include: [
+			{
+				model: Cellar,
+				as: "cellar",
+			},
+			{
+				model: Strain,
+				as: "strain",
+			},
+			{
+				model: Category,
+				as: "category"
+			},
+		],
 		where: {
 			categoryId: parseInt(req.params.categoryId),
 		},
@@ -50,6 +88,21 @@ server.get("/search?:query", (req, res) => {
 						[Op.like]: value,
 					},
 				},
+				{
+					'$category.name$': {
+						[Op.like]: value,
+					}
+				},
+				{
+					'$strain.name$': {
+						[Op.like]: value,
+					}
+				},
+				{
+					'$cellar.name$': {
+						[Op.like]: value,
+					}
+				}
 			],
 		},
 		include: [
