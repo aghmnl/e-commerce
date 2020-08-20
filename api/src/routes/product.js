@@ -5,6 +5,7 @@ const Op = Sequelize.Op;
 // Este get devuelve todos los productos para generar el catálogo
 server.get("/", (req, res) => {
 	Product.findAll({
+		where: { active: true },
 		include: [
 			{
 				model: Cellar,
@@ -19,10 +20,9 @@ server.get("/", (req, res) => {
 				as: "category"
 			},
 		],
-		where: { active: true },
 	}).then(products => {
 		res.json(products);
-	});
+	}).catch(err => console.log(err));
 });
 server.get("/detail/:id", (req, res) => {
 	Product.findOne({
@@ -46,7 +46,7 @@ server.get("/detail/:id", (req, res) => {
 		],
 	}).then(products => {
 		res.json(products);
-	});
+	}).catch(err => console.log(err));
 })
 // http://localhost:3000/products/category/1
 server.get("/category/:categoryId", (req, res) => {
@@ -68,7 +68,8 @@ server.get("/category/:categoryId", (req, res) => {
 		where: {
 			categoryId: parseInt(req.params.categoryId),
 		},
-	}).then(products => res.json(products));
+	}).then(products => res.json(products))
+	.catch(err => console.log(err));
 });
 
 // http://localhost:3000/products/search?query=agus

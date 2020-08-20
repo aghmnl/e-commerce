@@ -3,7 +3,7 @@ import "../styles/FormProduct.css";
 import { Nav, Button, Form, Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {connect} from "react-redux";
-import {getProduct, getStrainsBy, getProducts, getCategories, getCellars} from "../store/actions/index";
+import {getProduct, getStrainsBy, getProducts, getCategories, getCellars, cleanProduct} from "../store/actions/index";
 import axios from "axios";
 function FormProduct({
 	productDetail,
@@ -17,6 +17,7 @@ function FormProduct({
 	getStrainsBy,
 	getCategories,
 	getCellars,
+	cleanProduct
 }) {
 	const [handle, setHandle] = useState("add");
 	const [inputs, setInputs] = useState({
@@ -39,14 +40,22 @@ function FormProduct({
 		getStrainsBy(catid);
 	}
 	useEffect(() => {
+		if(!!inputs.categoryId) getStrainsBy(inputs.categoryId);
+	}, [inputs]);
+	useEffect(() => {
 		async function fetchData(){
 			await getProducts();
 			await getCategories();
 			await getCellars();
 		}
 		fetchData();
+		return () => {
+			cleanProduct();
+			
+		};
 	}, []);
 	useEffect(() => {
+		if(!id) return;
 		getProduct(id).then(() =>{
 			setHandle("edit");
 		})
@@ -178,7 +187,7 @@ function FormProduct({
 						<Form.Control
 							as="select"
 							id="categoryId"
-							onChange={e => handleStrains(parseInt(e.target.value))}
+							onChange={e => setInputs({...inputs, categoryId: parseInt(e.target.value)})}
 						>
 							<option>seleccione categoria</option>
 							{categories.map(category => (
@@ -289,4 +298,4 @@ export default connect(({
 		strains,
 		strains_by
 	}
-},{getProduct, getStrainsBy, getProducts, getCategories, getCellars})(FormProduct)
+},{getProduct, getStrainsBy, getProducts, getCategories, getCellars, cleanProduct})(FormProduct)
