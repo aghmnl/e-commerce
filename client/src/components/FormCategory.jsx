@@ -9,12 +9,14 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 	const [inputs, setInputs] = useState({
 		name: "",
 		description: "",
+		edit: false,
 		nombreBoton: "Agregar",
 	});
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
 		if(!id) return;
 		getCategory(id)
+		setInputs({...inputs, edit:true})
 	}, [id]);
 	useEffect(() => {
 		async function fetchData(){
@@ -23,7 +25,8 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 		fetchData();
 	}, []);
 	useEffect(()=>{
-		setInputs({...category, nombreBoton:"Actualizar"})
+		let nombreBoton = inputs.edit?"Actualizar":"Agregar";
+		setInputs({...category, nombreBoton})
 	},[category])
 	function handleSubmit(e, id) {
 		e.preventDefault();
@@ -49,6 +52,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 		setInputs({
 			name: "",
 			description: "",
+			nombreBoton : "Agregar",
 		});
 	}
 	function eliminar(e, id) {

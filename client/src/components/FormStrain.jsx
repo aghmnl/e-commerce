@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Col, Button, Row, Container } from "react-bootstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import {getStrains, getStrain, getStrainsBy, getCategories} from "../store/actions/index";
+import {getStrains, getStrain, getCategories} from "../store/actions/index";
 import {connect} from "react-redux";
 function FormStrain({
 	strain,
@@ -16,6 +16,7 @@ function FormStrain({
 	const [inputs, setInputs] = useState({
 		name: "",
 		categoryId: "",
+		edit : false,
 		nombreBoton: "Agregar",
 	});
 
@@ -23,6 +24,7 @@ function FormStrain({
 	useEffect(() => {
 		if(!id) return;
 		getStrain(id)
+		setInputs({...inputs, edit:true})
 	}, [id]);
 	useEffect(() => {
 		async function fetchData(){
@@ -33,7 +35,8 @@ function FormStrain({
 	}, []);
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
-		setInputs({ ...strain, nombreBoton: "Actualizar" });
+		let nombreBoton = inputs.edit?"Actualizar":"Agregar";
+		setInputs({ ...strain, nombreBoton});
 	}, [strain]);
 
 	function handleSubmit(e) {
@@ -61,12 +64,11 @@ function FormStrain({
 			.then(res => getStrains())
 			.catch(e => console.log(e));
 		setInputs({
-			name: "",
-			categoryId: "",
+			nombreBoton : "Agregar"
 		});
 	}
 
-	function eliminar(e) {
+	function eliminar(e, id) {
 		e.preventDefault();
 		if (window.confirm("Esta cepa será eliminada. ¿Confirma?"))
 			axios
