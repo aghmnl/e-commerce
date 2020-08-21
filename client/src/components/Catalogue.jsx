@@ -1,31 +1,41 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import {connect, useDispatch} from "react-redux";
-import {getCategories, getProducts} from "../store/actions/index";
-import Nav from "react-bootstrap/Nav";
+import {getCategories, getCatalogue, getProducts, cleanCatalogue} from "../store/actions/index";
+import {Nav,Spinner} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 import "../styles/Catalogue.css";
-function Catalogue({ category, products, categories, getProducts, getCategories}) {
+function Catalogue({ 
+	category, 
+	products, 
+	categories, 
+	getCatalogue,
+	cleanCatalogue,
+	getCategories, 
+	getProducts, 
+	pag, 
+	pags
+}) {
 	useEffect(() => {
-		async function fetchData(){
-			await getProducts(category);
+		if(!pag) return;
+		getCatalogue(pag);
+		return () =>{
+			cleanCatalogue();
 		}
-		fetchData();
+	}, [pag]);
+	useEffect(() => {
+		if(!category) return;
+		getProducts(category);
 	}, [category]);
 	useEffect(() =>{
-		async function fetchData(){
-			await getCategories();
-		}
-		fetchData();
-		return () =>{
-			
-		}
+		//getCatalogue("0");
+		getCategories();
 	},[])
 	return (
 		<div>
 			<Nav id="navegacion" activeKey="/catalogue/category/1">
 				<Nav.Item>
-				<Nav.Link><NavLink to="/catalogue">Todos</NavLink></Nav.Link>
+				<Nav.Link><NavLink to="/catalogue/0">Todos</NavLink></Nav.Link>
 				</Nav.Item>
 				{categories.map(category => (
 					<Nav.Item>
@@ -49,17 +59,40 @@ function Catalogue({ category, products, categories, getProducts, getCategories}
 					</Form> */}
 				</div>
 				<div className="col-10 catalogue">
-					{products.map(product => (
-						<ProductCard id={product.id} name={product.name} price={product.price} cellar={product.cellar} img={product.img} />
-					))}
+					{
+						!!products?products.map(product => (
+							<ProductCard id={product.id} name={product.name} price={product.price} cellar={product.cellar} img={product.img} />
+						)):(() =>{
+							setInterval(()=>{
+								return "Catalogo vacio"
+							},1000)
+							return (<Spinner animation="border" />);
+						})()
+					}
+					{
+						(()=>{
+							if(!products) return;
+							let buttons = [];
+							for(let i=0;i<=Math.floor(pags/4);i++){
+								buttons.push((<NavLink to={"/catalogue/"+i}>{i}</NavLink>))
+							}
+							return buttons.map(button => button);
+						})()
+					}
 				</div>
 			</div>
 		</div>
 	);
 }
-export default connect((state) =>{
+export default connect(({catalogue, products, categories}) =>{
 	return {
-		products : state.products,
-		categories : state.categories
+		pags : catalogue.count,
+		products : !Object.values(catalogue).length?products:catalogue.rows,
+		categories : categories
 	}
-},{getCategories,getProducts})(Catalogue)
+},{
+	getCategories, 
+	getCatalogue,
+	cleanCatalogue,
+	getProducts
+})(Catalogue)

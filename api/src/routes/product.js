@@ -24,6 +24,33 @@ server.get("/", (req, res) => {
 		res.json(products);
 	}).catch(err => console.log(err));
 });
+server.get("/catalogue?:pag", (req, res) => {
+	const pag =  !parseInt(req.query.pag)?0:parseInt(req.query.pag);
+	const pagsize = 4;
+	const offset = pagsize * (pagsize - (pagsize - pag))
+	console.log(offset);
+	Product.findAndCountAll({
+		where: { active: true },
+		include: [
+			{
+				model: Cellar,
+				as: "cellar",
+			},
+			{
+				model: Strain,
+				as: "strain",
+			},
+			{
+				model: Category,
+				as: "category"
+			},
+		],
+		limit : pagsize,
+		offset
+	}).then(products => {
+		res.json(products);
+	}).catch(err => console.log(err));
+});
 server.get("/detail/:id", (req, res) => {
 	Product.findOne({
 		where:{

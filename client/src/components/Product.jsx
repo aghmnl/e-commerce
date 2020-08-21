@@ -3,7 +3,7 @@ import store from "../store";
 import {addProduct, getProduct, cleanProduct} from "../store/actions";
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
-import {Button, Col, Row, Container, Card, ListGroup, ListGroupItem} from "react-bootstrap"
+import {Button, Col, Row, Container, Card, ListGroup, ListGroupItem, Spinner} from "react-bootstrap"
 import "../styles/Product.css";
 function Product({ id, productDetail, getProduct, cellar, strain, category, cleanProduct, addProduct}) {
 	useEffect(()=>{
@@ -15,7 +15,10 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 		}
 	},[])
 	function awaitFor(element, prop){
-		if(!element) return ("cargando...");
+		if(!element) {
+			setInterval(()=>"Vacio", 1000)
+			return (<Spinner animation="border" />);
+		}
 		if(!prop) return(element);
 		return (element[prop]);
 	}
@@ -47,7 +50,7 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 								<ListGroupItem>{awaitFor(strain,"name")}</ListGroupItem>
 								<ListGroupItem>Productos disponibles: {productDetail.stock}</ListGroupItem>
 							</ListGroup>
-							<Button onClick={() => addProduct(productDetail, 1)}>Añadir al carrito</Button>
+							<Button onClick={() => addProduct(productDetail)}>Añadir al carrito</Button>
 						</Card.Body>
 					</Col>
 				</Row>

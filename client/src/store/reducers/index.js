@@ -16,12 +16,14 @@ import {
     GET_CELLAR,
     GET_STRAIN,
     GET_USERS,
-    GET_USER
+    GET_USER,
+    GET_CATALOGUE
 
 } from "../actions";
 
 const initialState = {
     products :[],
+    catalogue : {},
     categories :[],
     strains :[],
     cellars :[],
@@ -101,6 +103,11 @@ export default (state = initialState, action) =>{
                 ...state,
                 products : action.payload
             }
+        case GET_CATALOGUE:
+            return {
+                ...state,
+                catalogue : action.payload
+            }
         case GET_PRODUCT_DETAIL:
             return {
                 ...state,
@@ -157,6 +164,7 @@ export default (state = initialState, action) =>{
                     user : action.payload
                 }
         case "CLEAN_PRODUCT" : return {...state, productDetail:{}}
+        case "CLEAN_CATALOGUE" : return {...state, catalogue:{}}
         case "CLEAN_USER" : return {...state, user:{}}
         default: return {...state}
 

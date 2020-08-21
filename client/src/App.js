@@ -16,14 +16,13 @@ import Admin from "./components/Admin";
 import {connect} from "react-redux";
 import Cart from "./components/Cart";
 
-
 function App({getProducts, getCategories, getStrains, getCellars, searchProduct, getUsers}) {
 	useEffect(()=>{
-		getProducts();
+		/* getProducts();
 		getCategories();
 		getStrains();
 		getCellars();
-		getUsers();
+		getUsers(); */
 	},[])
 	return (
 		<div className="App">
@@ -39,8 +38,8 @@ function App({getProducts, getCategories, getStrains, getCellars, searchProduct,
 			/>
   			<Route
 				exact
-				path="/catalogue"
-				render={() => (<Catalogue/>)}
+				path="/catalogue/:pag"
+				render={({ match }) => (<Catalogue pag={match.params.pag}/>)}
 			/>
 			<Route
 				exact
