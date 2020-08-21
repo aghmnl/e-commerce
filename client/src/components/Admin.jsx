@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Nav from "react-bootstrap/Nav";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 export default function Admin() {
 	return (
 		<Nav id="navegacion">
@@ -11,7 +11,7 @@ export default function Admin() {
 			</Nav.Item>
 			<Nav.Item>
 				<Nav.Link>
-					<NavLink to="/admin/formCategory">Categorias</NavLink>
+					<NavLink to="/admin/formCategory">Categorías</NavLink>
 				</Nav.Link>
 			</Nav.Item>
 			<Nav.Item>
@@ -27,6 +27,11 @@ export default function Admin() {
 			<Nav.Item>
 				<Nav.Link>
 					<NavLink to="/admin/formUser">Usuarios</NavLink>
+				</Nav.Link>
+			</Nav.Item>
+			<Nav.Item>
+				<Nav.Link>
+					<NavLink to="/admin/purchases">Compras</NavLink>
 				</Nav.Link>
 			</Nav.Item>
 		</Nav>
