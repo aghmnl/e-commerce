@@ -14,6 +14,8 @@ export const GET_STRAINS = "GET_STRAINS";
 export const GET_STRAIN = "GET_STRAIN";
 export const GET_STRAINS_BY = "GET_STRAINS_BY";
 export const SEARCH_PRODUCT = "SEARCH_PRODUCT";
+export const GET_USERS = "GET_USERS";
+export const GET_USER = "GET_USER";
 export const cleanProduct = () => ({
         type : "CLEAN_PRODUCT",
 })
@@ -141,4 +143,21 @@ export const emptyCart = () => {
 	};
 }
 
-
+export const getUsers = () => {
+        return (dispatch) => {
+                const url = "http://localhost:3000/user";
+		return fetch(url)
+			.then(r => r.json())
+                        .then(users => dispatch({type: GET_USERS, payload: users}))
+                        .catch(err => console.log(err))
+        }
+}
+export const getUser = (id) => {
+        return (dispatch) => {
+                const url = "http://localhost:3000/user/"+id;
+		return fetch(url)
+			.then(r => r.json())
+                        .then(user => dispatch({type: GET_USER, payload: user}))
+                        .catch(err => console.log(err))
+        }
+}

@@ -24,6 +24,11 @@ export default function Admin() {
 					<NavLink to="/admin/formStrain">Cepas</NavLink>
 				</Nav.Link>
 			</Nav.Item>
+			<Nav.Item>
+				<Nav.Link>
+					<NavLink to="/admin/formUser">Usuarios</NavLink>
+				</Nav.Link>
+			</Nav.Item>
 		</Nav>
 	);
 }
