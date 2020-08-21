@@ -18,6 +18,9 @@ export const GET_USERS = "GET_USERS";
 export const GET_USER = "GET_USER";
 export const cleanProduct = () => ({
         type : "CLEAN_PRODUCT",
+});
+export const cleanUser = () => ({
+        type : "CLEAN_USER",
 })
 export const getProducts = (categoryId) => {
         return (dispatch) => {

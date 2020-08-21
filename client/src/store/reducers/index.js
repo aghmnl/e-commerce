@@ -157,6 +157,7 @@ export default (state = initialState, action) =>{
                     user : action.payload
                 }
         case "CLEAN_PRODUCT" : return {...state, productDetail:{}}
+        case "CLEAN_USER" : return {...state, user:{}}
         default: return {...state}
 
     }

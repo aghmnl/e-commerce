@@ -6,7 +6,7 @@ server.get("/", (req, res) => {
 });
 
 server.get("/:id", (req, res) => {
-	User.findAll({ where: { id: req.params.id } }).then(users => res.json(users));
+	User.findOne({ where: { id: req.params.id } }).then(users => res.json(users));
 });
 
 server.delete("/:id", (req, res) => {
@@ -16,6 +16,7 @@ server.delete("/:id", (req, res) => {
 });
 
 server.post("/", (req, res) => {
+	delete req.body["nombreBoton"]
 	console.log(req.body);
 	User.create(req.body).then(() => res.sendStatus(200));
 });
