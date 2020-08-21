@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { getPurchases } from "../store/actions/index";
 import { Card } from "react-bootstrap";
