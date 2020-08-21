@@ -24,7 +24,10 @@ import Admin from "./components/Admin";
 import Purchases from "./components/Purchases";
 import { connect } from "react-redux";
 import Cart from "./components/Cart";
-function App({ getProducts, getCategories, getStrains, getCellars, searchProduct, getUsers, getPurchases }) {
+function App({getPurchases}) {
+	useEffect(()=>{
+		getPurchases()
+	},[])
 	return (
 		<div className="App">
 			<Route path="/" render={() => <NavBar cb={searchProduct} />} />
@@ -43,9 +46,6 @@ function App({ getProducts, getCategories, getStrains, getCellars, searchProduct
 				exact
 				path="/catalogue/:pag"
 				render={({ match }) => (<Catalogue pag={match.params.pag}/>)}
-			/>
-	
-
 			/>
 			<Route exact path="/catalogue" render={() => <Catalogue />} />
 			<Route exact path="/admin/formProduct" component={FormProduct} />
