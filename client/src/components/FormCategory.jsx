@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Form, Col, Button, Row, Container, Nav } from "react-bootstrap";
+import { Form, Col, Button, Row, Container } from "react-bootstrap";
 import "../styles/FormCategory.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import {connect} from "react-redux";
-import {getCategories, getCategory} from "../store/actions/index";
+import { connect } from "react-redux";
+import { getCategories, getCategory } from "../store/actions/index";
 function FormCategory({ categories, category, getCategory, getCategories, id }) {
 	const [inputs, setInputs] = useState({
 		name: "",
@@ -14,23 +14,23 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 	});
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
-		if(!id) return;
-		getCategory(id)
-		setInputs({...inputs, edit:true})
+		if (!id) return;
+		getCategory(id);
+		setInputs({ ...inputs, edit: true });
 	}, [id]);
 	useEffect(() => {
-		async function fetchData(){
+		async function fetchData() {
 			await getCategories();
 		}
 		fetchData();
 	}, []);
-	useEffect(()=>{
-		let nombreBoton = inputs.edit?"Actualizar":"Agregar";
-		setInputs({...category, nombreBoton})
-	},[category])
+	useEffect(() => {
+		let nombreBoton = inputs.edit ? "Actualizar" : "Agregar";
+		setInputs({ ...category, nombreBoton });
+	}, [category]);
 	function handleSubmit(e, id) {
 		e.preventDefault();
-		if(!inputs.name){
+		if (!inputs.name) {
 			alert("name is required !");
 			document.querySelector("#name").focus();
 			return;
@@ -52,7 +52,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 		setInputs({
 			name: "",
 			description: "",
-			nombreBoton : "Agregar",
+			nombreBoton: "Agregar",
 		});
 	}
 	function eliminar(e, id) {
@@ -118,9 +118,12 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 		</div>
 	);
 }
-export default connect(({category, categories})=>{
-	return{
-		categories,
-		category 
-	}
-},{getCategories, getCategory})(FormCategory)
+export default connect(
+	({ category, categories }) => {
+		return {
+			categories,
+			category,
+		};
+	},
+	{ getCategories, getCategory }
+)(FormCategory);

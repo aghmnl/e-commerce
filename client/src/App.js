@@ -36,17 +36,10 @@ function App({ getProducts, getCategories, getStrains, getCellars, searchProduct
 			<Route
 				exact
 				path="/catalogue/category/:categoryId"
+				render={({ match }) => <Catalogue category={match.params.categoryId} />}
+			/>
+			<Route exact path="/catalogue/:pag" render={({ match }) => <Catalogue pag={match.params.pag} />} />
 
-				render={({ match }) => (<Catalogue category={match.params.categoryId}/>)}
-			/>
-  			<Route
-				exact
-				path="/catalogue/:pag"
-				render={({ match }) => (<Catalogue pag={match.params.pag}/>)}
-			/>
-	
-
-			/>
 			<Route exact path="/catalogue" render={() => <Catalogue />} />
 			<Route exact path="/admin/formProduct" component={FormProduct} />
 			<Route exact path="/admin/formProduct/edit/:id" render={({ match }) => <FormProduct id={match.params.id} />} />
