@@ -7,7 +7,7 @@ server.get("/", (req, res) => {
 server.get("/one/:id", (req, res) => {
 	Category.findOne({where : parseInt(req.params.id)})
 		.then(category => res.json(category))
-		.catch(err => console.log(err));
+		.catch(err => res.json(err));
 });
 server.delete("/:id", (req, res) => {
 	Category.destroy({
