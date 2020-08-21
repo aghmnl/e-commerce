@@ -41,23 +41,35 @@ const {
 	Purchased_product,
 	Status,
 } = sequelize.models;
-Cellar.hasMany(Product);
+Cellar.hasMany(Product,{
+	onDelete : "NO ACTION"
+});
 Product.belongsTo(Cellar);
-Strain.hasMany(Product);
+Strain.hasMany(Product,{
+	onDelete : "NO ACTION"
+});
 Product.belongsTo(Strain);
-Category.hasMany(Product);
+Category.hasMany(Product,{
+	onDelete: "NO ACTION"
+});
 Product.belongsTo(Category);
-Category.hasMany(Strain);
+Category.hasMany(Strain,{
+	onDelete : "NO ACTION"
+});
 Strain.belongsTo(Category);
 User.hasMany(Purchase);
 Purchase.belongsTo(User);
 Purchase.belongsToMany(Product, { through: Purchased_product });
 Product.belongsToMany(Purchase, { through: Purchased_product });
-Pay_method.hasMany(Purchase);
+Pay_method.hasMany(Purchase,{
+	onDelete : "NO ACTION"
+});
 Purchase.belongsTo(Pay_method);
 User.belongsToMany(Product, { through: Review });
 Product.belongsToMany(User, { through: Review });
-Status.hasMany(Purchase);
+Status.hasMany(Purchase, {
+	onDelete : "NO ACTION"
+});
 Purchase.belongsTo(Status);
 
 module.exports = {
