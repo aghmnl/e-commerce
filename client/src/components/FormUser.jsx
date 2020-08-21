@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Col, Button, Row, Container} from "react-bootstrap";
 import axios from "axios";
 import {Link} from "react-router-dom";
-import {getUsers, getUser} from "../store/actions/index";
+import {getUsers, getUser, cleanUser} from "../store/actions/index";
 import {connect} from "react-redux";
 function FormUser({
 	users,
@@ -10,8 +10,7 @@ function FormUser({
 	getUsers,
 	getUser,
 	id,
-	edit,
-	cleanState
+	cleanUser
 }) {
 	const [inputs, setInputs] = useState({
 		name: "",
@@ -32,17 +31,22 @@ function FormUser({
 	// Cuando monta el componente, trae todos los usuarios.
 	useEffect(() => {
 		if(!id) return;
-		getUser(id)
+		getUser(id);
+		setInputs({...inputs, edit:true})
 	}, [id]);
 	useEffect(() => {
 		async function fetchData(){
 			await getUsers();
 		}
 		fetchData();
+		return () =>{
+			cleanUser();
+		}
 	}, []);
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
-		setInputs({ ...user, nombreBoton: "Actualizar"});
+		let nombreBoton = inputs.edit?"Actualizar":"Agregar";
+		setInputs({ ...user, nombreBoton, admin : false});
 	}, [user]);
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -51,14 +55,14 @@ function FormUser({
 			document.querySelector("#name").focus();
 			return;
 		}
-		if(inputs2.password != inputs2.password2){
+		if(inputs.password != inputs2.password2){
 			alert("Las contraseñas no coinciden");
 			document.querySelector("#password").focus();
 			return;
 		}else{
 			setInputs({...user,password:inputs2.password});
 		}
-		if (edit) {
+		if (!!id) {
 			axios
 				.put(`http://localhost:3000/user/${id}`, inputs)
 				.then(() => {
@@ -73,7 +77,7 @@ function FormUser({
 			.then(res => getUsers())
 			.catch(e => console.log(e));
 		setInputs({
-			name: "",
+			nombreBoton: "Agregar",
 		});
 	}
 	function eliminar(e, id) {
@@ -119,7 +123,7 @@ function FormUser({
 					Contraseña
 				</Form.Label>
 				<Col sm="10">
-					<Form.Control value={inputs2.password} type="password" id="password" onChange={e => setInputs2({ ...inputs2, password: e.target.value })} />
+					<Form.Control value={inputs.password} type="password" id="password" onChange={e => setInputs({ ...inputs, password: e.target.value })} />
 				</Col>
 			</Form.Group>
 			<Form.Group as={Row}>
@@ -164,4 +168,4 @@ function FormUser({
 	);
 }
 export default connect(({user, users}) => ({user, users}),
-{getUser, getUsers})(FormUser);
+{getUser, getUsers, cleanUser})(FormUser);
