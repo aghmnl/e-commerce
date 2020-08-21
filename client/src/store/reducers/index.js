@@ -91,7 +91,7 @@ export default (state = initialState, action) =>{
         case DELETE_PRODUCT:
             var {id, price } = action.product;
             var {purchased_products} = state;
-            var index = purchased_products.findIndex(pp => pp.productId === id);
+            var index = purchased_products.findIndex(pp => pp.id === id);
             var totalProducto = purchased_products[index].quantity * purchased_products[index].price;
             return {
                 ...state,

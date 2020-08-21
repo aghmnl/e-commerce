@@ -15,15 +15,7 @@ import {getCategories, getProducts, getStrains, getCellars, searchProduct, getUs
 import Admin from "./components/Admin";
 import {connect} from "react-redux";
 import Cart from "./components/Cart";
-
 function App({getProducts, getCategories, getStrains, getCellars, searchProduct, getUsers}) {
-	useEffect(()=>{
-		/* getProducts();
-		getCategories();
-		getStrains();
-		getCellars();
-		getUsers(); */
-	},[])
 	return (
 		<div className="App">
 			<Route path="/" render={() => <NavBar cb={searchProduct} />} />
