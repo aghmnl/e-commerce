@@ -14,7 +14,9 @@ import {
     SEARCH_PRODUCT,
     GET_CATEGORY,
     GET_CELLAR,
-    GET_STRAIN
+    GET_STRAIN,
+    GET_USERS,
+    GET_USER
 
 } from "../actions";
 
@@ -30,6 +32,7 @@ const initialState = {
     pay_methods: [],
     purchases: [],
     reviews: [],
+    users:[],
     total : 0 
 }
 export default (state = initialState, action) =>{
@@ -142,6 +145,16 @@ export default (state = initialState, action) =>{
                 return {
                     ...state,
                     products : action.payload
+                }
+        case GET_USERS:
+                return {
+                    ...state,
+                    users : action.payload
+                }
+        case GET_USER:
+                return {
+                    ...state,
+                    user : action.payload
                 }
         case "CLEAN_PRODUCT" : return {...state, productDetail:{}}
         default: return {...state}

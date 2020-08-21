@@ -7,20 +7,23 @@ import Product from "./components/Product";
 import FormCategory from "./components/FormCategory";
 import FormCellar from "./components/FormCellar";
 import FormStrain from "./components/FormStrain";
+import FormUser from "./components/FormUser";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import CarouselSlider from "./components/CarouselSlider";
-import {getCategories, getProducts, getStrains, getCellars, searchProduct} from "./store/actions/index";
+import {getCategories, getProducts, getStrains, getCellars, searchProduct, getUsers} from "./store/actions/index";
 import Admin from "./components/Admin";
 import {connect} from "react-redux";
 import Cart from "./components/Cart";
 
-function App({getProducts, getCategories, getStrains, getCellars, searchProduct}) {
+
+function App({getProducts, getCategories, getStrains, getCellars, searchProduct, getUsers}) {
 	useEffect(()=>{
 		getProducts();
 		getCategories();
 		getStrains();
 		getCellars();
+		getUsers();
 	},[])
 	return (
 		<div className="App">
@@ -112,6 +115,25 @@ function App({getProducts, getCategories, getStrains, getCellars, searchProduct}
 				path="/product/:id"
 				render={({ match }) => <Product id={match.params.id}/>}
 			/>
+
+			<Route
+				exact
+				path="/admin/formUser"
+				render={() => (
+					<FormUser/>
+				)}
+			/>
+			<Route
+				exact
+				path="/admin/formUser/edit/:id"
+				render={({ match }) => (
+					<FormUser
+						id={match.params.id}
+						edit={true}
+					/>
+				)}
+			/>
+
 		</div>
 	);
 }
@@ -121,5 +143,6 @@ export default connect(null,
 		getProducts, 
 		getStrains, 
 		getCellars,
+		getUsers,
 		searchProduct
 	})(App);
