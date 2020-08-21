@@ -1,23 +1,36 @@
 const server = require("express").Router();
-const { Purchase } = require("../db.js");
+const { Purchase, User, Pay_method, Status } = require("../db.js");
 
 // S44 : Crear ruta que retorne todas las órdenes
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
+// http://localhost:3000/purchase/
+server.get("/", (req, res) => {
+	Purchase.findAll({
+		include: [
+			{
+				model: User,
+				as: "user",
+			},
+			{
+				model: Pay_method,
+				as: "pay_method",
+			},
+			{
+				model: Status,
+				as: "status",
+			},
+		],
+	}).then(purchases => res.json(purchases));
+});
+
+// http://localhost:3000/purchase/status?statusId=1
 server.get("/status?:statusId", (req, res) => {
-	if (req.params.statusId) {
-		Purchase.findAll({ where: { statusId: parseInt(req.params.statusId) } }).then(purchases =>
-			res.json(purchases)
-		);
-	} else {
-		Purchase.findAll().then(purchases => res.json(purchases));
-	}
+	Purchase.findAll({ where: { statusId: parseInt(req.query.statusId) } }).then(purchases => res.json(purchases));
 });
 
 // S45 : Crear Ruta que retorne todas las Ordenes de los usuarios
 server.get("/users/:userId", (req, res) => {
-	Purchase.findAll({ where: { userId: parseInt(req.params.userId) } }).then(purchases =>
-		res.json(purchases)
-	);
+	Purchase.findAll({ where: { userId: parseInt(req.params.userId) } }).then(purchases => res.json(purchases));
 });
 
 // OTRA OPCIÓN S45 SERÍA:
