@@ -16,8 +16,12 @@ export const GET_STRAINS_BY = "GET_STRAINS_BY";
 export const SEARCH_PRODUCT = "SEARCH_PRODUCT";
 export const GET_USERS = "GET_USERS";
 export const GET_USER = "GET_USER";
+export const GET_CATALOGUE= "GET_CATALOGUE";
 export const cleanProduct = () => ({
         type : "CLEAN_PRODUCT",
+});
+export const cleanCatalogue = () => ({
+        type : "CLEAN_CATALOGUE",
 });
 export const cleanUser = () => ({
         type : "CLEAN_USER",
@@ -28,6 +32,15 @@ export const getProducts = (categoryId) => {
 		return fetch(url)
 			.then(r => r.json())
                         .then(products => dispatch({type: GET_PRODUCTS, payload: products}))
+                        .catch(err => console.log(err))
+        }
+}
+export const getCatalogue = (pag) => {
+        return (dispatch) => {
+                const url = `http://localhost:3000/product/catalogue?pag=${pag}`;
+		return fetch(url)
+			.then(r => r.json())
+                        .then(products => dispatch({type: GET_CATALOGUE, payload: products}))
                         .catch(err => console.log(err))
         }
 }

@@ -11,7 +11,7 @@ export default function (props) {
 		<Navbar bg="dark" variant="dark">
 			<Link to="/"><Navbar.Brand>ToniWines</Navbar.Brand></Link>
 			<Nav className="mr-auto">
-				<Link to="/catalogue"><Navbar.Brand>Catálogo</Navbar.Brand></Link>
+				<Link to="/catalogue/0"><Navbar.Brand>Catálogo</Navbar.Brand></Link>
 			</Nav>
 			<SearchBar cb={props.cb}/>
 			
