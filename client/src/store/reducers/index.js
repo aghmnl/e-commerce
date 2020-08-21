@@ -17,7 +17,8 @@ import {
     GET_STRAIN,
     GET_USERS,
     GET_USER,
-    GET_CATALOGUE
+    GET_CATALOGUE,
+    GET_PURCHASES,
 
 } from "../actions";
 
@@ -165,8 +166,14 @@ export default (state = initialState, action) =>{
                 }
         case "CLEAN_PRODUCT" : return {...state, productDetail:{}}
         case "CLEAN_CATALOGUE" : return {...state, catalogue:{}}
+        		case GET_PURCHASES:
+			return {
+				...state,
+				purchases: action.payload,
+			};
         case "CLEAN_USER" : return {...state, user:{}}
         default: return {...state}
 
     }
 }
+

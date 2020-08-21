@@ -1,0 +1,7 @@
+.purchases {
+	display: flex !important;
+	align-items: center;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-self: auto;
+}
