@@ -24,10 +24,7 @@ import Admin from "./components/Admin";
 import Purchases from "./components/Purchases";
 import { connect } from "react-redux";
 import Cart from "./components/Cart";
-
-
 function App({ getProducts, getCategories, getStrains, getCellars, searchProduct, getUsers, getPurchases }) {
-
 	return (
 		<div className="App">
 			<Route path="/" render={() => <NavBar cb={searchProduct} />} />

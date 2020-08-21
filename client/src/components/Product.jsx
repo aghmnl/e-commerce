@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useCallback } from "react";
-import store from "../store";
 import {addProduct, getProduct, cleanProduct} from "../store/actions";
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
 import {Button, Col, Row, Container, Card, ListGroup, ListGroupItem, Spinner} from "react-bootstrap"
 import "../styles/Product.css";
+import {saveCart, saveTotal} from "../store/localState";
+import store from "../store/index";
+store.subscribe(()=>{
+	const {purchased_products, total} = store.getState();
+	saveCart(purchased_products);
+	saveTotal(total);
+})
 function Product({ id, productDetail, getProduct, cellar, strain, category, cleanProduct, addProduct}) {
 	useEffect(()=>{
 		getProduct(id)
