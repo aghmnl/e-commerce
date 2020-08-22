@@ -12,3 +12,15 @@
 	background-color: transparent !important;
 	margin-top: 15rem;
 }
+body {
+	/* The image used */
+	background-image: var(--imgPrinc);
+	/* Half height */
+	height: 50%;
+
+	/* Center and scale the image nicely */
+	/*background-position: center; */
+	background-attachment: fixed;
+	overflow: scroll;
+	background-size: cover;
+}
