@@ -40,21 +40,37 @@ const initialState = {
 export default (state = initialState, action) => {
 	switch (action.type) {
 		case ADD_PRODUCT:
-			var { id, price, name, img } = action.product;
+			var { id, price, name, img, stock } = action.product;
 			var { purchased_products, total } = state;
 			var index = purchased_products.findIndex(pp => pp.id === id);
-			if (index < 0)
-				return {
+			if (index < 0) {
+				state = {
 					...state,
 					total: total + price,
-					purchased_products: purchased_products.concat({ id: id, quantity: 1, price: price, img, name }),
+					purchased_products: purchased_products.concat({
+						id: id,
+						quantity: 1,
+						price: price,
+						img,
+						name,
+						stock,
+					}),
 				};
+			} else {
+				purchased_products[index].quantity++;
+				state = {
+					...state,
+					total: total + price,
+					purchased_products,
+				};
+			}
+			return state;
 			//purchased_products[index].quantity = purchased_products[index].quantity + action.quantity;
 			return {
 				...state,
 			};
 		case INCRESE_PRODUCT:
-			var { id, price } = action.product;
+			var { id, price, stock } = action.product;
 			var { purchased_products, total } = state;
 			var index = purchased_products.findIndex(pp => pp.id === id);
 			purchased_products[index].quantity = purchased_products[index].quantity + 1;
@@ -86,6 +102,7 @@ export default (state = initialState, action) => {
 			};
 		case EMPTY_CART:
 			return {
+				...state,
 				purchased_products: [],
 				total: 0,
 			};

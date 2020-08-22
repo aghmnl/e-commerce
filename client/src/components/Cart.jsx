@@ -6,7 +6,8 @@ import { BsTrash } from "react-icons/bs";
 import { VscAdd } from "react-icons/vsc";
 import { GrSubtract } from "react-icons/gr";
 import "../styles/Cart.css";
-import { Card, Container, Row } from "react-bootstrap";
+import { Card, Container, Row, Col, Button } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 import {
 	addProduct,
 	deleteProduct,
@@ -32,46 +33,59 @@ function CartItem({
 				<Card id="card">
 					<Container>
 						<Row>
-							<div className="col-sm-2 p-2">
-								<img
-									alt={product.name}
-									style={{ margin: "0 auto", maxHeight: "50px" }}
-									src={product.img}
-									className="img-fluid d-block"
-								/>
-							</div>
-							<div className="col-sm-4 p-2">
-								<h5 className="mb-1">{product.name}</h5>
-								<p className="mb-1">$ {product.price} </p>
-							</div>
-							<div className="col-sm-2 p-2 text-center ">
-								<p className="mb-0">Cantidad: {product.quantity}</p>
-							</div>
-							<div className="col-sm-4 p-2 text-right">
-								<button onClick={() => increseProduct(product)} className="btn btn-primary btn-sm mr-2 mb-1">
-									<VscAdd />
-									{/* <PlusCircleIcon width={"20px"}/> */}
-								</button>
+							<Col sm="1" style={{ alignSelf: "center" }}>
+								<Button onClick={() => deleteProduct(product)} className="btn-danger btn-sm">
+									<BsTrash />
+									{/* <TrashIcon width={"20px"}/> */}
+								</Button>
+							</Col>
+							<Col sm="2" style={{ alignSelf: "center" }}>
+								<NavLink to={`/product/${product.id}`}>
+									<Card.Img style={{ transform: "scale(0.5)" }} src={product.img} />
+								</NavLink>
+							</Col>
+							<Col sm="3" style={{ alignSelf: "center" }}>
+								<NavLink to={`/product/${product.id}`}>
+									<Card.Title>{product.name}</Card.Title>
+								</NavLink>
+							</Col>
+							<Col sm="2" style={{ alignSelf: "center" }}>
+								<Card.Subtitle>$ {product.price}</Card.Subtitle>
+							</Col>
 
+							<Col sm="2" style={{ alignSelf: "center" }}>
+								Stock: {product.stock}
+							</Col>
+							<Col sm="1" style={{ alignSelf: "center" }}>
+								<Card.Title> {product.quantity}</Card.Title>
+							</Col>
+
+							<Col sm="1" style={{ alignSelf: "center" }}>
+								{" "}
+								{product.quantity < product.stock && (
+									<Button onClick={() => increseProduct(product)} className="btn-sm">
+										<VscAdd />
+										{/* <PlusCircleIcon width={"20px"}/> */}
+									</Button>
+								)}
 								{product.quantity > 1 && (
-									<button onClick={() => decreseProduct(product)} className="btn btn-danger btn-sm mb-1">
+									<Button onClick={() => decreseProduct(product)} className="btn-danger btn-sm">
 										<GrSubtract />
 										{/* <MinusCircleIcon width={"20px"}/> */}
-									</button>
+									</Button>
 								)}
-								{product.quantity === 1 && (
-									<button onClick={() => deleteProduct(product)} className="btn btn-danger btn-sm mb-1">
-										<BsTrash />
-										{/* <TrashIcon width={"20px"}/> */}
-									</button>
-								)}
-							</div>
+							</Col>
 						</Row>
 					</Container>
 				</Card>
 			))}
 			<Card id="total">
-				<Card.Title>Total: $ {total}</Card.Title>
+				<Card.Title>
+					Total: $ {total}
+					<Button onClick={() => emptyCart()} className="btn-danger">
+						Vaciar carrito
+					</Button>
+				</Card.Title>
 			</Card>
 		</div>
 	);

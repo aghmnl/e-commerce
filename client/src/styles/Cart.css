@@ -2,10 +2,11 @@
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+
 	width: 50rem;
 	margin-top: 1rem;
 	/* background-color: transparent; */
-	border: transparent;
+	/*border: transparent; */
 }
 
 #total {
