@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "../styles/FormProduct.css";
-import { Nav, Button, Form, Container, Row, Col } from "react-bootstrap";
+import { Button, Form, Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import {connect} from "react-redux";
-import {getProduct, getStrainsBy, getProducts, getCategories, getCellars, cleanProduct} from "../store/actions/index";
+import { connect } from "react-redux";
+import { getProduct, getStrainsBy, getProducts, getCategories, getCellars, cleanProduct } from "../store/actions/index";
 import axios from "axios";
 function FormProduct({
 	productDetail,
@@ -17,7 +17,7 @@ function FormProduct({
 	getStrainsBy,
 	getCategories,
 	getCellars,
-	cleanProduct
+	cleanProduct,
 }) {
 	const [handle, setHandle] = useState("add");
 	const [inputs, setInputs] = useState({
@@ -35,15 +35,15 @@ function FormProduct({
 	// var nombreBoton = "Agregar";
 
 	// Esto se ejecuta cuando se selecciona una categoría
-	function handleStrains(catid){
-		setInputs({...inputs, categoryId: catid})
+	function handleStrains(catid) {
+		setInputs({ ...inputs, categoryId: catid });
 		getStrainsBy(catid);
 	}
 	useEffect(() => {
-		if(!!inputs.categoryId) getStrainsBy(inputs.categoryId);
+		if (!!inputs.categoryId) getStrainsBy(inputs.categoryId);
 	}, [inputs]);
 	useEffect(() => {
-		async function fetchData(){
+		async function fetchData() {
 			await getProducts();
 			await getCategories();
 			await getCellars();
@@ -51,21 +51,22 @@ function FormProduct({
 		fetchData();
 		return () => {
 			cleanProduct();
-			
 		};
 	}, []);
 	useEffect(() => {
-		if(!id) return;
-		getProduct(id).then(() =>{
+		if (!id) return;
+		getProduct(id).then(() => {
 			setHandle("edit");
-		})
+		});
 	}, [id]);
-	useEffect(() =>{
-		let nombreBoton = ""
-		if(handle === "edit") nombreBoton = "Actualizar";
-		else{nombreBoton = "Agragar"}
-		setInputs({...productDetail, nombreBoton });
-	},[handle, productDetail])
+	useEffect(() => {
+		let nombreBoton = "";
+		if (handle === "edit") nombreBoton = "Actualizar";
+		else {
+			nombreBoton = "Agragar";
+		}
+		setInputs({ ...productDetail, nombreBoton });
+	}, [handle, productDetail]);
 	function handleSubmit(e, id) {
 		e.preventDefault();
 		// Acá manda mensaje del dato que falta y hace foco en el mismo (sitúa el cursor en ese campo)
@@ -105,11 +106,7 @@ function FormProduct({
 	}
 	return (
 		<div>
-			<Form
-				style={{ width: "60rem", margin: "1rem" }}
-				id="formulario"
-				onSubmit={e => handleSubmit(e, id)}
-			>
+			<Form style={{ width: "60rem", margin: "1rem" }} id="formulario" onSubmit={e => handleSubmit(e, id)}>
 				<Form.Group as={Row}>
 					<Form.Label column sm="4">
 						Nombre de producto:{" "}
@@ -187,13 +184,11 @@ function FormProduct({
 						<Form.Control
 							as="select"
 							id="categoryId"
-							onChange={e => setInputs({...inputs, categoryId: parseInt(e.target.value)})}
+							onChange={e => setInputs({ ...inputs, categoryId: parseInt(e.target.value) })}
 						>
 							<option>seleccione categoria</option>
 							{categories.map(category => (
-								<option value={category.id}
-									selected={category.id === inputs.categoryId ? "selected" : ""}
-								>
+								<option value={category.id} selected={category.id === inputs.categoryId ? "selected" : ""}>
 									{category.name}
 								</option>
 							))}
@@ -212,9 +207,7 @@ function FormProduct({
 						>
 							<option>seleccione bodega</option>
 							{cellars.map(cellar => (
-								<option value={cellar.id}
-								selected={cellar.id === inputs.cellarId ? "selected" : ""}
-								>
+								<option value={cellar.id} selected={cellar.id === inputs.cellarId ? "selected" : ""}>
 									{cellar.name}
 								</option>
 							))}
@@ -235,10 +228,7 @@ function FormProduct({
 							{(() => {
 								if (!strains_by) return <option>seleccione categoria</option>;
 								return strains_by.map(strain => (
-									<option
-										value={strain.id}
-										selected={strain.id === inputs.strainId ? "selected" : ""}
-									>
+									<option value={strain.id} selected={strain.id === inputs.strainId ? "selected" : ""}>
 										{strain.name}
 									</option>
 								));
@@ -282,20 +272,16 @@ function FormProduct({
 		</div>
 	);
 }
-export default connect(({
-	productDetail,
-	products,
-	categories,
-	cellars,
-	strains,
-	strains_by
-})=>{
-	return {
-		productDetail,
-		products,
-		categories,
-		cellars,
-		strains,
-		strains_by
-	}
-},{getProduct, getStrainsBy, getProducts, getCategories, getCellars, cleanProduct})(FormProduct)
+export default connect(
+	({ productDetail, products, categories, cellars, strains, strains_by }) => {
+		return {
+			productDetail,
+			products,
+			categories,
+			cellars,
+			strains,
+			strains_by,
+		};
+	},
+	{ getProduct, getStrainsBy, getProducts, getCategories, getCellars, cleanProduct }
+)(FormProduct);

@@ -13,3 +13,9 @@ body {
 	background-repeat: no-repeat;
 	background-size: cover;
 }
+
+#carrito {
+	margin-left: 1rem;
+	margin-bottom: 0.5rem;
+	transform: scale(1.5);
+}
