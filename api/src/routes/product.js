@@ -108,27 +108,27 @@ server.get("/search?:query", (req, res, next) => {
 			[Op.or]: [
 				{
 					name: {
-						[Op.like]: value,
+						[Op.iLike]: value,
 					},
 				},
 				{
 					description: {
-						[Op.like]: value,
+						[Op.iLike]: value,
 					},
 				},
 				{
 					'$category.name$': {
-						[Op.like]: value,
+						[Op.iLike]: value,
 					}
 				},
 				{
 					'$strain.name$': {
-						[Op.like]: value,
+						[Op.iLike]: value,
 					}
 				},
 				{
 					'$cellar.name$': {
-						[Op.like]: value,
+						[Op.iLike]: value,
 					}
 				}
 			],
