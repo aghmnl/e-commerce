@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import {connect, useDispatch} from "react-redux";
-import {getCategories, getCatalogue, getProducts, cleanCatalogue} from "../store/actions/index";
+import {getCategories, getCatalogue, getProducts, cleanCatalogue, searchProduct} from "../store/actions/index";
 import {Nav,Spinner} from "react-bootstrap";
-import {NavLink} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 import "../styles/Catalogue.css";
 function Catalogue({ 
 	category, 
@@ -12,10 +12,12 @@ function Catalogue({
 	getCatalogue,
 	cleanCatalogue,
 	getCategories, 
-	getProducts, 
+	getProducts,
+	searchProduct,
 	pag, 
 	pags
 }) {
+	const location = useLocation();
 	useEffect(() => {
 		if(!pag) return;
 		getCatalogue(pag);
@@ -28,9 +30,13 @@ function Catalogue({
 		getProducts(category);
 	}, [category]);
 	useEffect(() =>{
-		//getCatalogue("0");
 		getCategories();
 	},[])
+	useEffect(()=>{
+		if(!location.search) return;
+		const searchParams = new URLSearchParams(location.search);
+		searchProduct(searchParams.get("search"));
+	},[location])
 	return (
 		<div>
 			<Nav id="navegacion" activeKey="/catalogue/category/1">
@@ -94,5 +100,6 @@ export default connect(({catalogue, products, categories}) =>{
 	getCategories, 
 	getCatalogue,
 	cleanCatalogue,
-	getProducts
+	getProducts,
+	searchProduct
 })(Catalogue)

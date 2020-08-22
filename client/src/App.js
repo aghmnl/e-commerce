@@ -12,12 +12,6 @@ import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import CarouselSlider from "./components/CarouselSlider";
 import {
-	getCategories,
-	getProducts,
-	getStrains,
-	getCellars,
-	searchProduct,
-	getUsers,
 	getPurchases,
 } from "./store/actions/index";
 import Admin from "./components/Admin";
@@ -30,7 +24,7 @@ function App({getPurchases}) {
 	},[])
 	return (
 		<div className="App">
-			<Route path="/" render={() => <NavBar cb={searchProduct} />} />
+			<Route path="/" render={() => <NavBar/>} />
 			<Route exact path="/" component={Home} />
 			<Route exact path="/" component={CarouselSlider} />
 			<Route path="/admin" component={Admin} />
@@ -41,6 +35,7 @@ function App({getPurchases}) {
 				path="/catalogue/category/:categoryId"
 				render={({ match }) => <Catalogue category={match.params.categoryId} />}
 			/>
+			<Route path="/catalogue?search" component={Catalogue} />
 			<Route exact path="/catalogue/:pag" render={({ match }) => <Catalogue pag={match.params.pag} />} />
 			<Route exact path="/catalogue" render={() => <Catalogue />} />
 			<Route exact path="/admin/formProduct" component={FormProduct} />
@@ -77,11 +72,5 @@ function App({getPurchases}) {
 	);
 }
 export default connect(null, {
-	getCategories,
-	getProducts,
-	getStrains,
-	getCellars,
-	getUsers,
-	searchProduct,
 	getPurchases,
 })(App);

@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
 import { Form, Button, Nav, Navbar, FormControl } from "react-bootstrap";
-import {NavLink} from "react-router-dom";
-export default function SearchBar(props) {
-  // acá va tu código
+import {NavLink, useHistory} from "react-router-dom";
+export default function SearchBar() {
+  const history = useHistory();
   const [inputText, setinputText] = useState("");
-
   return (
     <div>
       <Form inline onSubmit={(e)=>{
-        e.preventDefault();
-        props.cb(inputText)
+          e.preventDefault();
+          history.replace("/catalogue?search="+inputText);
         }} >
         <NavLink to="/admin">
           <Navbar.Brand>
