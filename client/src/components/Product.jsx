@@ -20,6 +20,9 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 			cleanProduct();
 		}
 	},[])
+	function goBack(){
+		window.history.back();
+	}
 	function awaitFor(element, prop){
 		if(!element) {
 			setInterval(()=>"Vacio", 1000)
@@ -34,6 +37,7 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 			<Container>
 				<Row>
 					<Col style={{ alignSelf: "center" }}>
+						<Button className="float-left" onClick={() => goBack()}>Volver</Button>
 						<Card.Img src={productDetail.img} />
 					</Col>
 					<Col>
