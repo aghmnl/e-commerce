@@ -17,17 +17,19 @@ server.get("/", (req, res, next) => {
 			},
 			{
 				model: Category,
-				as: "category"
+				as: "category",
 			},
 		],
-	}).then(products => {
-		res.json(products);
-	}).catch(err =>next(err));
+	})
+		.then(products => {
+			res.json(products);
+		})
+		.catch(err => next(err));
 });
 server.get("/catalogue?:pag", (req, res, next) => {
-	const pag =  !parseInt(req.query.pag)?0:parseInt(req.query.pag);
-	const pagsize = 4;
-	const offset = pagsize * (pagsize - (pagsize - pag))
+	const pag = !parseInt(req.query.pag) ? 0 : parseInt(req.query.pag);
+	const pagsize = 10;
+	const offset = pagsize * (pagsize - (pagsize - pag));
 	console.log(offset);
 	Product.findAndCountAll({
 		where: { active: true },
@@ -42,20 +44,22 @@ server.get("/catalogue?:pag", (req, res, next) => {
 			},
 			{
 				model: Category,
-				as: "category"
+				as: "category",
 			},
 		],
-		limit : pagsize,
-		offset
-	}).then(products => {
-		res.json(products);
-	}).catch(err =>next(err));
+		limit: pagsize,
+		offset,
+	})
+		.then(products => {
+			res.json(products);
+		})
+		.catch(err => next(err));
 });
-server.get("/detail/:id", (req, res,next) => {
+server.get("/detail/:id", (req, res, next) => {
 	Product.findOne({
-		where:{
-			active:true,
-			id:parseInt(req.params.id)
+		where: {
+			active: true,
+			id: parseInt(req.params.id),
 		},
 		include: [
 			{
@@ -71,12 +75,14 @@ server.get("/detail/:id", (req, res,next) => {
 				as: "category",
 			},
 		],
-	}).then(products => {
-		res.json(products);
-	}).catch(err =>next(err));
-})
+	})
+		.then(products => {
+			res.json(products);
+		})
+		.catch(err => next(err));
+});
 // http://localhost:3000/products/category/1
-server.get("/category/:categoryId", (req, res ,next) => {
+server.get("/category/:categoryId", (req, res, next) => {
 	Product.findAll({
 		include: [
 			{
@@ -89,14 +95,15 @@ server.get("/category/:categoryId", (req, res ,next) => {
 			},
 			{
 				model: Category,
-				as: "category"
+				as: "category",
 			},
 		],
 		where: {
 			categoryId: parseInt(req.params.categoryId),
 		},
-	}).then(products => res.json(products))
-	.catch(err =>next(err));
+	})
+		.then(products => res.json(products))
+		.catch(err => next(err));
 });
 
 // http://localhost:3000/products/search?query=agus
@@ -151,7 +158,7 @@ server.get("/search?:query", (req, res, next) => {
 		.then(products => res.json(products))
 		.catch(err => next(err));
 });
-server.post("/", (req, res,next) => {
+server.post("/", (req, res, next) => {
 	/*const values = Object.values(req.body);
 	if(!values.length) return res.send("NOT DATA");
 	for(let value of values){
@@ -160,15 +167,15 @@ server.post("/", (req, res,next) => {
 	delete req.body["nombreBoton"];
 	Product.create(req.body)
 		.then(() => res.sendStatus(200))
-		.catch(err =>next(err));
+		.catch(err => next(err));
 });
-server.put("/:id", (req, res,next) => {
+server.put("/:id", (req, res, next) => {
 	delete req.body["nombreBoton"];
 	Product.update(req.body, { where: { id: parseInt(req.params.id) } })
 		.then(() => res.sendStatus(200))
 		.catch(err => next(err));
 });
-server.delete("/:id", (req, res,next) => {
+server.delete("/:id", (req, res, next) => {
 	Product.destroy({ where: { id: parseInt(req.params.id) } })
 		.then(() => res.sendStatus(200))
 		.catch(err => next(err));

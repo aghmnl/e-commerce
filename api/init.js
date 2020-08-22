@@ -45,6 +45,7 @@ conn.sync({ force: true }).then(async () => {
 	await Promise.all(purchasesPromise);
 	const purchased_productsPromise = purchased_products.map(c => createPromise(Purchased_product, c));
 	await Promise.all(purchased_productsPromise);
+	console.log("Base de dato cargando. Espere por favor...");
 });
 var purchases = [
 	{

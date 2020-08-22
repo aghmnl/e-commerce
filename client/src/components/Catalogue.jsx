@@ -1,54 +1,54 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import {connect, useDispatch} from "react-redux";
-import {getCategories, getCatalogue, getProducts, cleanCatalogue, searchProduct} from "../store/actions/index";
-import {Nav,Spinner} from "react-bootstrap";
-import {NavLink, useLocation} from "react-router-dom";
+import { connect, useDispatch } from "react-redux";
+import { getCategories, getCatalogue, getProducts, cleanCatalogue, searchProduct } from "../store/actions/index";
+import { Nav, Spinner } from "react-bootstrap";
+import { NavLink, useLocation } from "react-router-dom";
 import "../styles/Catalogue.css";
-function Catalogue({ 
-	category, 
-	products, 
-	categories, 
+function Catalogue({
+	category,
+	products,
+	categories,
 	getCatalogue,
 	cleanCatalogue,
-	getCategories, 
+	getCategories,
 	getProducts,
 	searchProduct,
-	pag, 
-	pags
+	pag,
+	pags,
 }) {
 	const location = useLocation();
 	useEffect(() => {
-		if(!pag) return;
+		if (!pag) return;
 		getCatalogue(pag);
-		return () =>{
+		return () => {
 			cleanCatalogue();
-		}
+		};
 	}, [pag]);
 	useEffect(() => {
-		if(!category) return;
+		if (!category) return;
 		getProducts(category);
 	}, [category]);
-	useEffect(() =>{
+	useEffect(() => {
 		getCategories();
-	},[])
-	useEffect(()=>{
-		if(!location.search) return;
+	}, []);
+	useEffect(() => {
+		if (!location.search) return;
 		const searchParams = new URLSearchParams(location.search);
 		searchProduct(searchParams.get("search"));
-	},[location])
+	}, [location]);
 	return (
 		<div>
 			<Nav id="navegacion" activeKey="/catalogue/category/1">
 				<Nav.Item>
-				<Nav.Link><NavLink to="/catalogue/0">Todos</NavLink></Nav.Link>
+					<Nav.Link>
+						<NavLink to="/catalogue/0">Todos</NavLink>
+					</Nav.Link>
 				</Nav.Item>
 				{categories.map(category => (
 					<Nav.Item>
 						<Nav.Link>
-						<NavLink to={`/catalogue/category/${category.id}`}>
-							{category.name}
-						</NavLink>
+							<NavLink to={`/catalogue/category/${category.id}`}>{category.name}</NavLink>
 						</Nav.Link>
 					</Nav.Item>
 				))}
@@ -65,41 +65,48 @@ function Catalogue({
 					</Form> */}
 				</div>
 				<div className="col-10 catalogue">
-					{
-						!!products?products.map(product => (
-							<ProductCard id={product.id} name={product.name} price={product.price} cellar={product.cellar} img={product.img} />
-						)):(() =>{
-							setInterval(()=>{
-								return "Catalogo vacio"
-							},1000)
-							return (<Spinner animation="border" />);
-						})()
-					}
-					{
-						(()=>{
-							if(!products) return;
-							let buttons = [];
-							for(let i=0;i<=Math.floor(pags/4);i++){
-								buttons.push((<NavLink to={"/catalogue/"+i}>{i}</NavLink>))
-							}
-							return buttons.map(button => button);
-						})()
-					}
+					{!!products
+						? products.map(product => (
+								<ProductCard
+									id={product.id}
+									name={product.name}
+									price={product.price}
+									cellar={product.cellar}
+									img={product.img}
+								/>
+						  ))
+						: (() => {
+								setInterval(() => {
+									return "Catálogo vacío";
+								}, 1000);
+								return <Spinner animation="border" />;
+						  })()}
+					{(() => {
+						if (!products) return;
+						let buttons = [];
+						for (let i = 0; i <= Math.floor(pags / 10); i++) {
+							buttons.push(<NavLink to={"/catalogue/" + i}>{i}</NavLink>);
+						}
+						return buttons.map(button => button);
+					})()}
 				</div>
 			</div>
 		</div>
 	);
 }
-export default connect(({catalogue, products, categories}) =>{
-	return {
-		pags : catalogue.count,
-		products : !Object.values(catalogue).length?products:catalogue.rows,
-		categories : categories
+export default connect(
+	({ catalogue, products, categories }) => {
+		return {
+			pags: catalogue.count,
+			products: !Object.values(catalogue).length ? products : catalogue.rows,
+			categories: categories,
+		};
+	},
+	{
+		getCategories,
+		getCatalogue,
+		cleanCatalogue,
+		getProducts,
+		searchProduct,
 	}
-},{
-	getCategories, 
-	getCatalogue,
-	cleanCatalogue,
-	getProducts,
-	searchProduct
-})(Catalogue)
+)(Catalogue);
