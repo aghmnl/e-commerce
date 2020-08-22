@@ -3,7 +3,7 @@ const Sequelize = require("sequelize");
 const { Product, Cellar, Strain, Category } = require("../db.js");
 const Op = Sequelize.Op;
 // Este get devuelve todos los productos para generar el catálogo
-server.get("/", (req, res) => {
+server.get("/", (req, res, next) => {
 	Product.findAll({
 		where: { active: true },
 		include: [
@@ -22,9 +22,9 @@ server.get("/", (req, res) => {
 		],
 	}).then(products => {
 		res.json(products);
-	}).catch(err => console.log(err));
+	}).catch(err =>next(err));
 });
-server.get("/catalogue?:pag", (req, res) => {
+server.get("/catalogue?:pag", (req, res, next) => {
 	const pag =  !parseInt(req.query.pag)?0:parseInt(req.query.pag);
 	const pagsize = 4;
 	const offset = pagsize * (pagsize - (pagsize - pag))
@@ -49,9 +49,9 @@ server.get("/catalogue?:pag", (req, res) => {
 		offset
 	}).then(products => {
 		res.json(products);
-	}).catch(err => console.log(err));
+	}).catch(err =>next(err));
 });
-server.get("/detail/:id", (req, res) => {
+server.get("/detail/:id", (req, res,next) => {
 	Product.findOne({
 		where:{
 			active:true,
@@ -73,10 +73,10 @@ server.get("/detail/:id", (req, res) => {
 		],
 	}).then(products => {
 		res.json(products);
-	}).catch(err => console.log(err));
+	}).catch(err =>next(err));
 })
 // http://localhost:3000/products/category/1
-server.get("/category/:categoryId", (req, res) => {
+server.get("/category/:categoryId", (req, res ,next) => {
 	Product.findAll({
 		include: [
 			{
@@ -96,11 +96,11 @@ server.get("/category/:categoryId", (req, res) => {
 			categoryId: parseInt(req.params.categoryId),
 		},
 	}).then(products => res.json(products))
-	.catch(err => console.log(err));
+	.catch(err =>next(err));
 });
 
 // http://localhost:3000/products/search?query=agus
-server.get("/search?:query", (req, res) => {
+server.get("/search?:query", (req, res, next) => {
 	const value = "%" + req.query.query + "%";
 	console.log(value);
 	Product.findAll({
@@ -149,9 +149,9 @@ server.get("/search?:query", (req, res) => {
 		],
 	})
 		.then(products => res.json(products))
-		.catch(err => res.json(err));
+		.catch(err => next(err));
 });
-server.post("/", (req, res) => {
+server.post("/", (req, res,next) => {
 	/*const values = Object.values(req.body);
 	if(!values.length) return res.send("NOT DATA");
 	for(let value of values){
@@ -160,18 +160,18 @@ server.post("/", (req, res) => {
 	delete req.body["nombreBoton"];
 	Product.create(req.body)
 		.then(() => res.sendStatus(200))
-		.catch(err => console.log(err));
+		.catch(err =>next(err));
 });
-server.put("/:id", (req, res) => {
+server.put("/:id", (req, res,next) => {
 	delete req.body["nombreBoton"];
 	Product.update(req.body, { where: { id: parseInt(req.params.id) } })
 		.then(() => res.sendStatus(200))
-		.catch(err => res.json(err));
+		.catch(err => next(err));
 });
-server.delete("/:id", (req, res) => {
+server.delete("/:id", (req, res,next) => {
 	Product.destroy({ where: { id: parseInt(req.params.id) } })
 		.then(() => res.sendStatus(200))
-		.catch(err => res.json(err));
+		.catch(err => next(err));
 });
 
 module.exports = server;
