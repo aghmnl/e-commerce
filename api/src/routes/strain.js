@@ -1,7 +1,14 @@
 const server = require("express").Router();
-const { Strain } = require("../db.js");
+const { Strain, Category } = require("../db.js");
 server.get("/", (req, res, next) => {
-	Strain.findAll()
+	Strain.findAll({
+		include: [
+			{
+				model: Category,
+				as: "category",
+			},
+		],
+	})
 		.then(strains => res.json(strains))
 		.catch(err => next(err));
 });

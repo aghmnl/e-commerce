@@ -1,6 +1,21 @@
 body {
 	/* The image used */
-	background-image: var(--imgCat) ;
+	background-image: var(--imgCat);
 	/* color: #ffffff; */
 }
+#main {
+	color: #ffffff;
+	text-align: left;
+	width: 30rem;
+	margin-left: auto;
+	margin-right: auto;
+}
 
+#form2 {
+	width: 30rem;
+	text-align: left;
+}
+
+#contenedor {
+	text-align: center;
+}
