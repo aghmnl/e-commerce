@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Col, Button, Row, Container} from "react-bootstrap";
+import { Form, Col, Button, Row, Container, Alert} from "react-bootstrap";
 import axios from "axios";
 import {Link} from "react-router-dom";
 import {getUsers, getUser, cleanUser} from "../store/actions/index";
@@ -12,6 +12,16 @@ function FormUser({
 	id,
 	cleanUser
 }) {
+	const [deleted, setDelete] = useState({
+		show : false,
+		confirmed : false,
+		msg: "",
+		deleteId : null
+	});
+	const [warning, setWarninig] = useState({
+		show : false,
+		msg : ""
+	});
 	const [handle, setHandle] = useState("add");
 	const [inputs, setInputs] = useState({
 		name: "",
@@ -46,18 +56,31 @@ function FormUser({
 	}, []);
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
+		let values = inputs
 		let nombreBoton = handle==="edit"?"Actualizar":"Agregar";
-		setInputs({ ...user, nombreBoton, admin : false});
+		if(user) values = user;
+		setInputs({ ...values, nombreBoton });
 	}, [handle, user]);
+	useEffect(()=>{
+		if (deleted.confirmed && deleted.deleteId)
+			axios
+				.delete(`http://localhost:3000/user/${deleted.deleteId}`)
+				.then(() => {
+					getUsers();
+				})
+				.catch(err => {
+					console.log(err);
+				});
+	},[deleted.confirmed, deleted.deleteId])
 	function handleSubmit(e) {
 		e.preventDefault();
 		if(!inputs.name){
-			alert("Introduzca un nombre");
+			setWarninig({show:true,msg: `name is require`});
 			document.querySelector("#name").focus();
 			return;
 		}
 		if(inputs.password != inputs2.password2){
-			alert("Las contraseñas no coinciden");
+			setWarninig({show:true,msg: `password is require`});
 			document.querySelector("#password").focus();
 			return;
 		}else{
@@ -83,18 +106,47 @@ function FormUser({
 	}
 	function eliminar(e, id) {
 		e.preventDefault();
-		if (window.confirm("Este usuario será eliminado. ¿Está seguro?"))
-			axios
-				.delete(`http://localhost:3000/user/${id}`)
-				.then(() => {
-					getUsers();
-				})
-				.catch(err => console.log(err));
+		setDelete({
+			msg: "Este usuario será eliminado. ¿Está seguro?",
+			show: true,
+			deleteId : id
+		});
 	}
 
 	return (
-		<div>
-		<Form style={{ width: "30rem", margin: "10rem" }} onSubmit={e => handleSubmit(e)}>
+		<div id="main">
+			<Alert className="alert" variant="warning" show={warning.show} 
+				onClose={()=>setWarninig({...warning, show: false})} 
+				dismissible
+			>
+				<Alert.Heading>
+					Dato requerido!
+				</Alert.Heading>
+				<p>
+					{warning.msg}
+				</p>
+			</Alert>
+			<Alert className="alert" variant="danger" show={deleted.show} 
+				onClose={()=>setDelete({...deleted, show:false})} 
+				dismissible
+			>
+				<Alert.Heading>
+					Eliminar
+				</Alert.Heading>
+				<p>
+					{deleted.msg}
+				</p>
+				<div className="d-flex justify-content-end">
+          			<Button onClick={() => setDelete({
+						  ...deleted,
+						  show:false,
+						  confirmed :true
+					  })} variant="danger">
+           				 Eliminar
+         			</Button>
+        		</div>
+			</Alert>
+		<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e)}>
 			<Form.Group as={Row}>
 				<Form.Label column sm="2">
 					Nombre

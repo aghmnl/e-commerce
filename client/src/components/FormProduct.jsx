@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/FormProduct.css";
-import { Button, Form, Container, Row, Col } from "react-bootstrap";
+import { Button, Form, Container, Row, Col, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getProduct, getStrainsBy, getProducts, getCategories, getCellars, cleanProduct } from "../store/actions/index";
@@ -20,6 +20,16 @@ function FormProduct({
 	cleanProduct,
 }) {
 	const [handle, setHandle] = useState("add");
+	const [deleted, setDelete] = useState({
+		show : false,
+		confirmed : false,
+		msg: "",
+		deleteId : ""
+	});
+	const [warning, setWarninig] = useState({
+		show : false,
+		msg : ""
+	});
 	const [inputs, setInputs] = useState({
 		name: "",
 		description: "",
@@ -59,21 +69,33 @@ function FormProduct({
 			setHandle("edit");
 		});
 	}, [id]);
+
 	useEffect(() => {
 		let nombreBoton = "";
+		let values = inputs;
 		if (handle === "edit") nombreBoton = "Actualizar";
 		else {
-			nombreBoton = "Agragar";
+			nombreBoton = "Agregar";
 		}
-		setInputs({ ...productDetail, nombreBoton });
+		if(Object.values(productDetail).length) values = productDetail;
+		setInputs({ ...values, nombreBoton });
 	}, [handle, productDetail]);
+	useEffect(()=>{
+		if (deleted.confirmed && deleted.deleteId)
+			axios
+				.delete(`http://localhost:3000/product/${deleted.deleteId}`)
+				.then(() => {
+					getProducts();
+				})
+				.catch(err => console.log(err));
+	},[deleted.confirmed, deleted.deleteId])
 	function handleSubmit(e, id) {
 		e.preventDefault();
 		// Acá manda mensaje del dato que falta y hace foco en el mismo (sitúa el cursor en ese campo)
 		for (let prop in inputs) {
 			if (!inputs[prop] && prop !== "active") {
 				document.querySelector(`#${prop}`).focus();
-				alert(`${prop} is require`);
+				setWarninig({show:true,msg: `${prop} is require`});
 				return;
 			}
 		}
@@ -96,17 +118,49 @@ function FormProduct({
 	}
 	function eliminar(e, id) {
 		e.preventDefault();
-		if (window.confirm("Este producto será eliminado. ¿Confirma?"))
-			axios
-				.delete(`http://localhost:3000/product/${id}`)
-				.then(() => {
-					getProducts();
-				})
-				.catch(err => console.log(err));
+		setDelete({
+			...deleted, 
+			msg:"Este producto sera eliminado. ¿Está seguro?", 
+			show:true,
+			deleteId : id
+		})
+			
 	}
 	return (
-		<div>
-			<Form style={{ width: "60rem", margin: "10rem" }} id="formulario" onSubmit={e => handleSubmit(e, id)}>
+		<div id="main">
+			<Alert className="alert" variant="warning" show={warning.show} 
+				onClose={()=>setWarninig({...warning, show: false})} 
+				dismissible
+			>
+				<Alert.Heading>
+					Dato requerido!
+				</Alert.Heading>
+				<p>
+					{warning.msg}
+				</p>
+			</Alert>
+			<Alert className="alert" variant="danger" show={deleted.show} 
+				onClose={()=>setDelete({...deleted, show:false})} 
+				dismissible
+			>
+				<Alert.Heading>
+					Eliminar
+				</Alert.Heading>
+				<p>
+					{deleted.msg}
+				</p>
+				<div className="d-flex justify-content-end">
+          			<Button onClick={() => setDelete({
+						  ...deleted,
+						  show:false,
+						  confirmed :true
+					  })} variant="danger">
+           				 Eliminar
+         			</Button>
+        		</div>
+			</Alert>
+			<Form style={{ width: "60rem", margin: "1rem" }} id="formulario" onSubmit={e => handleSubmit(e, id)}>
+
 				<Form.Group as={Row}>
 					<Form.Label column sm="4">
 						Nombre de producto:{" "}

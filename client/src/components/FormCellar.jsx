@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Form, Col, Button, Row, Container, Nav } from "react-bootstrap";
+import { Form, Col, Button, Row, Container, Nav, Alert } from "react-bootstrap";
 import axios from "axios";
 import {Link} from "react-router-dom";
-import {getCellars, getCellar} from "../store/actions/index";
+import {getCellars, getCellar, cleanCellar} from "../store/actions/index";
 import {connect} from "react-redux";
 function FormCellar({
 	cellars,
@@ -11,8 +11,18 @@ function FormCellar({
 	getCellar,
 	id,
 	edit,
-	cleanState
+	cleanCellar
 }) {
+	const [deleted, setDelete] = useState({
+		show : false,
+		confirmed : false,
+		msg: "",
+		deleteId : null
+	});
+	const [warning, setWarninig] = useState({
+		show : false,
+		msg : ""
+	});
 	const [handle, setHandle] = useState("add");
 	const [inputs, setInputs] = useState({
 		name: "",
@@ -31,16 +41,36 @@ function FormCellar({
 			await getCellars();
 		}
 		fetchData();
+		return()=>{
+			cleanCellar();
+		}
 	}, []);
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
+		let values = inputs
 		let nombreBoton = handle==="edit"?"Actualizar":"Agregar";
-		setInputs({ ...cellar, nombreBoton});
+		if(cellar) values = cellar;
+		setInputs({ ...values, nombreBoton });
 	}, [handle, cellar]);
+	useEffect(()=>{
+		if (deleted.confirmed && deleted.deleteId)
+			axios
+				.delete(`http://localhost:3000/cellar/${deleted.deleteId}`)
+				.then(() => {
+					getCellars();;
+				})
+				.catch(err => {
+					console.log(err);
+					setWarninig({
+						show: true,
+						msg: "No se puede eliminar"
+					});
+				});
+	},[deleted.confirmed, deleted.deleteId])
 	function handleSubmit(e) {
 		e.preventDefault();
 		if(!inputs.name){
-			alert("name is required !");
+			setWarninig({show:true,msg: `name is require`});
 			document.querySelector("#name").focus();
 			return;
 		}
@@ -64,18 +94,47 @@ function FormCellar({
 	}
 	function eliminar(e, id) {
 		e.preventDefault();
-		if (window.confirm("Este producto será eliminado. ¿Está seguro?"))
-			axios
-				.delete(`http://localhost:3000/cellar/${id}`)
-				.then(() => {
-					getCellars();
-				})
-				.catch(err => console.log(err));
+		setDelete({
+			msg: "Esta bodega sera eliminada, ¿Está seguro?",
+			show: true,
+			deleteId : id
+		});
 	}
 
 	return (
-		<div>
-		<Form style={{ width: "30rem", margin: "10rem" }} onSubmit={e => handleSubmit(e)}>
+		<div id="main">
+			<Alert className="alert" variant="warning" show={warning.show} 
+				onClose={()=>setWarninig({...warning, show: false})} 
+				dismissible
+			>
+				<Alert.Heading>
+					Advertencia!
+				</Alert.Heading>
+				<p>
+					{warning.msg}
+				</p>
+			</Alert>
+			<Alert className="alert" variant="danger" show={deleted.show} 
+				onClose={()=>setDelete({...deleted, show:false})} 
+				dismissible
+			>
+				<Alert.Heading>
+					Eliminar
+				</Alert.Heading>
+				<p>
+					{deleted.msg}
+				</p>
+				<div className="d-flex justify-content-end">
+          			<Button onClick={() => setDelete({
+						  ...deleted,
+						  show:false,
+						  confirmed :true
+					  })} variant="danger">
+           				 Eliminar
+         			</Button>
+        		</div>
+			</Alert>
+		<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e)}>
 			<Form.Group as={Row}>
 				<Form.Label column sm="2">
 					Bodega
@@ -109,4 +168,4 @@ function FormCellar({
 	);
 }
 export default connect(({cellar, cellars}) => ({cellar, cellars}),
-{getCellar, getCellars})(FormCellar);
+{getCellar, getCellars, cleanCellar})(FormCellar);

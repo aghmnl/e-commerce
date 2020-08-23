@@ -192,6 +192,12 @@ export default (state = initialState, action) => {
 			};
 		case "CLEAN_USER":
 			return { ...state, user: {} };
+		case "CLEAN_CELLAR":
+			return { ...state, cellar: {} };
+		case "CLEAN_CATEGORY":
+			return { ...state, category: {} };
+		case "CLEAN_STRAIN":
+			return { ...state, strain: {} };
 		default:
 			return { ...state };
 	}
