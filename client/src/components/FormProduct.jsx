@@ -160,6 +160,7 @@ function FormProduct({
         		</div>
 			</Alert>
 			<Form style={{ width: "60rem", margin: "1rem" }} id="formulario" onSubmit={e => handleSubmit(e, id)}>
+
 				<Form.Group as={Row}>
 					<Form.Label column sm="4">
 						Nombre de producto:{" "}
