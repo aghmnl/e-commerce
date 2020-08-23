@@ -6,3 +6,8 @@
 	width: 100%; /* Full width */
 	z-index: 100;
 }
+body {
+	/* The image used */
+	background-image: var(--imgCat);
+	/* color: #ffffff; */
+}

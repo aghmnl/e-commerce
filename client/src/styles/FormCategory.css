@@ -1,6 +1,6 @@
 body {
 	/* The image used */
-	background-image: var(--imgCat);
+	background-image: var(--imgCat) ;
 	/* color: #ffffff; */
 }
 
