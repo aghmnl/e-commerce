@@ -57,7 +57,9 @@ Category.hasMany(Strain,{
 	onDelete : "NO ACTION"
 });
 Strain.belongsTo(Category);
-User.hasMany(Purchase);
+User.hasMany(Purchase, {
+	onDelete : "NO ACTION"
+});
 Purchase.belongsTo(User);
 Purchase.belongsToMany(Product, { through: Purchased_product });
 Product.belongsToMany(Purchase, { through: Purchased_product });

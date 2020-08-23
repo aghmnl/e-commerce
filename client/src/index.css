@@ -8,7 +8,16 @@ body {
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
-
+#main{
+	display: flex;
+	flex-direction: column;
+}
+.alert{
+	position: fixed;
+	align-self: center;
+	width: 50rem;
+	z-index: 1000;
+}
 :root {
 	--color1: #2e1000;
 	--color2: #a36b52;

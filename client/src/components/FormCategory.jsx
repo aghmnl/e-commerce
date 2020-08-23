@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Form, Col, Button, Row, Container } from "react-bootstrap";
+import { Form, Col, Button, Row, Container, Alert } from "react-bootstrap";
 import "../styles/FormCategory.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getCategories, getCategory } from "../store/actions/index";
-function FormCategory({ categories, category, getCategory, getCategories, id }) {
+import { getCategories, getCategory, cleanCategory } from "../store/actions/index";
+function FormCategory({ categories, category, getCategory, getCategories, id, cleanCategory }) {
+	const [deleted, setDelete] = useState({
+		show : false,
+		confirmed : false,
+		msg: "",
+		deleteId : null
+	});
+	const [warning, setWarninig] = useState({
+		show : false,
+		msg : ""
+	});
 	const [handle, setHandle] = useState("add");
 	const [inputs, setInputs] = useState({
 		name: "",
@@ -24,15 +34,35 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 			await getCategories();
 		}
 		fetchData();
+		return() =>{
+			cleanCategory()
+		}
 	}, []);
 	useEffect(() => {
+		let values = inputs
 		let nombreBoton = handle==="edit" ? "Actualizar" : "Agregar";
-		setInputs({ ...category, nombreBoton });
+		if(!!category) values = category;
+		setInputs({ ...values, nombreBoton });
 	}, [handle, category]);
+	useEffect(()=>{
+		if (deleted.confirmed && deleted.deleteId)
+			axios
+				.delete(`http://localhost:3000/category/${deleted.deleteId}`)
+				.then(() => {
+					getCategories();
+				})
+				.catch(err => {
+					console.log(err);
+					setWarninig({
+						show: true,
+						msg: "No se puede eliminar"
+					});
+				});
+	},[deleted.confirmed, deleted.deleteId])
 	function handleSubmit(e, id) {
 		e.preventDefault();
 		if (!inputs.name) {
-			alert("name is required !");
+			setWarninig({show:true,msg: `name is require`});
 			document.querySelector("#name").focus();
 			return;
 		}
@@ -58,16 +88,45 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 	}
 	function eliminar(e, id) {
 		e.preventDefault();
-		if (window.confirm("Esta categoría será eliminada. ¿Confirma?"))
-			axios
-				.delete(`http://localhost:3000/category/${id}`)
-				.then(() => {
-					getCategories();
-				})
-				.catch(err => console.log(err));
+		setDelete({
+			msg: "Esta categoria sera eliminada, ¿Está seguro?",
+			show: true,
+			deleteId : id
+		});
 	}
 	return (
-		<div>
+		<div id="main">
+			<Alert className="alert" variant="warning" show={warning.show} 
+				onClose={()=>setWarninig({...warning, show: false})} 
+				dismissible
+			>
+				<Alert.Heading>
+					Advertencia!
+				</Alert.Heading>
+				<p>
+					{warning.msg}
+				</p>
+			</Alert>
+			<Alert className="alert" variant="danger" show={deleted.show} 
+				onClose={()=>setDelete({...deleted, show:false})} 
+				dismissible
+			>
+				<Alert.Heading>
+					Eliminar
+				</Alert.Heading>
+				<p>
+					{deleted.msg}
+				</p>
+				<div className="d-flex justify-content-end">
+          			<Button onClick={() => setDelete({
+						  ...deleted,
+						  show:false,
+						  confirmed :true
+					  })} variant="danger">
+           				 Eliminar
+         			</Button>
+        		</div>
+			</Alert>
 			<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e, id)}>
 				<Form.Group as={Row}>
 					<Form.Label column sm="2">
@@ -126,5 +185,5 @@ export default connect(
 			category,
 		};
 	},
-	{ getCategories, getCategory }
+	{ getCategories, getCategory, cleanCategory }
 )(FormCategory);

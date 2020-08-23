@@ -29,6 +29,15 @@ export const cleanCatalogue = () => ({
 export const cleanUser = () => ({
         type : "CLEAN_USER",
 })
+export const cleanCellar = () => ({
+	type : "CLEAN_CELLAR",
+})
+export const cleanCategory = () => ({
+	type : "CLEAN_CATEGORY",
+})
+export const cleanStrain = () => ({
+	type : "CLEAN_STRAIN",
+})
 export const getProducts = (categoryId) => {
         return (dispatch) => {
                 const url = !categoryId?"http://localhost:3000/product":`http://localhost:3000/product/category/${categoryId}`;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Form, Col, Button, Row, Container } from "react-bootstrap";
+import { Form, Col, Button, Row, Container, Alert } from "react-bootstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import {getStrains, getStrain, getCategories} from "../store/actions/index";
+import {getStrains, getStrain, getCategories, cleanStrain} from "../store/actions/index";
 import {connect} from "react-redux";
 function FormStrain({
 	strain,
@@ -12,7 +12,18 @@ function FormStrain({
 	getCategories,
 	categories,
 	id,
+	cleanStrain
 }) {
+	const [deleted, setDelete] = useState({
+		show : false,
+		confirmed : false,
+		msg: "",
+		deleteId : null
+	});
+	const [warning, setWarninig] = useState({
+		show : false,
+		msg : ""
+	});
 	const [handle, setHandle] = useState("add");
 	const [inputs, setInputs] = useState({
 		name: "",
@@ -33,18 +44,37 @@ function FormStrain({
 			await getStrains();
 		}
 		fetchData();
+		return ()=>{
+			cleanStrain()
+		}
 	}, []);
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
+		let values = inputs
 		let nombreBoton = handle==="edit"?"Actualizar":"Agregar";
-		setInputs({ ...strain, nombreBoton});
+		if(strain) values = strain;
+		setInputs({ ...values, nombreBoton });
 	}, [handle, strain]);
-
+	useEffect(()=>{
+		if (deleted.confirmed && deleted.deleteId)
+			axios
+				.delete(`http://localhost:3000/strain/${deleted.deleteId}`)
+				.then(() => {
+					getStrains();
+				})
+				.catch(err => {
+					console.log(err);
+					setWarninig({
+						show: true,
+						msg: "No se puede eliminar"
+					});
+				});
+	},[deleted.confirmed, deleted.deleteId])
 	function handleSubmit(e) {
 		e.preventDefault();
 		for(let prop in inputs){
 			if(!inputs[prop]){
-				alert("this field is required !");
+				setWarninig({show:true,msg: `${prop} is require`});
 				document.querySelector(`#${prop}`).focus();
 				return;
 			}
@@ -71,17 +101,46 @@ function FormStrain({
 
 	function eliminar(e, id) {
 		e.preventDefault();
-		if (window.confirm("Esta cepa será eliminada. ¿Confirma?"))
-			axios
-				.delete(`http://localhost:3000/strain/${id}`)
-				.then(() => {
-					getStrains();
-				})
-				.catch(err => console.log(err));
+		setDelete({
+			msg: "Esta cepa sera eliminada, ¿Está seguro?",
+			show: true,
+			deleteId : id
+		});
 	}
 
 	return (
-		<div>
+		<div id="main">
+			<Alert className="alert" variant="warning" show={warning.show} 
+				onClose={()=>setWarninig({...warning, show: false})} 
+				dismissible
+			>
+				<Alert.Heading>
+					Advertencia!
+				</Alert.Heading>
+				<p>
+					{warning.msg}
+				</p>
+			</Alert>
+			<Alert className="alert" variant="danger" show={deleted.show} 
+				onClose={()=>setDelete({...deleted, show:false})} 
+				dismissible
+			>
+				<Alert.Heading>
+					Eliminar
+				</Alert.Heading>
+				<p>
+					{deleted.msg}
+				</p>
+				<div className="d-flex justify-content-end">
+          			<Button onClick={() => setDelete({
+						  ...deleted,
+						  show:false,
+						  confirmed :true
+					  })} variant="danger">
+           				 Eliminar
+         			</Button>
+        		</div>
+			</Alert>
 			<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e)}>
 				<Form.Group as={Row}>
 					<Form.Label column sm="2">
@@ -140,4 +199,4 @@ function FormStrain({
 	);
 }
 export default connect(({strains, strain, categories}) => ({strains, strain, categories}),
-{getStrains, getStrain, getCategories})(FormStrain);
+{getStrains, getStrain, getCategories, cleanStrain})(FormStrain);
