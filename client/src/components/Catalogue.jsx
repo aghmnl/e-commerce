@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import { connect, useDispatch } from "react-redux";
 import { getCategories, getCatalogue, getProducts, cleanCatalogue, searchProduct } from "../store/actions/index";
-import { Nav, Spinner } from "react-bootstrap";
+import { Nav, Spinner, Pagination, Container, Row, Col } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router-dom";
 import "../styles/Catalogue.css";
 function Catalogue({
@@ -53,8 +53,8 @@ function Catalogue({
 					</Nav.Item>
 				))}
 			</Nav>
-			<div className="row">
-				<div className="col-2">
+			<Container>
+				<Col>
 					{/* Acá va a selececcionar las cepas
 					<Form>
 						{["checkbox"].map(type => (
@@ -63,34 +63,45 @@ function Catalogue({
 							</div>
 						))}
 					</Form> */}
-				</div>
-				<div className="col-10 catalogue">
-					{!!products
-						? products.map(product => (
-								<ProductCard
-									id={product.id}
-									name={product.name}
-									price={product.price}
-									cellar={product.cellar}
-									img={product.img}
-								/>
-						  ))
-						: (() => {
-								setInterval(() => {
-									return "Catálogo vacío";
-								}, 1000);
-								return <Spinner animation="border" />;
-						  })()}
-					{(() => {
-						if (!products) return;
-						let buttons = [];
-						for (let i = 0; i <= Math.floor(pags / 10); i++) {
-							buttons.push(<NavLink to={"/catalogue/" + i}>{i}</NavLink>);
-						}
-						return buttons.map(button => button);
-					})()}
-				</div>
-			</div>
+				</Col>
+				<Col>
+					<Row>
+						{(() => {
+							if (!products) return;
+							let active = pag;
+							let buttons = [];
+							for (let i = 0; i <= Math.floor(pags / 10); i++) {
+								buttons.push(
+									<Pagination.Item key={i + 1} active={i === parseInt(active)}>
+										<NavLink to={"/catalogue/" + i}>{i + 1}</NavLink>
+									</Pagination.Item>
+								);
+							}
+							return buttons.map(button => button);
+						})()}
+					</Row>
+					<Row>
+						<div className="catalogue">
+							{!!products
+								? products.map(product => (
+										<ProductCard
+											id={product.id}
+											name={product.name}
+											price={product.price}
+											cellar={product.cellar}
+											img={product.img}
+										/>
+								  ))
+								: (() => {
+										setInterval(() => {
+											return "Catálogo vacío";
+										}, 1000);
+										return <Spinner animation="border" />;
+								  })()}
+						</div>
+					</Row>
+				</Col>
+			</Container>
 		</div>
 	);
 }

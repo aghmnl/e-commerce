@@ -4,7 +4,7 @@ const { Purchase, User, Pay_method, Status } = require("../db.js");
 // S44 : Crear ruta que retorne todas las órdenes
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
 // http://localhost:3000/purchase/
-server.get("/", (req, res,next) => {
+server.get("/", (req, res, next) => {
 	Purchase.findAll({
 		include: [
 			{
@@ -20,18 +20,23 @@ server.get("/", (req, res,next) => {
 				as: "status",
 			},
 		],
-	}).then(purchases => res.json(purchases))
-	.catch((err)=>next(err))
+	})
+		.then(purchases => res.json(purchases))
+		.catch(err => next(err));
 });
 
 // http://localhost:3000/purchase/status?statusId=1
 server.get("/status?:statusId", (req, res, next) => {
-	Purchase.findAll({ where: { statusId: parseInt(req.query.statusId) } }).then(purchases => res.json(purchases)) .catch((err)=>next(err))
+	Purchase.findAll({ where: { statusId: parseInt(req.query.statusId) } })
+		.then(purchases => res.json(purchases))
+		.catch(err => next(err));
 });
 
 // S45 : Crear Ruta que retorne todas las Ordenes de los usuarios
-server.get("/users/:userId", (req, res ,next) => {
-	Purchase.findAll({ where: { userId: parseInt(req.params.userId) } }).then(purchases => res.json(purchases)) .catch((err)=>next(err))
+server.get("/users/:userId", (req, res, next) => {
+	Purchase.findAll({ where: { userId: parseInt(req.params.userId) } })
+		.then(purchases => res.json(purchases))
+		.catch(err => next(err));
 });
 
 // OTRA OPCIÓN S45 SERÍA:
@@ -44,20 +49,21 @@ server.get("/users/:userId", (req, res ,next) => {
 // });
 
 // S46 : Crear Ruta que retorne una orden en particular.
-server.get("/:id", (req, res ,next) => {
-	Purchase.findByPk(req.params.id).then(purchase => res.json(purchase)) .catch((err)=>next(err))
+server.get("/:id", (req, res, next) => {
+	Purchase.findByPk(req.params.id)
+		.then(purchase => res.json(purchase))
+		.catch(err => next(err));
 });
 
 // S47 : Crear Ruta para modificar una Orden
 server.put("/:id", function (req, res, next) {
-	Purchase.findByPk(req.params.id).then(function (purchase) {
-		user.update(req.body);
-		res.status(201);
-		res.send(purchase);
-		
-	})
-	.catch((err)=>next(err))
-	
+	Purchase.findByPk(req.params.id)
+		.then(function (purchase) {
+			user.update(req.body);
+			res.status(201);
+			res.send(purchase);
+		})
+		.catch(err => next(err));
 });
 
 // OTRA OPCIÓN SERÍA
