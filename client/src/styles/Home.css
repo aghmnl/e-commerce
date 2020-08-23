@@ -1,9 +1,9 @@
 #logo {
 	display: block;
-	margin-left: auto;
+	margin-left: 10rem;
 	margin-right: auto;
 	width: 25rem;
-	margin-top: 10rem;
+	margin-top: 5rem;
 	background-color: transparent;
 	border: transparent;
 }

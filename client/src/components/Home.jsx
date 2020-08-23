@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { CardGroup, Card, Nav } from "react-bootstrap";
 import "../styles/Home.css";
-import {connect} from "react-redux";
-import {Link} from "react-router-dom";
-import {getCategories} from "../store/actions/index";
-function Home({ categories, getCategories}) {
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { getCategories } from "../store/actions/index";
+function Home({ categories, getCategories }) {
 	const [cats, setCats] = useState([]);
-	useEffect(() =>{
-		async function fetchData(){
+	useEffect(() => {
+		async function fetchData() {
 			await getCategories();
 		}
 		fetchData();
-	},[])
+	}, []);
 	useEffect(() => {
 		setCats(
 			categories.map(category => {
@@ -40,18 +40,18 @@ function Home({ categories, getCategories}) {
 	return (
 		<div>
 			<Card id="logo">
-				<Card.Img variant="top" src="https://i.ibb.co/k9pSWmx/default-removebg-preview.png" />
-				<Card.Img variant="top" src="https://i.ibb.co/gMbh6ZK/toni-Black.png" />
+				<Card.Img src="https://i.ibb.co/k9pSWmx/default-removebg-preview.png" />
+				<Card.Img src="https://i.ibb.co/gMbh6ZK/toni-Black.png" />
 			</Card>
 			<CardGroup id="categorias">
 				{cats.map(cat => (
 					<Card>
 						<Nav.Link>
 							<Link to={`/catalogue/category/${cat.id}`}>
-							<Card.Img variant="top" src={cat.img} />
-							<Card.Body>
-								<Card.Title>{cat.name}</Card.Title>
-							</Card.Body>
+								<Card.Img variant="top" src={cat.img} />
+								<Card.Body>
+									<Card.Title>{cat.name}</Card.Title>
+								</Card.Body>
 							</Link>
 						</Nav.Link>
 					</Card>
@@ -60,4 +60,4 @@ function Home({ categories, getCategories}) {
 		</div>
 	);
 }
-export default connect(({categories}) => ({categories}),{getCategories})(Home);
+export default connect(({ categories }) => ({ categories }), { getCategories })(Home);
