@@ -10,6 +10,8 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 	const [inputs, setInputs] = useState({
 		name: "",
 		description: "",
+		strainName: "",
+		satrinCategoryId: 0,
 		edit: false,
 		nombreBoton: "Agregar",
 	});
@@ -26,7 +28,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 		fetchData();
 	}, []);
 	useEffect(() => {
-		let nombreBoton = handle==="edit" ? "Actualizar" : "Agregar";
+		let nombreBoton = handle === "edit" ? "Actualizar" : "Agregar";
 		setInputs({ ...category, nombreBoton });
 	}, [handle, category]);
 	function handleSubmit(e, id) {
@@ -46,13 +48,25 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 			return;
 		}
 		const url = "http://localhost:3000/category";
+		const urlStrain = "http://localhost:3000/strain";
+		const newCategoryId = categories[categories.length - 1].id + 1;
+
+		const inputStrain = {
+			name: inputs.strainName,
+			categoryId: newCategoryId,
+		};
 		axios
 			.post(url, inputs)
-			.then(() => getCategories())
+			.then(() => {
+				axios.post(urlStrain, inputStrain);
+				getCategories();
+			})
 			.catch(e => console.log(e));
 		setInputs({
 			name: "",
 			description: "",
+			strainName: "",
+			strainCategoryId: 0,
 			nombreBoton: "Agregar",
 		});
 	}
@@ -68,12 +82,14 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 	}
 	return (
 		<div>
+
 			<Form style={{ width: "30rem", margin: "10rem" }} onSubmit={e => handleSubmit(e, id)}>
+
 				<Form.Group as={Row}>
-					<Form.Label column sm="2">
+					<Form.Label column sm="4">
 						Categoría
 					</Form.Label>
-					<Col sm="10">
+					<Col sm="8">
 						<Form.Control
 							value={inputs.name}
 							id="name"
@@ -82,10 +98,28 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 					</Col>
 				</Form.Group>
 				<Form.Group as={Row}>
-					<Form.Label column sm="2">
+					{handle !== "edit" && (
+						<Form.Label column sm="4">
+							Nueva cepa
+						</Form.Label>
+					)}
+					{handle !== "edit" && (
+						<Col sm="8">
+							<Form.Control
+								value={inputs.strainName}
+								id="strain"
+								onChange={e => {
+									setInputs({ ...inputs, strainName: e.target.value });
+								}}
+							/>
+						</Col>
+					)}
+				</Form.Group>
+				<Form.Group as={Row}>
+					<Form.Label column sm="4">
 						Descripción
 					</Form.Label>
-					<Col sm="10">
+					<Col sm="8">
 						<Form.Control
 							as="textarea"
 							rows="3"
