@@ -68,7 +68,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 	}
 	return (
 		<div>
-			<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e, id)}>
+			<Form style={{ width: "30rem", margin: "10rem" }} onSubmit={e => handleSubmit(e, id)}>
 				<Form.Group as={Row}>
 					<Form.Label column sm="2">
 						Categoría

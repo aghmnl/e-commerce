@@ -75,7 +75,7 @@ function FormCellar({
 
 	return (
 		<div>
-		<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e)}>
+		<Form style={{ width: "30rem", margin: "10rem" }} onSubmit={e => handleSubmit(e)}>
 			<Form.Group as={Row}>
 				<Form.Label column sm="2">
 					Bodega

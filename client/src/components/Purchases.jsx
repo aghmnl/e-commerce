@@ -12,7 +12,7 @@ function allPurchases({ purchases }) {
 	return (
 		<div className="col-10 purchases">
 			{purchases.map(purchase => (
-				<Card style={{ width: "18rem" }}>
+				<Card style={{ width: "18rem", margin: "10rem" }}>
 					<Card.Title>Compra: {purchase.id}</Card.Title>
 					<Card.Subtitle className="mb-2 text-muted">Fecha compra: {Date(purchase.date)}</Card.Subtitle>
 					<Card.Text>

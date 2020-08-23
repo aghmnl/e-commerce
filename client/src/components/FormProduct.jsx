@@ -106,7 +106,7 @@ function FormProduct({
 	}
 	return (
 		<div>
-			<Form style={{ width: "60rem", margin: "1rem" }} id="formulario" onSubmit={e => handleSubmit(e, id)}>
+			<Form style={{ width: "60rem", margin: "10rem" }} id="formulario" onSubmit={e => handleSubmit(e, id)}>
 				<Form.Group as={Row}>
 					<Form.Label column sm="4">
 						Nombre de producto:{" "}
