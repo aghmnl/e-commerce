@@ -1,6 +1,9 @@
 .bg-dark {
 	background-color: var(--color1) !important;
-	height: 50%;
+	height: 50px;
+	position: fixed; /* Set the navbar to fixed position */
+	top: 0; /* Position the navbar at the top of the page */
+	width: 100%; /* Full width */
 }
 
 #carrito {
