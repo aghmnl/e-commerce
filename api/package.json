@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "init" : "node init.js",
+    "init": "node init.js",
     "start": "nodemon -L",
     "forever": "forever index.js",
     "test": "mocha -w ./tests/**/*.spec.js"
