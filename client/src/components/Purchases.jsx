@@ -12,6 +12,12 @@ function allPurchases({ purchases }) {
 	return (
 		<div className="col-10 purchases">
 			{purchases.map(purchase => (
+
+				
+	
+			
+			
+
 				<Card id="card" style={{ width: "40rem", marginTop: "1rem" }}>
 					<Container>
 						<Row>
@@ -36,6 +42,7 @@ function allPurchases({ purchases }) {
 							</Col>
 						</Row>
 					</Container>
+
 				</Card>
 			))}
 		</div>
