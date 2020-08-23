@@ -7,14 +7,14 @@ import { connect } from "react-redux";
 import { getCategories, getCategory, cleanCategory } from "../store/actions/index";
 function FormCategory({ categories, category, getCategory, getCategories, id, cleanCategory }) {
 	const [deleted, setDelete] = useState({
-		show : false,
-		confirmed : false,
+		show: false,
+		confirmed: false,
 		msg: "",
-		deleteId : null
+		deleteId: null,
 	});
 	const [warning, setWarninig] = useState({
-		show : false,
-		msg : ""
+		show: false,
+		msg: "",
 	});
 	const [handle, setHandle] = useState("add");
 	const [inputs, setInputs] = useState({
@@ -36,17 +36,17 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 			await getCategories();
 		}
 		fetchData();
-		return() =>{
-			cleanCategory()
-		}
+		return () => {
+			cleanCategory();
+		};
 	}, []);
 	useEffect(() => {
-		let values = inputs
-		let nombreBoton = handle==="edit" ? "Actualizar" : "Agregar";
-		if(!!category) values = category;
+		let values = inputs;
+		let nombreBoton = handle === "edit" ? "Actualizar" : "Agregar";
+		if (!!category) values = category;
 		setInputs({ ...values, nombreBoton });
 	}, [handle, category]);
-	useEffect(()=>{
+	useEffect(() => {
 		if (deleted.confirmed && deleted.deleteId)
 			axios
 				.delete(`http://localhost:3000/category/${deleted.deleteId}`)
@@ -57,14 +57,14 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 					console.log(err);
 					setWarninig({
 						show: true,
-						msg: "No se puede eliminar"
+						msg: "No se puede eliminar",
 					});
 				});
-	},[deleted.confirmed, deleted.deleteId])
+	}, [deleted.confirmed, deleted.deleteId]);
 	function handleSubmit(e, id) {
 		e.preventDefault();
 		if (!inputs.name) {
-			setWarninig({show:true,msg: `name is require`});
+			setWarninig({ show: true, msg: `name is require` });
 			document.querySelector("#name").focus();
 			return;
 		}
@@ -105,66 +105,71 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 		setDelete({
 			msg: "Esta categoria sera eliminada, ¿Está seguro?",
 			show: true,
-			deleteId : id
+			deleteId: id,
 		});
 	}
 	return (
-		<div id="main">
-			<Alert className="alert" variant="warning" show={warning.show} 
-				onClose={()=>setWarninig({...warning, show: false})} 
+		<div id="main" style={{ marginTop: "8rem" }}>
+			<Alert
+				className="alert"
+				variant="warning"
+				show={warning.show}
+				onClose={() => setWarninig({ ...warning, show: false })}
 				dismissible
 			>
-				<Alert.Heading>
-					Advertencia!
-				</Alert.Heading>
-				<p>
-					{warning.msg}
-				</p>
+				<Alert.Heading>Advertencia!</Alert.Heading>
+				<p>{warning.msg}</p>
 			</Alert>
-			<Alert className="alert" variant="danger" show={deleted.show} 
-				onClose={()=>setDelete({...deleted, show:false})} 
+			<Alert
+				className="alert"
+				variant="danger"
+				show={deleted.show}
+				onClose={() => setDelete({ ...deleted, show: false })}
 				dismissible
 			>
-				<Alert.Heading>
-					Eliminar
-				</Alert.Heading>
-				<p>
-					{deleted.msg}
-				</p>
+				<Alert.Heading>Eliminar</Alert.Heading>
+				<p>{deleted.msg}</p>
 				<div className="d-flex justify-content-end">
-          			<Button onClick={() => setDelete({
-						  ...deleted,
-						  show:false,
-						  confirmed :true
-					  })} variant="danger">
-           				 Eliminar
-         			</Button>
-        		</div>
+					<Button
+						onClick={() =>
+							setDelete({
+								...deleted,
+								show: false,
+								confirmed: true,
+							})
+						}
+						variant="danger"
+					>
+						Eliminar
+					</Button>
+				</div>
 			</Alert>
-			<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e, id)}>
+			<Form style={{ marginBottom: "2rem", textAlign: "right" }} onSubmit={e => handleSubmit(e, id)}>
 				<Form.Group as={Row}>
-					<Form.Label column sm="4">
+					<Form.Label column sm="3">
 						Categoría
 					</Form.Label>
-					<Col sm="8">
+					<Col>
 						<Form.Control
 							value={inputs.name}
 							id="name"
+							placeholder="Categoría"
 							onChange={e => setInputs({ ...inputs, name: e.target.value })}
 						/>
 					</Col>
 				</Form.Group>
 				<Form.Group as={Row}>
 					{handle !== "edit" && (
-						<Form.Label column sm="4">
+						<Form.Label column sm="3">
 							Nueva cepa
 						</Form.Label>
 					)}
 					{handle !== "edit" && (
-						<Col sm="8">
+						<Col>
 							<Form.Control
 								value={inputs.strainName}
 								id="strain"
+								placeholder="Cepa"
 								onChange={e => {
 									setInputs({ ...inputs, strainName: e.target.value });
 								}}
@@ -173,12 +178,13 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 					)}
 				</Form.Group>
 				<Form.Group as={Row}>
-					<Form.Label column sm="4">
+					<Form.Label column sm="3">
 						Descripción
 					</Form.Label>
-					<Col sm="8">
+					<Col>
 						<Form.Control
 							as="textarea"
+							placeholder="Descripción"
 							rows="3"
 							value={inputs.description}
 							onChange={e => setInputs({ ...inputs, description: e.target.value })}
@@ -190,10 +196,10 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 				</Button>
 			</Form>
 
-			<Container id="contenedor">
+			<Container id="contenedor" style={{ width: "20rem" }}>
 				{categories.map(category => (
 					<Row>
-						<Col>{category.name}</Col>
+						<Col sm="8">{category.name}</Col>
 						<Col>
 							<Link to={`/admin/formCategory/edit/${category.id}`}>Editar</Link>
 						</Col>

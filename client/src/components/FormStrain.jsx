@@ -2,60 +2,51 @@ import React, { useState, useEffect } from "react";
 import { Form, Col, Button, Row, Container, Alert } from "react-bootstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import {getStrains, getStrain, getCategories, cleanStrain} from "../store/actions/index";
-import {connect} from "react-redux";
-function FormStrain({
-	strain,
-	strains,
-	getStrains,
-	getStrain,
-	getCategories,
-	categories,
-	id,
-	cleanStrain
-}) {
+import { getStrains, getStrain, getCategories, cleanStrain } from "../store/actions/index";
+import { connect } from "react-redux";
+function FormStrain({ strain, strains, getStrains, getStrain, getCategories, categories, id, cleanStrain }) {
 	const [deleted, setDelete] = useState({
-		show : false,
-		confirmed : false,
+		show: false,
+		confirmed: false,
 		msg: "",
-		deleteId : null
+		deleteId: null,
 	});
 	const [warning, setWarninig] = useState({
-		show : false,
-		msg : ""
+		show: false,
+		msg: "",
 	});
 	const [handle, setHandle] = useState("add");
 	const [inputs, setInputs] = useState({
 		name: "",
 		categoryId: "",
-		edit : false,
+		edit: false,
 		nombreBoton: "Agregar",
 	});
 
 	// Cuando monta el componente, trae todos los strains.
 	useEffect(() => {
-		if(!id) return;
-		getStrain(id)
+		if (!id) return;
+		getStrain(id);
 		setHandle("edit");
 	}, [id]);
 	useEffect(() => {
-		async function fetchData(){
+		async function fetchData() {
 			await getCategories();
 			await getStrains();
 		}
 		fetchData();
-		return ()=>{
-			cleanStrain()
-		}
+		return () => {
+			cleanStrain();
+		};
 	}, []);
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
-		let values = inputs
-		let nombreBoton = handle==="edit"?"Actualizar":"Agregar";
-		if(strain) values = strain;
+		let values = inputs;
+		let nombreBoton = handle === "edit" ? "Actualizar" : "Agregar";
+		if (strain) values = strain;
 		setInputs({ ...values, nombreBoton });
 	}, [handle, strain]);
-	useEffect(()=>{
+	useEffect(() => {
 		if (deleted.confirmed && deleted.deleteId)
 			axios
 				.delete(`http://localhost:3000/strain/${deleted.deleteId}`)
@@ -66,15 +57,15 @@ function FormStrain({
 					console.log(err);
 					setWarninig({
 						show: true,
-						msg: "No se puede eliminar"
+						msg: "No se puede eliminar",
 					});
 				});
-	},[deleted.confirmed, deleted.deleteId])
+	}, [deleted.confirmed, deleted.deleteId]);
 	function handleSubmit(e) {
 		e.preventDefault();
-		for(let prop in inputs){
-			if(!inputs[prop]){
-				setWarninig({show:true,msg: `${prop} is require`});
+		for (let prop in inputs) {
+			if (!inputs[prop]) {
+				setWarninig({ show: true, msg: `${prop} is require` });
 				document.querySelector(`#${prop}`).focus();
 				return;
 			}
@@ -95,7 +86,7 @@ function FormStrain({
 			.then(res => getStrains())
 			.catch(e => console.log(e));
 		setInputs({
-			nombreBoton : "Agregar"
+			nombreBoton: "Agregar",
 		});
 	}
 
@@ -104,61 +95,68 @@ function FormStrain({
 		setDelete({
 			msg: "Esta cepa sera eliminada, ¿Está seguro?",
 			show: true,
-			deleteId : id
+			deleteId: id,
 		});
 	}
 
 	return (
 		<div id="main">
-			<Alert className="alert" variant="warning" show={warning.show} 
-				onClose={()=>setWarninig({...warning, show: false})} 
+			<Alert
+				className="alert"
+				variant="warning"
+				show={warning.show}
+				onClose={() => setWarninig({ ...warning, show: false })}
 				dismissible
 			>
-				<Alert.Heading>
-					Advertencia!
-				</Alert.Heading>
-				<p>
-					{warning.msg}
-				</p>
+				<Alert.Heading>Advertencia!</Alert.Heading>
+				<p>{warning.msg}</p>
 			</Alert>
-			<Alert className="alert" variant="danger" show={deleted.show} 
-				onClose={()=>setDelete({...deleted, show:false})} 
+			<Alert
+				className="alert"
+				variant="danger"
+				show={deleted.show}
+				onClose={() => setDelete({ ...deleted, show: false })}
 				dismissible
 			>
-				<Alert.Heading>
-					Eliminar
-				</Alert.Heading>
-				<p>
-					{deleted.msg}
-				</p>
+				<Alert.Heading>Eliminar</Alert.Heading>
+				<p>{deleted.msg}</p>
 				<div className="d-flex justify-content-end">
-          			<Button onClick={() => setDelete({
-						  ...deleted,
-						  show:false,
-						  confirmed :true
-					  })} variant="danger">
-           				 Eliminar
-         			</Button>
-        		</div>
+					<Button
+						onClick={() =>
+							setDelete({
+								...deleted,
+								show: false,
+								confirmed: true,
+							})
+						}
+						variant="danger"
+					>
+						Eliminar
+					</Button>
+				</div>
 			</Alert>
-			<Form style={{ width: "30rem", margin: "5rem" }} onSubmit={e => handleSubmit(e)}>
+			<Form
+				style={{ width: "25rem", marginTop: "8rem", textAlign: "right", marginBottom: "2rem" }}
+				onSubmit={e => handleSubmit(e)}
+			>
 				<Form.Group as={Row}>
-					<Form.Label column sm="2">
+					<Form.Label column sm="3">
 						Cepa
 					</Form.Label>
-					<Col sm="10">
+					<Col>
 						<Form.Control
 							value={inputs.name}
 							id="name"
+							placeholder="Cepa"
 							onChange={e => setInputs({ ...inputs, name: e.target.value })}
 						/>
 					</Col>
 				</Form.Group>
 				<Form.Group as={Row}>
-					<Form.Label column sm="2">
-						Categorías
+					<Form.Label column sm="3">
+						Categoría
 					</Form.Label>
-					<Col sm="10">
+					<Col>
 						<Form.Control
 							as="select"
 							id="categoryId"
@@ -166,9 +164,14 @@ function FormStrain({
 						>
 							<option>seleccione categoría</option>
 							{categories.map(category => (
-								<option value={category.id} selected={(()=>{
-									if(inputs.categoryId === category.id) return "selected"
-								})()}>{category.name}</option>
+								<option
+									value={category.id}
+									selected={(() => {
+										if (inputs.categoryId === category.id) return "selected";
+									})()}
+								>
+									{category.name}
+								</option>
 							))}
 						</Form.Control>
 					</Col>
@@ -177,11 +180,11 @@ function FormStrain({
 					{inputs.nombreBoton}
 				</Button>
 			</Form>
-			<Container id="contenedor">
+			<Container id="contenedor" style={{ width: "30rem" }}>
 				{strains.map(strain => (
 					<Row>
-						<Col>{strain.name}</Col>
-						<Col>{strain.categoryId}</Col>
+						<Col sm="5">{strain.name}</Col>
+						<Col>{strain.category.name}</Col>
 						<Col>
 							<Link to={`/admin/formStrain/edit/${strain.id}`}>Editar</Link>
 						</Col>
@@ -198,5 +201,9 @@ function FormStrain({
 		</div>
 	);
 }
-export default connect(({strains, strain, categories}) => ({strains, strain, categories}),
-{getStrains, getStrain, getCategories, cleanStrain})(FormStrain);
+export default connect(({ strains, strain, categories }) => ({ strains, strain, categories }), {
+	getStrains,
+	getStrain,
+	getCategories,
+	cleanStrain,
+})(FormStrain);

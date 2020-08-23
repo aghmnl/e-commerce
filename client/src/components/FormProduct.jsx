@@ -21,14 +21,14 @@ function FormProduct({
 }) {
 	const [handle, setHandle] = useState("add");
 	const [deleted, setDelete] = useState({
-		show : false,
-		confirmed : false,
+		show: false,
+		confirmed: false,
 		msg: "",
-		deleteId : ""
+		deleteId: "",
 	});
 	const [warning, setWarninig] = useState({
-		show : false,
-		msg : ""
+		show: false,
+		msg: "",
 	});
 	const [inputs, setInputs] = useState({
 		name: "",
@@ -77,10 +77,10 @@ function FormProduct({
 		else {
 			nombreBoton = "Agregar";
 		}
-		if(Object.values(productDetail).length) values = productDetail;
+		if (Object.values(productDetail).length) values = productDetail;
 		setInputs({ ...values, nombreBoton });
 	}, [handle, productDetail]);
-	useEffect(()=>{
+	useEffect(() => {
 		if (deleted.confirmed && deleted.deleteId)
 			axios
 				.delete(`http://localhost:3000/product/${deleted.deleteId}`)
@@ -88,14 +88,14 @@ function FormProduct({
 					getProducts();
 				})
 				.catch(err => console.log(err));
-	},[deleted.confirmed, deleted.deleteId])
+	}, [deleted.confirmed, deleted.deleteId]);
 	function handleSubmit(e, id) {
 		e.preventDefault();
 		// Acá manda mensaje del dato que falta y hace foco en el mismo (sitúa el cursor en ese campo)
 		for (let prop in inputs) {
 			if (!inputs[prop] && prop !== "active") {
 				document.querySelector(`#${prop}`).focus();
-				setWarninig({show:true,msg: `${prop} is require`});
+				setWarninig({ show: true, msg: `${prop} is require` });
 				return;
 			}
 		}
@@ -119,197 +119,171 @@ function FormProduct({
 	function eliminar(e, id) {
 		e.preventDefault();
 		setDelete({
-			...deleted, 
-			msg:"Este producto sera eliminado. ¿Está seguro?", 
-			show:true,
-			deleteId : id
-		})
-			
+			...deleted,
+			msg: "Este producto sera eliminado. ¿Está seguro?",
+			show: true,
+			deleteId: id,
+		});
 	}
 	return (
-		<div id="main">
-			<Alert className="alert" variant="warning" show={warning.show} 
-				onClose={()=>setWarninig({...warning, show: false})} 
+		<div style={{ marginTop: "6rem" }}>
+			<Alert
+				className="alert"
+				variant="warning"
+				show={warning.show}
+				onClose={() => setWarninig({ ...warning, show: false })}
 				dismissible
 			>
-				<Alert.Heading>
-					Dato requerido!
-				</Alert.Heading>
-				<p>
-					{warning.msg}
-				</p>
+				<Alert.Heading>Dato requerido!</Alert.Heading>
+				<p>{warning.msg}</p>
 			</Alert>
-			<Alert className="alert" variant="danger" show={deleted.show} 
-				onClose={()=>setDelete({...deleted, show:false})} 
+			<Alert
+				className="alert"
+				variant="danger"
+				show={deleted.show}
+				onClose={() => setDelete({ ...deleted, show: false })}
 				dismissible
 			>
-				<Alert.Heading>
-					Eliminar
-				</Alert.Heading>
-				<p>
-					{deleted.msg}
-				</p>
+				<Alert.Heading>Eliminar</Alert.Heading>
+				<p>{deleted.msg}</p>
 				<div className="d-flex justify-content-end">
-          			<Button onClick={() => setDelete({
-						  ...deleted,
-						  show:false,
-						  confirmed :true
-					  })} variant="danger">
-           				 Eliminar
-         			</Button>
-        		</div>
+					<Button
+						onClick={() =>
+							setDelete({
+								...deleted,
+								show: false,
+								confirmed: true,
+							})
+						}
+						variant="danger"
+					>
+						Eliminar
+					</Button>
+				</div>
 			</Alert>
-			<Form style={{ width: "60rem", margin: "1rem" }} id="formulario" onSubmit={e => handleSubmit(e, id)}>
-
-				<Form.Group as={Row}>
-					<Form.Label column sm="4">
-						Nombre de producto:{" "}
-					</Form.Label>
-					<Col sm="8">
-						<Form.Control
-							value={inputs.name}
-							id="name"
-							placeholder="Nombre"
-							onChange={e => setInputs({ ...inputs, name: e.target.value })}
-						/>
-					</Col>
-				</Form.Group>
-				<Form.Group as={Row}>
-					<Form.Label column sm="4">
-						Precio de producto:{" "}
-					</Form.Label>
-
-					<Col sm="8">
-						<Form.Control
-							type="number"
-							value={inputs.price}
-							id="price"
-							step="0.01"
-							placeholder="Precio"
-							onChange={e => setInputs({ ...inputs, price: e.target.value })}
-						/>
-					</Col>
-				</Form.Group>
-				<Form.Group as={Row}>
-					<Form.Label column sm="4">
-						Descripción del producto:
-					</Form.Label>
-					<Col sm="8">
-						<Form.Control
-							as="textarea"
-							value={inputs.description}
-							id="descripcion"
-							placeholder="Descripción"
-							onChange={e => setInputs({ ...inputs, description: e.target.value })}
-						/>
-					</Col>
-				</Form.Group>
-				<Form.Group as={Row}>
-					<Form.Label column sm="4">
-						Imagen:
-					</Form.Label>
-					<Col sm="8">
-						<Form.Control
-							placeholder="Link a Imagen"
-							value={inputs.img}
-							id="img"
-							onChange={e => setInputs({ ...inputs, img: e.target.value })}
-						/>
-					</Col>
-				</Form.Group>
-				<Form.Group as={Row}>
-					<Form.Label column sm="4">
-						Stock del producto:{" "}
-					</Form.Label>
-					<Col sm="8">
-						<Form.Control
-							placeholder="Cantidad"
-							id="stock"
-							value={inputs.stock}
-							onChange={e => setInputs({ ...inputs, stock: e.target.value })}
-						/>
-					</Col>
-				</Form.Group>
-				<Form.Group as={Row}>
-					<Form.Label column sm="4">
-						Categorías
-					</Form.Label>
-					<Col sm="8">
-						<Form.Control
-							as="select"
-							id="categoryId"
-							onChange={e => setInputs({ ...inputs, categoryId: parseInt(e.target.value) })}
-						>
-							<option>seleccione categoria</option>
-							{categories.map(category => (
-								<option value={category.id} selected={category.id === inputs.categoryId ? "selected" : ""}>
-									{category.name}
-								</option>
-							))}
-						</Form.Control>
-					</Col>
-				</Form.Group>
-				<Form.Group as={Row}>
-					<Form.Label column sm="4">
-						Bodega
-					</Form.Label>
-					<Col sm="8">
-						<Form.Control
-							as="select"
-							id="cellarId"
-							onChange={e => setInputs({ ...inputs, cellarId: parseInt(e.target.value) })}
-						>
-							<option>seleccione bodega</option>
-							{cellars.map(cellar => (
-								<option value={cellar.id} selected={cellar.id === inputs.cellarId ? "selected" : ""}>
-									{cellar.name}
-								</option>
-							))}
-						</Form.Control>
-					</Col>
-				</Form.Group>
-				<Form.Group as={Row}>
-					<Form.Label column sm="4">
-						Cepa
-					</Form.Label>
-					<Col sm="8">
-						<Form.Control
-							as="select"
-							id="strainId"
-							onChange={e => setInputs({ ...inputs, strainId: parseInt(e.target.value) })}
-						>
-							<option>seleccione cepa</option>
-							{(() => {
-								if (!strains_by) return <option>seleccione categoria</option>;
-								return strains_by.map(strain => (
-									<option value={strain.id} selected={strain.id === inputs.strainId ? "selected" : ""}>
-										{strain.name}
+			<Container id="form1" style={{ width: "60rem", marginBottom: "2rem" }}>
+				<Form onSubmit={e => handleSubmit(e, id)}>
+					<Form.Row>
+						<Form.Group as={Col}>
+							<Form.Label> Nombre de producto: </Form.Label>
+							<Form.Control
+								value={inputs.name}
+								id="name"
+								placeholder="Nombre"
+								onChange={e => setInputs({ ...inputs, name: e.target.value })}
+							/>
+						</Form.Group>
+						<Form.Group as={Col}>
+							<Form.Label>Precio de producto</Form.Label>
+							<Form.Control
+								type="number"
+								value={inputs.price}
+								id="price"
+								step="0.01"
+								placeholder="Precio"
+								onChange={e => setInputs({ ...inputs, price: e.target.value })}
+							/>
+						</Form.Group>
+					</Form.Row>
+					<Form.Row>
+						<Form.Group as={Col}>
+							<Form.Label>Descripción del producto</Form.Label>
+							<Form.Control
+								as="textarea"
+								value={inputs.description}
+								id="descripcion"
+								placeholder="Descripción"
+								onChange={e => setInputs({ ...inputs, description: e.target.value })}
+							/>
+						</Form.Group>
+						<Form.Group as={Col}>
+							<Form.Label>Imagen</Form.Label>
+							<Form.Control
+								placeholder="Link a Imagen"
+								value={inputs.img}
+								id="img"
+								onChange={e => setInputs({ ...inputs, img: e.target.value })}
+							/>
+						</Form.Group>
+					</Form.Row>
+					<Form.Row>
+						<Form.Group as={Col}>
+							<Form.Label>Stock del producto</Form.Label>
+							<Form.Control
+								placeholder="Cantidad"
+								id="stock"
+								value={inputs.stock}
+								onChange={e => setInputs({ ...inputs, stock: e.target.value })}
+							/>
+						</Form.Group>
+						<Form.Group as={Col}>
+							<Form.Label>Categorías</Form.Label>
+							<Form.Control
+								as="select"
+								id="categoryId"
+								onChange={e => setInputs({ ...inputs, categoryId: parseInt(e.target.value) })}
+							>
+								<option>seleccione categoría</option>
+								{categories.map(category => (
+									<option value={category.id} selected={category.id === inputs.categoryId ? "selected" : ""}>
+										{category.name}
 									</option>
-								));
-							})()}
-						</Form.Control>
-					</Col>
-				</Form.Group>
-				<Form.Group as={Row}>
-					<Form.Label column sm="4">
-						Estado de producto de tienda
-					</Form.Label>
-					<Col sm="8">
+								))}
+							</Form.Control>
+						</Form.Group>
+					</Form.Row>
+					<Form.Row>
+						<Form.Group as={Col}>
+							<Form.Label>Bodega</Form.Label>
+							<Form.Control
+								as="select"
+								id="cellarId"
+								onChange={e => setInputs({ ...inputs, cellarId: parseInt(e.target.value) })}
+							>
+								<option>seleccione bodega</option>
+								{cellars.map(cellar => (
+									<option value={cellar.id} selected={cellar.id === inputs.cellarId ? "selected" : ""}>
+										{cellar.name}
+									</option>
+								))}
+							</Form.Control>
+						</Form.Group>
+						<Form.Group as={Col}>
+							<Form.Label>Cepa</Form.Label>
+							<Form.Control
+								as="select"
+								id="strainId"
+								onChange={e => setInputs({ ...inputs, strainId: parseInt(e.target.value) })}
+							>
+								<option>seleccione cepa</option>
+								{(() => {
+									if (!strains_by) return <option>seleccione categoria</option>;
+									return strains_by.map(strain => (
+										<option value={strain.id} selected={strain.id === inputs.strainId ? "selected" : ""}>
+											{strain.name}
+										</option>
+									));
+								})()}
+							</Form.Control>
+						</Form.Group>
+					</Form.Row>
+					<Form.Group>
 						<Form.Check
 							type="checkbox"
+							label="Estado de producto de tienda"
 							checked={inputs.active}
 							onChange={e => setInputs({ ...inputs, active: !inputs.active })}
 						/>
-					</Col>
-				</Form.Group>
-				<Button variant="primary" type="submit">
-					{inputs.nombreBoton}
-				</Button>
-			</Form>
-			<Container id="contenedor">
+					</Form.Group>
+					<Button variant="primary" type="submit">
+						{inputs.nombreBoton}
+					</Button>
+				</Form>
+			</Container>
+			<Container id="contenedor" style={{ width: "30rem" }}>
 				{products.map(product => (
 					<Row>
-						<Col>{product.name}</Col>
+						<Col sm="8">{product.name}</Col>
 						<Col>
 							<Link to={`/admin/formProduct/edit/${product.id}`}>Editar</Link>
 						</Col>

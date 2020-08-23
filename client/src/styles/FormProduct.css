@@ -1,11 +1,9 @@
-#formulario {
+#form1 {
 	/* display: grid; */
 	/* grid-template-columns: 1fr 1fr; */
 	/* gap: 25px; */
 	color: #ffffff;
-}
-Label {
-	text-align-last: right !important;
+	text-align: left;
 }
 
 #contenedor {

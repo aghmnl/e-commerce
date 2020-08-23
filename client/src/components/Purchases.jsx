@@ -10,14 +10,8 @@ import { Card, Container, Row, Col } from "react-bootstrap";
 
 function allPurchases({ purchases }) {
 	return (
-		<div className="col-10 purchases">
+		<div className="col-10 purchases" style={{ marginTop: "8rem", textAlign: "left" }}>
 			{purchases.map(purchase => (
-
-				
-	
-			
-			
-
 				<Card id="card" style={{ width: "40rem", marginTop: "1rem" }}>
 					<Container>
 						<Row>
@@ -42,7 +36,6 @@ function allPurchases({ purchases }) {
 							</Col>
 						</Row>
 					</Container>
-
 				</Card>
 			))}
 		</div>
