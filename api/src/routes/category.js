@@ -9,7 +9,7 @@ server.get("/one/:id", (req, res, next) => {
 		.then(category => res.json(category))
 		.catch(err => next(err));
 });
-server.delete("/:id", (req, res) => {
+server.delete("/:id", (req, res, next) => {
 	Category.destroy({
 		where: { id: parseInt(req.params.id) },
 	}).then(() => res.sendStatus(200))

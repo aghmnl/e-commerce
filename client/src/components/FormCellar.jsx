@@ -13,6 +13,7 @@ function FormCellar({
 	edit,
 	cleanState
 }) {
+	const [handle, setHandle] = useState("add");
 	const [inputs, setInputs] = useState({
 		name: "",
 		edit : false,
@@ -23,7 +24,7 @@ function FormCellar({
 	useEffect(() => {
 		if(!id) return;
 		getCellar(id)
-		setInputs({...inputs, edit:true})
+		setHandle("edit");
 	}, [id]);
 	useEffect(() => {
 		async function fetchData(){
@@ -33,9 +34,9 @@ function FormCellar({
 	}, []);
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
-		let nombreBoton = inputs.edit?"Actualizar":"Agregar";
+		let nombreBoton = handle==="edit"?"Actualizar":"Agregar";
 		setInputs({ ...cellar, nombreBoton});
-	}, [cellar]);
+	}, [handle, cellar]);
 	function handleSubmit(e) {
 		e.preventDefault();
 		if(!inputs.name){

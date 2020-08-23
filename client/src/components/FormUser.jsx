@@ -12,6 +12,7 @@ function FormUser({
 	id,
 	cleanUser
 }) {
+	const [handle, setHandle] = useState("add");
 	const [inputs, setInputs] = useState({
 		name: "",
         last_name : "",
@@ -32,7 +33,7 @@ function FormUser({
 	useEffect(() => {
 		if(!id) return;
 		getUser(id);
-		setInputs({...inputs, edit:true})
+		setHandle("edit");
 	}, [id]);
 	useEffect(() => {
 		async function fetchData(){
@@ -45,9 +46,9 @@ function FormUser({
 	}, []);
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
-		let nombreBoton = inputs.edit?"Actualizar":"Agregar";
+		let nombreBoton = handle==="edit"?"Actualizar":"Agregar";
 		setInputs({ ...user, nombreBoton, admin : false});
-	}, [user]);
+	}, [handle, user]);
 	function handleSubmit(e) {
 		e.preventDefault();
 		if(!inputs.name){

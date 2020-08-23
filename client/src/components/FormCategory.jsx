@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCategories, getCategory } from "../store/actions/index";
 function FormCategory({ categories, category, getCategory, getCategories, id }) {
+	const [handle, setHandle] = useState("add");
 	const [inputs, setInputs] = useState({
 		name: "",
 		description: "",
@@ -16,7 +17,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 	useEffect(() => {
 		if (!id) return;
 		getCategory(id);
-		setInputs({ ...inputs, edit: true });
+		setHandle("edit");
 	}, [id]);
 	useEffect(() => {
 		async function fetchData() {
@@ -25,9 +26,9 @@ function FormCategory({ categories, category, getCategory, getCategories, id }) 
 		fetchData();
 	}, []);
 	useEffect(() => {
-		let nombreBoton = inputs.edit ? "Actualizar" : "Agregar";
+		let nombreBoton = handle==="edit" ? "Actualizar" : "Agregar";
 		setInputs({ ...category, nombreBoton });
-	}, [category]);
+	}, [handle, category]);
 	function handleSubmit(e, id) {
 		e.preventDefault();
 		if (!inputs.name) {

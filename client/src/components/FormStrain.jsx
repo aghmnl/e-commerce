@@ -13,6 +13,7 @@ function FormStrain({
 	categories,
 	id,
 }) {
+	const [handle, setHandle] = useState("add");
 	const [inputs, setInputs] = useState({
 		name: "",
 		categoryId: "",
@@ -24,7 +25,7 @@ function FormStrain({
 	useEffect(() => {
 		if(!id) return;
 		getStrain(id)
-		setInputs({...inputs, edit:true})
+		setHandle("edit");
 	}, [id]);
 	useEffect(() => {
 		async function fetchData(){
@@ -35,9 +36,9 @@ function FormStrain({
 	}, []);
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
-		let nombreBoton = inputs.edit?"Actualizar":"Agregar";
+		let nombreBoton = handle==="edit"?"Actualizar":"Agregar";
 		setInputs({ ...strain, nombreBoton});
-	}, [strain]);
+	}, [handle, strain]);
 
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -106,7 +107,9 @@ function FormStrain({
 						>
 							<option>seleccione categoría</option>
 							{categories.map(category => (
-								<option value={category.id}>{category.name}</option>
+								<option value={category.id} selected={(()=>{
+									if(inputs.categoryId === category.id) return "selected"
+								})()}>{category.name}</option>
 							))}
 						</Form.Control>
 					</Col>
