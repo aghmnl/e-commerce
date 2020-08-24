@@ -47,6 +47,7 @@ server.get("/catalogue?:pag", (req, res, next) => {
 				as: "category",
 			},
 		],
+		order:[["id","ASC"]],
 		limit: pagsize,
 		offset,
 	})

@@ -86,7 +86,7 @@ function Catalogue({
 							if (!products) return;
 							let active = pag;
 							let buttons = [];
-							for (let i = 0; i <= Math.floor(pags / 10); i++) {
+							for (let i = 0; i < Math.ceil(pags / 10); i++) {
 								buttons.push(
 									<Pagination.Item key={i + 1} active={i === parseInt(active)}>
 										<NavLink to={"/catalogue/" + i}>{i + 1}</NavLink>
