@@ -27,7 +27,23 @@ server.get("/", (req, res, next) => {
 
 // http://localhost:3000/purchase/status?statusId=1
 server.get("/status?:statusId", (req, res, next) => {
-	Purchase.findAll({ where: { statusId: parseInt(req.query.statusId) } })
+	Purchase.findAll({
+		include: [
+			{
+				model: User,
+				as: "user",
+			},
+			{
+				model: Pay_method,
+				as: "pay_method",
+			},
+			{
+				model: Status,
+				as: "status",
+			},
+		],
+		where: { statusId: parseInt(req.query.statusId) },
+	})
 		.then(purchases => res.json(purchases))
 		.catch(err => next(err));
 });

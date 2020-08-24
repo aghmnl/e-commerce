@@ -10,25 +10,31 @@ import FormStrain from "./components/FormStrain";
 import FormUser from "./components/FormUser";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
+import Purchase from "./components/Purchases";
+
 import CarouselSlider from "./components/CarouselSlider";
-import {
-	getPurchases,
-} from "./store/actions/index";
+import { getPurchases } from "./store/actions/index";
 import Admin from "./components/Admin";
 import Purchases from "./components/Purchases";
 import { connect } from "react-redux";
 import Cart from "./components/Cart";
-function App({getPurchases}) {
-	useEffect(()=>{
-		getPurchases()
-	},[])
+function App({ getPurchases }) {
+	useEffect(() => {
+		getPurchases();
+	}, []);
 	return (
 		<div className="App">
-			<Route path="/" render={() => <NavBar/>} />
+			<Route path="/" render={() => <NavBar />} />
 			<Route exact path="/" component={Home} />
 			<Route exact path="/" component={CarouselSlider} />
 			<Route path="/admin" component={Admin} />
-			<Route path="/admin/purchases/" component={Purchases} />
+			<Route exact path="/admin/purchases" component={Purchases} />
+			<Route
+				exact
+				path="/admin/purchases/status/:statusId"
+				render={({ match }) => <Purchase statusId={match.params.statusId} />}
+			/>
+
 			<Route exact path="/cart" component={Cart} />
 			<Route
 				exact
