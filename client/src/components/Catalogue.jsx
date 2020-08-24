@@ -79,8 +79,9 @@ function Catalogue({
 
 
 					</Col>
-					<Col sm="1">
 
+				</Row>
+				<Row sm="1">
 						{(() => {
 							if (!products) return;
 							let active = pag;
@@ -104,15 +105,14 @@ function Catalogue({
 						})()}
 
 						{/* Acá va a selececcionar las cepas
-					<Form>
+						<Form>
 						{["checkbox"].map(type => (
 							<div key={`default-${type}`} className="mb-3">
 								<Form.Check type={type} id={`default-${type}`} label={`default ${type}`} />
 							</div>
 						))}
-					</Form> */}
-					</Col>
-				</Row>
+						</Form> */}
+						</Row>
 
 			</Container>
 		</div>
