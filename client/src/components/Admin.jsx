@@ -6,7 +6,7 @@ export default function Admin() {
 		<Nav id="navegacion">
 			<Nav.Item>
 				<Nav.Link>
-					<NavLink to="/admin/formProduct">Producto</NavLink>
+					<NavLink to="/admin/formProduct">Productos</NavLink>
 				</Nav.Link>
 			</Nav.Item>
 			<Nav.Item>
