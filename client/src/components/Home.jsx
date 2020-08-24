@@ -48,9 +48,9 @@ function Home({ categories, getCategories }) {
 					<Card>
 						<Nav.Link>
 							<Link to={`/catalogue/category/${cat.id}`}>
-								<Card.Img variant="top" src={cat.img} />
+								<Card.Img variant="top" src={cat.img} className="imagenes"/>
 								<Card.Body>
-									<Card.Title>{cat.name}</Card.Title>
+									<Card.Title className="colorText">{cat.name}</Card.Title>
 								</Card.Body>
 							</Link>
 						</Nav.Link>

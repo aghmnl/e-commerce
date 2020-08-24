@@ -54,8 +54,10 @@ function Catalogue({
 				))}
 			</Nav>
 			<Container>
+
 				<Row>
 					<Col>
+
 						<div className="catalogue">
 							{!!products
 								? products.map(product => (
@@ -74,8 +76,11 @@ function Catalogue({
 										return <Spinner animation="border" />;
 								  })()}
 						</div>
+
+
 					</Col>
 					<Col sm="1">
+
 						{(() => {
 							if (!products) return;
 							let active = pag;
@@ -87,6 +92,7 @@ function Catalogue({
 									</Pagination.Item>
 								);
 							}
+
 							const paginationBasic = (
 								<div>
 									<Pagination>{buttons}</Pagination>
@@ -107,6 +113,7 @@ function Catalogue({
 					</Form> */}
 					</Col>
 				</Row>
+
 			</Container>
 		</div>
 	);

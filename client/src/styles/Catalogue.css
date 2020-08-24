@@ -4,6 +4,10 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-self: auto;
+
+	margin-top: 100px;
+	margin-right: 80px;
+
 }
 
 #navegacion {
