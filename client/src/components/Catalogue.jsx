@@ -66,21 +66,6 @@ function Catalogue({
 				</Col>
 				<Col>
 					<Row>
-						{(() => {
-							if (!products) return;
-							let active = pag;
-							let buttons = [];
-							for (let i = 0; i <= Math.floor(pags / 10); i++) {
-								buttons.push(
-									<Pagination.Item key={i + 1} active={i === parseInt(active)}>
-										<NavLink to={"/catalogue/" + i}>{i + 1}</NavLink>
-									</Pagination.Item>
-								);
-							}
-							return buttons.map(button => button);
-						})()}
-					</Row>
-					<Row>
 						<div className="catalogue">
 							{!!products
 								? products.map(product => (
@@ -99,6 +84,21 @@ function Catalogue({
 										return <Spinner animation="border" />;
 								  })()}
 						</div>
+					</Row>
+					<Row>
+						{(() => {
+							if (!products) return;
+							let active = pag;
+							let buttons = [];
+							for (let i = 0; i <= Math.floor(pags / 10); i++) {
+								buttons.push(
+									<Pagination.Item key={i + 1} active={i === parseInt(active)}>
+										<NavLink to={"/catalogue/" + i}>{i + 1}</NavLink>
+									</Pagination.Item>
+								);
+							}
+							return buttons.map(button => button);
+						})()}
 					</Row>
 				</Col>
 			</Container>

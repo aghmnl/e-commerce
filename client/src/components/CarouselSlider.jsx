@@ -33,7 +33,7 @@ function ControlledCarousel({ products, getProducts }) {
 	};
 
 	return (
-		<div>
+		<div className="ajust">
 			<div className={"p-5 text-center"}>
 				<h2 style={{ color: "white" }}>Más vendidos</h2>
 			</div>
@@ -45,7 +45,7 @@ function ControlledCarousel({ products, getProducts }) {
 				ssr={true} // means to render carousel on server-side.
 				infinite={true}
 				autoPlay={true}
-				autoPlaySpeed={1000}
+				autoPlaySpeed={1900}
 				keyBoardControl={true}
 				customTransition="all .5"
 				transitionDuration={500}
