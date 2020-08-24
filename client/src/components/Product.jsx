@@ -34,50 +34,51 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 	}
 	if (!productDetail) return <Redirect to="/catelogue" />;
 	return (
-		<div style={{ marginTop: "5rem" }}>
-			<Card style={{ width: "55rem", margin: "auto" }} className="mt-3">
-				<Container>
-					<Row>
-						<Col style={{ alignSelf: "center" }}>
-							<Button className="float-left" onClick={() => goBack()}>
-								Volver
+
+		<Card style={{ width: "55rem", margin: "auto"}} className="mt-3 center">
+			<Container>
+				<Row>
+					<Col style={{ alignSelf: "center" }}>
+						<Card.Img src={productDetail.img} />
+
+					</Col>
+					<Col>
+						<Card.Body>
+							<Card.Title>
+								<h1>{productDetail.name}</h1>
+							</Card.Title>
+							<Card.Subtitle className="mb-2 text-muted">
+								<h3>{awaitFor(cellar, "name")}</h3>
+							</Card.Subtitle>
+							<Card.Text text-align="justify">{productDetail.description}</Card.Text>
+						</Card.Body>
+						<Card.Body>
+							<ListGroup className="list-group-flush">
+								<ListGroupItem>
+									<h3>$ {productDetail.price}</h3>
+								</ListGroupItem>
+								{/* size="lg" style={{fontSize:'2rem'}}  */}
+								<ListGroupItem>{awaitFor(category, "name")}</ListGroupItem>
+								<ListGroupItem>{awaitFor(strain, "name")}</ListGroupItem>
+								<ListGroupItem>Productos disponibles: {productDetail.stock}</ListGroupItem>
+							</ListGroup>
+							<Button
+								onClick={() => {
+									addProduct(productDetail);
+									historia.replace("/cart");
+								}}
+							>
+								Añadir al carrito
 							</Button>
-							<Card.Img src={productDetail.img} />
-						</Col>
-						<Col>
-							<Card.Body>
-								<Card.Title>
-									<h1>{productDetail.name}</h1>
-								</Card.Title>
-								<Card.Subtitle className="mb-2 text-muted">
-									<h3>{awaitFor(cellar, "name")}</h3>
-								</Card.Subtitle>
-								<Card.Text>{productDetail.description}</Card.Text>
-							</Card.Body>
-							<Card.Body>
-								<ListGroup className="list-group-flush">
-									<ListGroupItem>
-										<h3>$ {productDetail.price}</h3>
-									</ListGroupItem>
-									{/* size="lg" style={{fontSize:'2rem'}}  */}
-									<ListGroupItem>{awaitFor(category, "name")}</ListGroupItem>
-									<ListGroupItem>{awaitFor(strain, "name")}</ListGroupItem>
-									<ListGroupItem>Productos disponibles: {productDetail.stock}</ListGroupItem>
-								</ListGroup>
-								<Button
-									onClick={() => {
-										addProduct(productDetail);
-										historia.replace("/cart");
-									}}
-								>
-									Añadir al carrito
-								</Button>
-							</Card.Body>
-						</Col>
-					</Row>
-				</Container>
-			</Card>
-		</div>
+							<Button className="float-left" onClick={() => goBack()}>
+							Volver
+						</Button>
+						</Card.Body>
+					</Col>
+				</Row>
+			</Container>
+		</Card>
+
 	);
 }
 export default connect(
