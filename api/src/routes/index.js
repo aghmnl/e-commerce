@@ -17,6 +17,6 @@ router.use("/cellar", cellarRouter);
 router.use("/user", userRouter);
 router.use("/purchase", purchaseRouter);
 router.use("/purchase/purchProd", purchProdRouter); // ¿¿Se puede esto??
-router.use("/purchase/status", statusRouter); // ¿¿Se puede esto??
+router.use("/status", statusRouter); // ¿¿Se puede esto??
 
 module.exports = router;

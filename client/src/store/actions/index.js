@@ -17,48 +17,48 @@ export const SEARCH_PRODUCT = "SEARCH_PRODUCT";
 export const GET_USERS = "GET_USERS";
 export const GET_USER = "GET_USER";
 export const GET_PURCHASES = "GET_PURCHASES";
+export const GET_STATUSES = "GET_STATUSES";
 
-
-export const GET_CATALOGUE= "GET_CATALOGUE";
+export const GET_CATALOGUE = "GET_CATALOGUE";
 export const cleanProduct = () => ({
-        type : "CLEAN_PRODUCT",
+	type: "CLEAN_PRODUCT",
 });
 export const cleanCatalogue = () => ({
-        type : "CLEAN_CATALOGUE",
+	type: "CLEAN_CATALOGUE",
 });
 export const cleanUser = () => ({
-        type : "CLEAN_USER",
-})
+	type: "CLEAN_USER",
+});
 export const cleanCellar = () => ({
-	type : "CLEAN_CELLAR",
-})
+	type: "CLEAN_CELLAR",
+});
 export const cleanCategory = () => ({
-	type : "CLEAN_CATEGORY",
-})
+	type: "CLEAN_CATEGORY",
+});
 export const cleanStrain = () => ({
-	type : "CLEAN_STRAIN",
-})
-export const getProducts = (categoryId) => {
-        return (dispatch) => {
-                const url = !categoryId?"http://localhost:3000/product":`http://localhost:3000/product/category/${categoryId}`;
+	type: "CLEAN_STRAIN",
+});
+export const getProducts = categoryId => {
+	return dispatch => {
+		const url = !categoryId ? "http://localhost:3000/product" : `http://localhost:3000/product/category/${categoryId}`;
 		return fetch(url)
 			.then(r => r.json())
-                        .then(products => dispatch({type: GET_PRODUCTS, payload: products}))
-                        .catch(err => console.log(err))
-        }
-}
-export const getCatalogue = (pag) => {
-        return (dispatch) => {
-                const url = `http://localhost:3000/product/catalogue?pag=${pag}`;
+			.then(products => dispatch({ type: GET_PRODUCTS, payload: products }))
+			.catch(err => console.log(err));
+	};
+};
+export const getCatalogue = pag => {
+	return dispatch => {
+		const url = `http://localhost:3000/product/catalogue?pag=${pag}`;
 		return fetch(url)
 			.then(r => r.json())
-                        .then(products => dispatch({type: GET_CATALOGUE, payload: products}))
-                        .catch(err => console.log(err))
-        }
-}
-export const getProduct = (id) =>{
-        return (dispatch) => {
-                const url = `http://localhost:3000/product/detail/${id}`;
+			.then(products => dispatch({ type: GET_CATALOGUE, payload: products }))
+			.catch(err => console.log(err));
+	};
+};
+export const getProduct = id => {
+	return dispatch => {
+		const url = `http://localhost:3000/product/detail/${id}`;
 
 		return fetch(url)
 			.then(r => r.json())
@@ -191,12 +191,24 @@ export const getUser = id => {
 	};
 };
 
-export const getPurchases = () => {
+export const getPurchases = statusId => {
 	return dispatch => {
-		const url = "http://localhost:3000/purchase";
+		const url = !statusId
+			? "http://localhost:3000/purchase"
+			: `http://localhost:3000/purchase/status?statusId=${statusId}`;
 		return fetch(url)
 			.then(r => r.json())
 			.then(purchases => dispatch({ type: GET_PURCHASES, payload: purchases }))
+			.catch(err => console.log(err));
+	};
+};
+
+export const getStatuses = () => {
+	return dispatch => {
+		const url = "http://localhost:3000/status";
+		return fetch(url)
+			.then(r => r.json())
+			.then(statuses => dispatch({ type: GET_STATUSES, payload: statuses }))
 			.catch(err => console.log(err));
 	};
 };

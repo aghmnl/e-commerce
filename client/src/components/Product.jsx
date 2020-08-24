@@ -34,6 +34,7 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 	}
 	if (!productDetail) return <Redirect to="/catelogue" />;
 	return (
+
 		<Card style={{ width: "55rem", margin: "auto"}} className="mt-3 center">
 			<Container>
 				<Row>
@@ -77,6 +78,7 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 				</Row>
 			</Container>
 		</Card>
+
 	);
 }
 export default connect(

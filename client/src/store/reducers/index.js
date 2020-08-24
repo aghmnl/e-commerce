@@ -19,6 +19,7 @@ import {
 	GET_USER,
 	GET_CATALOGUE,
 	GET_PURCHASES,
+	GET_STATUSES,
 } from "../actions";
 
 const initialState = {
@@ -34,7 +35,6 @@ const initialState = {
 	pay_methods: [],
 	purchases: [],
 	reviews: [],
-	users: [],
 	total: 0,
 };
 export default (state = initialState, action) => {
@@ -181,15 +181,21 @@ export default (state = initialState, action) => {
 				...state,
 				user: action.payload,
 			};
-		case "CLEAN_PRODUCT":
-			return { ...state, productDetail: {} };
-		case "CLEAN_CATALOGUE":
-			return { ...state, catalogue: {} };
+		case GET_STATUSES:
+			return {
+				...state,
+				statuses: action.payload,
+			};
 		case GET_PURCHASES:
 			return {
 				...state,
 				purchases: action.payload,
 			};
+		case "CLEAN_PRODUCT":
+			return { ...state, productDetail: {} };
+		case "CLEAN_CATALOGUE":
+			return { ...state, catalogue: {} };
+
 		case "CLEAN_USER":
 			return { ...state, user: {} };
 		case "CLEAN_CELLAR":
