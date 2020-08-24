@@ -53,12 +53,9 @@ function FormProduct({
 		if (!!inputs.categoryId) getStrainsBy(inputs.categoryId);
 	}, [inputs]);
 	useEffect(() => {
-		async function fetchData() {
-			await getProducts();
-			await getCategories();
-			await getCellars();
-		}
-		fetchData();
+		getProducts();
+		getCategories();
+		getCellars()
 		return () => {
 			cleanProduct();
 		};
@@ -198,11 +195,17 @@ function FormProduct({
 						</Form.Group>
 						<Form.Group as={Col}>
 							<Form.Label>Imagen</Form.Label>
-							<Form.Control
+							<Form.File
 								placeholder="Link a Imagen"
-								value={inputs.img}
 								id="img"
-								onChange={e => setInputs({ ...inputs, img: e.target.value })}
+								onChange={e => {
+									const input = e.target;
+									const reader = new FileReader();
+									reader.onloadend = ()=>{
+										setInputs({...inputs, img:reader.result})
+									}
+									reader.readAsDataURL(input.files[0]); 
+								}}
 							/>
 						</Form.Group>
 					</Form.Row>
@@ -297,6 +300,7 @@ function FormProduct({
 					</Row>
 				))}
 			</Container>
+			<img src={inputs.img}/>
 		</div>
 	);
 }
