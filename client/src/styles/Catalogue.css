@@ -4,12 +4,11 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-self: auto;
-	margin-top: 100px;
 }
 
 #navegacion {
 	font-size: 20px !important;
-	background-color: #ffffff46 !important;
+	background-color: #ffffff6b !important;
 	position: fixed; /* Set the navbar to fixed position */
 	top: 50px; /* Position the navbar at the top of the page */
 	width: 100%; /* Full width */

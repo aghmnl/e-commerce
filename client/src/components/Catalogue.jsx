@@ -38,7 +38,7 @@ function Catalogue({
 		searchProduct(searchParams.get("search"));
 	}, [location]);
 	return (
-		<div>
+		<div style={{ marginTop: "8rem" }}>
 			<Nav id="navegacion" activeKey="/catalogue/category/1">
 				<Nav.Item>
 					<Nav.Link>
@@ -54,33 +54,8 @@ function Catalogue({
 				))}
 			</Nav>
 			<Container>
-				<Col>
-					{/* Acá va a selececcionar las cepas
-					<Form>
-						{["checkbox"].map(type => (
-							<div key={`default-${type}`} className="mb-3">
-								<Form.Check type={type} id={`default-${type}`} label={`default ${type}`} />
-							</div>
-						))}
-					</Form> */}
-				</Col>
-				<Col>
-					<Row>
-						{(() => {
-							if (!products) return;
-							let active = pag;
-							let buttons = [];
-							for (let i = 0; i <= Math.floor(pags / 10); i++) {
-								buttons.push(
-									<Pagination.Item key={i + 1} active={i === parseInt(active)}>
-										<NavLink to={"/catalogue/" + i}>{i + 1}</NavLink>
-									</Pagination.Item>
-								);
-							}
-							return buttons.map(button => button);
-						})()}
-					</Row>
-					<Row>
+				<Row>
+					<Col>
 						<div className="catalogue">
 							{!!products
 								? products.map(product => (
@@ -99,8 +74,39 @@ function Catalogue({
 										return <Spinner animation="border" />;
 								  })()}
 						</div>
-					</Row>
-				</Col>
+					</Col>
+					<Col sm="1">
+						{(() => {
+							if (!products) return;
+							let active = pag;
+							let buttons = [];
+							for (let i = 0; i <= Math.floor(pags / 10); i++) {
+								buttons.push(
+									<Pagination.Item key={i + 1} active={i === parseInt(active)}>
+										<NavLink to={"/catalogue/" + i}>{i + 1}</NavLink>
+									</Pagination.Item>
+								);
+							}
+							const paginationBasic = (
+								<div>
+									<Pagination>{buttons}</Pagination>
+									<br />
+								</div>
+							);
+							return paginationBasic;
+							// return buttons.map(button => button);
+						})()}
+
+						{/* Acá va a selececcionar las cepas
+					<Form>
+						{["checkbox"].map(type => (
+							<div key={`default-${type}`} className="mb-3">
+								<Form.Check type={type} id={`default-${type}`} label={`default ${type}`} />
+							</div>
+						))}
+					</Form> */}
+					</Col>
+				</Row>
 			</Container>
 		</div>
 	);

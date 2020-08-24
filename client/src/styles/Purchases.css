@@ -6,3 +6,11 @@
 	justify-self: auto;
 	margin-top: 50px;
 }
+
+#navegacion2 {
+	font-size: 18px !important;
+	position: fixed; /* Set the navbar to fixed position */
+	top: 100px; /* Position the navbar at the top of the page */
+	width: 100%; /* Full width */
+	z-index: 100;
+}

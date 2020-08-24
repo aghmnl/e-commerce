@@ -28,7 +28,7 @@ function CartItem({
 	increseProduct,
 }) {
 	return (
-		<div style={{ marginTop: "2rem" }}>
+		<div style={{ marginTop: "5rem" }}>
 			{products.map(product => (
 				<Card id="card">
 					<Container>
