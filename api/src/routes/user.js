@@ -1,5 +1,6 @@
 const server = require("express").Router();
 const { User, Purchased_product, Purchase } = require("../db.js");
+module.exports = server;
 
 server.get("/", (req, res, next) => {
 	User.findAll()
@@ -62,5 +63,3 @@ server.get("/:id/purchase/", (req, res, next) => {
 		.then(purchased_products => res.json(purchased_products))
 		.catch(err => next(err));
 });
-
-module.exports = server;

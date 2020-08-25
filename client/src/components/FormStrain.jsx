@@ -65,7 +65,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 		e.preventDefault();
 		for (let prop in inputs) {
 			if (!inputs[prop]) {
-				setWarninig({ show: true, msg: `${prop} is require` });
+				setWarninig({ show: true, msg: `Se requiere el ingreso de ${prop}` });
 				document.querySelector(`#${prop}`).focus();
 				return;
 			}
@@ -93,7 +93,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 	function eliminar(e, id) {
 		e.preventDefault();
 		setDelete({
-			msg: "Esta cepa sera eliminada, ¿Está seguro?",
+			msg: "Esta cepa será eliminada, ¿Confirma?",
 			show: true,
 			deleteId: id,
 		});

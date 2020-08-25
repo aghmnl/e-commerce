@@ -64,7 +64,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 	function handleSubmit(e, id) {
 		e.preventDefault();
 		if (!inputs.name) {
-			setWarninig({ show: true, msg: `name is require` });
+			setWarninig({ show: true, msg: `Se requiere el ingreso de nombre de categoría` });
 			document.querySelector("#name").focus();
 			return;
 		}
@@ -103,7 +103,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 	function eliminar(e, id) {
 		e.preventDefault();
 		setDelete({
-			msg: "Esta categoria sera eliminada, ¿Está seguro?",
+			msg: "Esta categoría será eliminada, ¿Confirma?",
 			show: true,
 			deleteId: id,
 		});

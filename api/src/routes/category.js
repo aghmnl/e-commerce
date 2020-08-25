@@ -1,5 +1,7 @@
 const server = require("express").Router();
 const { Category } = require("../db.js");
+module.exports = server;
+
 server.get("/", (req, res, next) => {
 	Category.findAll()
 		.then(categories => res.json(categories))
@@ -34,4 +36,3 @@ server.put("/:id", (req, res, next) => {
 		.then(() => res.sendStatus(200))
 		.catch(err => next(err));
 });
-module.exports = server;

@@ -67,12 +67,12 @@ function FormUser({ users, user, getUsers, getUser, id, cleanUser }) {
 	function handleSubmit(e) {
 		e.preventDefault();
 		if (!inputs.name) {
-			setWarninig({ show: true, msg: `name is require` });
+			setWarninig({ show: true, msg: `Se requiere el ingreso de name` });
 			document.querySelector("#name").focus();
 			return;
 		}
 		if (inputs.password != inputs2.password2) {
-			setWarninig({ show: true, msg: `password is require` });
+			setWarninig({ show: true, msg: `Se requiere el ingreso de contraseña` });
 			document.querySelector("#password").focus();
 			return;
 		} else {

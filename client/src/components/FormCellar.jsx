@@ -62,7 +62,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 	function handleSubmit(e) {
 		e.preventDefault();
 		if (!inputs.name) {
-			setWarninig({ show: true, msg: `name is require` });
+			setWarninig({ show: true, msg: `Se requiere el ingreso de nombre de cepa` });
 			document.querySelector("#name").focus();
 			return;
 		}
@@ -87,7 +87,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 	function eliminar(e, id) {
 		e.preventDefault();
 		setDelete({
-			msg: "Esta bodega sera eliminada, ¿Está seguro?",
+			msg: "Esta bodega será eliminada, ¿Confirma?",
 			show: true,
 			deleteId: id,
 		});

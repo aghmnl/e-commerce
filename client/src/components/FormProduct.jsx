@@ -55,7 +55,7 @@ function FormProduct({
 	useEffect(() => {
 		getProducts();
 		getCategories();
-		getCellars()
+		getCellars();
 		return () => {
 			cleanProduct();
 		};
@@ -92,7 +92,7 @@ function FormProduct({
 		for (let prop in inputs) {
 			if (!inputs[prop] && prop !== "active") {
 				document.querySelector(`#${prop}`).focus();
-				setWarninig({ show: true, msg: `${prop} is require` });
+				setWarninig({ show: true, msg: `Se requiere el ingreso de ${prop}` });
 				return;
 			}
 		}
@@ -117,7 +117,7 @@ function FormProduct({
 		e.preventDefault();
 		setDelete({
 			...deleted,
-			msg: "Este producto sera eliminado. ¿Está seguro?",
+			msg: "Este producto será eliminado. ¿Confirma?",
 			show: true,
 			deleteId: id,
 		});
@@ -201,10 +201,10 @@ function FormProduct({
 								onChange={e => {
 									const input = e.target;
 									const reader = new FileReader();
-									reader.onloadend = ()=>{
-										setInputs({...inputs, img:reader.result})
-									}
-									reader.readAsDataURL(input.files[0]); 
+									reader.onloadend = () => {
+										setInputs({ ...inputs, img: reader.result });
+									};
+									reader.readAsDataURL(input.files[0]);
 								}}
 							/>
 						</Form.Group>
@@ -300,7 +300,7 @@ function FormProduct({
 					</Row>
 				))}
 			</Container>
-			<img src={inputs.img}/>
+			<img src={inputs.img} />
 		</div>
 	);
 }
