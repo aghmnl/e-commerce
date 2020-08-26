@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { addProduct, getProduct, cleanProduct } from "../store/actions";
 import { connect } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
-import { Button, Col, Row, Container, Card, ListGroup, ListGroupItem, Spinner } from "react-bootstrap";
+import { Alert, Button, Col, Row, Container, Card, ListGroup, ListGroupItem, Spinner } from "react-bootstrap";
 import "../styles/Product.css";
 import { saveCart, saveTotal } from "../store/localState";
 import store from "../store/index";
@@ -36,12 +36,16 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 	if (!productDetail) return <Redirect to="/catelogue" />;
 	return (
 		<div>
-		<Card style={{ width: "55rem", margin: "auto"}} className="mt-3 center">
+		<Card style={{ width: "55rem", margin: "auto" }} className="mt-3 center">
 			<Container>
 				<Row>
+					{productDetail.stock === 0 && (
+						<Alert style={{ width: "55rem" }} variant="danger">
+							Producto agotado
+						</Alert>
+					)}
 					<Col style={{ alignSelf: "center" }}>
 						<Card.Img src={productDetail.img} />
-
 					</Col>
 					<Col>
 						<Card.Body>
@@ -63,17 +67,19 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 								<ListGroupItem>{awaitFor(strain, "name")}</ListGroupItem>
 								<ListGroupItem>Productos disponibles: {productDetail.stock}</ListGroupItem>
 							</ListGroup>
-							<Button
-								onClick={() => {
-									addProduct(productDetail);
-									historia.replace("/cart");
-								}}
-							>
-								Añadir al carrito
-							</Button>
+							{productDetail.stock > 0 && (
+								<Button
+									onClick={() => {
+										addProduct(productDetail);
+										historia.replace("/cart");
+									}}
+								>
+									Añadir al carrito
+								</Button>
+							)}
 							<Button className="float-left" onClick={() => goBack()}>
-							Volver
-						</Button>
+								Volver
+							</Button>
 						</Card.Body>
 					</Col>
 				</Row>
