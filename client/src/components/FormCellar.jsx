@@ -11,7 +11,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 		msg: "",
 		deleteId: null,
 	});
-	const [warning, setWarninig] = useState({
+	const [warning, setWarning] = useState({
 		show: false,
 		msg: "",
 	});
@@ -53,7 +53,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 				})
 				.catch(err => {
 					console.log(err);
-					setWarninig({
+					setWarning({
 						show: true,
 						msg: "No se puede eliminar",
 					});
@@ -62,7 +62,9 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 	function handleSubmit(e) {
 		e.preventDefault();
 		if (!inputs.name) {
+
 			setWarninig({ show: true, msg: `Se requiere el ingreso de nombre de cepa` });
+
 			document.querySelector("#name").focus();
 			return;
 		}
@@ -99,7 +101,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 				className="alert"
 				variant="warning"
 				show={warning.show}
-				onClose={() => setWarninig({ ...warning, show: false })}
+				onClose={() => setWarning({ ...warning, show: false })}
 				dismissible
 			>
 				<Alert.Heading>Advertencia!</Alert.Heading>
