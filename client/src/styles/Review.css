@@ -1,0 +1,18 @@
+.content-review{
+    width: 55rem;
+    margin: 1rem auto;
+    text-align: justify;
+}
+.title-review{
+    display: flex;
+}
+.body-review{
+    display: flex;
+}
+.stadist{
+    margin-left: auto;
+}
+.title-review .rating{
+    font-size: 1.75rem;
+    margin-left: 1rem;
+}
