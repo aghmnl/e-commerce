@@ -1,6 +1,6 @@
 const server = require("express").Router();
 const { Cellar } = require("../db.js");
-module.exports = server;
+
 
 server.get("/", (req, res, next) => {
 	Cellar.findAll()
@@ -32,3 +32,4 @@ server.put("/:id", (req, res, next) => {
 		.then(() => res.sendStatus(201))
 		.catch(err => next(err));
 });
+module.exports = server;

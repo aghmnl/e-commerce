@@ -2,7 +2,7 @@ const server = require("express").Router();
 const Sequelize = require("sequelize");
 const { Product, Cellar, Strain, Category, Review, User } = require("../db.js");
 const Op = Sequelize.Op;
-module.exports = server;
+
 
 // Este get devuelve todos los productos para generar el catálogo
 server.get("/", (req, res, next) => {
@@ -187,3 +187,4 @@ server.delete("/:id", (req, res, next) => {
 		.then(() => res.sendStatus(200))
 		.catch(err => next(err));
 });
+module.exports = server;

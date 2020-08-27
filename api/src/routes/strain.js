@@ -1,6 +1,6 @@
 const server = require("express").Router();
 const { Strain, Category } = require("../db.js");
-module.exports = server;
+
 
 server.get("/", (req, res, next) => {
 	Strain.findAll({
@@ -45,3 +45,4 @@ server.put("/:id", (req, res, next) => {
 		.then(() => res.sendStatus(200))
 		.catch(err => next(err));
 });
+module.exports = server;
