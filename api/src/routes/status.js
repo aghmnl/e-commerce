@@ -2,7 +2,7 @@ const server = require("express").Router();
 const { Status } = require("../db.js");
 
 
-// http://localhost:3000/status
+// http://localhost:3001/status
 server.get("/", (req, res, next) => {
 	Status.findAll()
 		.then(statuses => res.json(statuses))

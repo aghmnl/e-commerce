@@ -11,9 +11,10 @@ const {
 	Review,
 	Status,
 } = require("./src/db");
+const crypto = require("crypto")
 // const servidor = require("./src/app.js");
-const { conn } = require("./src/db.js");
-
+/* const salt = crypto.randomBytes(64).toString("hex");
+	const password = crypto.pbkdf2Sync(req.body.password, salt, 10000, 64, "sha512").toString("base64"); */
 const createPromise = (model, value) =>
 	new Promise((resolve, reject) => {
 		model
@@ -24,7 +25,7 @@ const createPromise = (model, value) =>
 			.catch(err => reject(err));
 	});
 // Syncing all the models at once.
-conn.sync({ force: true }).then(async () => {
+const createRegs = async () => {
 	const categoriesPromise = categories.map(c => createPromise(Category, c));
 	await Promise.all(categoriesPromise);
 	const cellarsPromise = cellars.map(c => createPromise(Cellar, c));
@@ -33,7 +34,11 @@ conn.sync({ force: true }).then(async () => {
 	await Promise.all(strainsPromise);
 	const productPromise = products.map(c => createPromise(Product, c));
 	await Promise.all(productPromise);
-	const usersPromise = users.map(c => createPromise(User, c));
+	const usersPromise = users.map(c => {
+		c.salt = crypto.randomBytes(64).toString("hex");
+		c.password = crypto.pbkdf2Sync(c.password, c.salt, 10000, 64, "sha512").toString("base64");
+		createPromise(User, c)
+	});
 	await Promise.all(usersPromise);
 	const pay_methodPromise = pay_methods.map(c => createPromise(Pay_method, c));
 	await Promise.all(pay_methodPromise);
@@ -45,8 +50,8 @@ conn.sync({ force: true }).then(async () => {
 	await Promise.all(purchasesPromise);
 	const purchased_productsPromise = purchased_products.map(c => createPromise(Purchased_product, c));
 	await Promise.all(purchased_productsPromise);
-	console.log("Base de dato cargando. Espere por favor...");
-});
+	console.log("Base de datos cargando. Espere por favor...");
+};
 var purchases = [
 	{
 		// purchaseId:1,
@@ -609,3 +614,4 @@ var purchased_products = [
 		// purchased_productId: 8,
 	},
 ];
+module.exports = createRegs;

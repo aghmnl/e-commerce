@@ -40,7 +40,7 @@ export const cleanStrain = () => ({
 });
 export const getProducts = categoryId => {
 	return dispatch => {
-		const url = !categoryId ? "http://localhost:3000/product" : `http://localhost:3000/product/category/${categoryId}`;
+		const url = !categoryId ? "http://localhost:3001/product" : `http://localhost:3001/product/category/${categoryId}`;
 		return fetch(url)
 			.then(r => r.json())
 			.then(products => dispatch({ type: GET_PRODUCTS, payload: products }))
@@ -49,7 +49,7 @@ export const getProducts = categoryId => {
 };
 export const getCatalogue = pag => {
 	return dispatch => {
-		const url = `http://localhost:3000/product/catalogue?pag=${pag}`;
+		const url = `http://localhost:3001/product/catalogue?pag=${pag}`;
 		return fetch(url)
 			.then(r => r.json())
 			.then(products => dispatch({ type: GET_CATALOGUE, payload: products }))
@@ -58,7 +58,7 @@ export const getCatalogue = pag => {
 };
 export const getProduct = id => {
 	return dispatch => {
-		const url = `http://localhost:3000/product/detail/${id}`;
+		const url = `http://localhost:3001/product/detail/${id}`;
 
 		return fetch(url)
 			.then(r => r.json())
@@ -68,7 +68,7 @@ export const getProduct = id => {
 };
 export const getCategories = () => {
 	return dispatch => {
-		const url = "http://localhost:3000/category";
+		const url = "http://localhost:3001/category";
 		return fetch(url)
 			.then(r => r.json())
 			.then(categories => dispatch({ type: GET_CATEGORIES, payload: categories }))
@@ -77,7 +77,7 @@ export const getCategories = () => {
 };
 export const getCategory = id => {
 	return dispatch => {
-		const url = "http://localhost:3000/category/one/" + id;
+		const url = "http://localhost:3001/category/one/" + id;
 		return fetch(url)
 			.then(r => r.json())
 			.then(category => dispatch({ type: GET_CATEGORY, payload: category }))
@@ -86,7 +86,7 @@ export const getCategory = id => {
 };
 export const getCellars = () => {
 	return dispatch => {
-		const url = "http://localhost:3000/cellar";
+		const url = "http://localhost:3001/cellar";
 		return fetch(url)
 			.then(r => r.json())
 			.then(cellars => dispatch({ type: GET_CELLARS, payload: cellars }))
@@ -95,7 +95,7 @@ export const getCellars = () => {
 };
 export const getCellar = id => {
 	return dispatch => {
-		const url = "http://localhost:3000/cellar/one/" + id;
+		const url = "http://localhost:3001/cellar/one/" + id;
 		return fetch(url)
 			.then(r => r.json())
 			.then(cellar => dispatch({ type: GET_CELLAR, payload: cellar }))
@@ -104,7 +104,7 @@ export const getCellar = id => {
 };
 export const getStrains = () => {
 	return dispatch => {
-		const url = "http://localhost:3000/strain";
+		const url = "http://localhost:3001/strain";
 		return fetch(url)
 			.then(r => r.json())
 			.then(strains => dispatch({ type: GET_STRAINS, payload: strains }))
@@ -113,7 +113,7 @@ export const getStrains = () => {
 };
 export const getStrain = id => {
 	return dispatch => {
-		const url = "http://localhost:3000/strain/one/" + id;
+		const url = "http://localhost:3001/strain/one/" + id;
 		return fetch(url)
 			.then(r => r.json())
 			.then(strain => dispatch({ type: GET_STRAIN, payload: strain }))
@@ -122,7 +122,7 @@ export const getStrain = id => {
 };
 export const getStrainsBy = categoryId => {
 	return dispatch => {
-		const url = "http://localhost:3000/strain/category/" + categoryId;
+		const url = "http://localhost:3001/strain/category/" + categoryId;
 		return fetch(url)
 			.then(r => r.json())
 			.then(strains => dispatch({ type: GET_STRAINS_BY, payload: strains }))
@@ -131,7 +131,7 @@ export const getStrainsBy = categoryId => {
 };
 export const searchProduct = query => {
 	return dispatch => {
-		const url = "http://localhost:3000/product/search?query=" + query;
+		const url = "http://localhost:3001/product/search?query=" + query;
 		return fetch(url)
 			.then(r => r.json())
 			.then(products => dispatch({ type: SEARCH_PRODUCT, payload: products }))
@@ -174,7 +174,7 @@ export const emptyCart = () => {
 
 export const getUsers = () => {
 	return dispatch => {
-		const url = "http://localhost:3000/user";
+		const url = "http://localhost:3001/user";
 		return fetch(url)
 			.then(r => r.json())
 			.then(users => dispatch({ type: GET_USERS, payload: users }))
@@ -183,7 +183,7 @@ export const getUsers = () => {
 };
 export const getUser = id => {
 	return dispatch => {
-		const url = "http://localhost:3000/user/" + id;
+		const url = "http://localhost:3001/user/" + id;
 		return fetch(url)
 			.then(r => r.json())
 			.then(user => dispatch({ type: GET_USER, payload: user }))
@@ -194,8 +194,8 @@ export const getUser = id => {
 export const getPurchases = statusId => {
 	return dispatch => {
 		const url = !statusId
-			? "http://localhost:3000/purchase"
-			: `http://localhost:3000/purchase/status?statusId=${statusId}`;
+			? "http://localhost:3001/purchase"
+			: `http://localhost:3001/purchase/status?statusId=${statusId}`;
 		return fetch(url)
 			.then(r => r.json())
 			.then(purchases => dispatch({ type: GET_PURCHASES, payload: purchases }))
@@ -205,7 +205,7 @@ export const getPurchases = statusId => {
 
 export const getStatuses = () => {
 	return dispatch => {
-		const url = "http://localhost:3000/status";
+		const url = "http://localhost:3001/status";
 		return fetch(url)
 			.then(r => r.json())
 			.then(statuses => dispatch({ type: GET_STATUSES, payload: statuses }))

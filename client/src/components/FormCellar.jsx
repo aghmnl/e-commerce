@@ -43,7 +43,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 	function handleSubmit(values) {
 		if (id) {
 			axios
-				.put(`http://localhost:3000/cellar/${id}`, values)
+				.put(`http://localhost:3001/cellar/${id}`, values)
 				.then(() => {
 					getCellars();
 					formik.resetForm({name:""});
@@ -52,7 +52,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 				.catch(err => console.log("error", err));
 			return;
 		}
-		const url = "http://localhost:3000/cellar";
+		const url = "http://localhost:3001/cellar";
 		axios
 			.post(url, values)
 			.then(res => {
@@ -63,7 +63,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 	}
 	function eliminar(id) {
 		axios
-			.delete(`http://localhost:3000/cellar/${id}`)
+			.delete(`http://localhost:3001/cellar/${id}`)
 			.then(() => {
 				getCellars();
 				throwModal({...modalDelete, show:false});

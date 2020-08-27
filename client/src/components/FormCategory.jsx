@@ -47,15 +47,15 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 	function handleSubmit(values) {
 		if (!!id) {
 			axios
-				.put(`http://localhost:3000/category/${id}`, values)
+				.put(`http://localhost:3001/category/${id}`, values)
 				.then(() => {
 					getCategories();
 				})
 				.catch(err => console.log("error", err));
 			return;
 		}
-		const url = "http://localhost:3000/category";
-		const urlStrain = "http://localhost:3000/strain";
+		const url = "http://localhost:3001/category";
+		const urlStrain = "http://localhost:3001/strain";
 		axios
 			.post(url, values)
 			.then((res) => {
@@ -70,7 +70,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 	}
 	function eliminar(id) {
 		axios
-			.delete(`http://localhost:3000/category/${id}`)
+			.delete(`http://localhost:3001/category/${id}`)
 			.then(() => {
 				getCategories();
 				throwModal({...modalDelete, show:false})

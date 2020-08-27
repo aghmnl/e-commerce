@@ -92,7 +92,7 @@ server.get("/detail/:id", (req, res, next) => {
 		})
 		.catch(err => next(err));
 });
-// http://localhost:3000/products/category/1
+// http://localhost:3001/products/category/1
 server.get("/category/:categoryId", (req, res, next) => {
 	Product.findAll({
 		include: [
@@ -117,7 +117,7 @@ server.get("/category/:categoryId", (req, res, next) => {
 		.catch(err => next(err));
 });
 
-// http://localhost:3000/products/search?query=agus
+// http://localhost:3001/products/search?query=agus
 server.get("/search?:query", (req, res, next) => {
 	const value = "%" + req.query.query + "%";
 	console.log(value);
