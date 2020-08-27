@@ -11,7 +11,7 @@ import FormUser from "./components/FormUser";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import Purchase from "./components/Purchases";
-
+import Login from "./components/Login";
 import CarouselSlider from "./components/CarouselSlider";
 import { getPurchases } from "./store/actions/index";
 import Admin from "./components/Admin";
@@ -74,6 +74,9 @@ function App({ getPurchases }) {
 				path="/admin/formUser/edit/:id"
 				render={({ match }) => <FormUser id={match.params.id} edit={true} />}
 			/>
+
+			<Route exact path="/login" component={Login} />
+
 		</div>
 	);
 }

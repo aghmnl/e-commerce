@@ -8,7 +8,10 @@ const userRouter = require("./user.js");
 const purchaseRouter = require("./purchase.js");
 const purchProdRouter = require("./purchProd.js");
 const statusRouter = require("./status.js");
+const reviewRouter = require("./review.js");
 const router = Router();
+
+module.exports = router;
 
 router.use("/product", productRouter);
 router.use("/category", categoryRouter);
@@ -17,6 +20,5 @@ router.use("/cellar", cellarRouter);
 router.use("/user", userRouter);
 router.use("/purchase", purchaseRouter);
 router.use("/purchase/purchProd", purchProdRouter); // ¿¿Se puede esto??
-router.use("/status", statusRouter); // ¿¿Se puede esto??
-
-module.exports = router;
+router.use("/status", statusRouter);
+router.use("/review", reviewRouter);

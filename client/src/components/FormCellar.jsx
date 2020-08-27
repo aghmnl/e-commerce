@@ -1,169 +1,128 @@
-import React, { useState, useEffect } from "react";
-import { Form, Col, Button, Row, Container, Nav, Alert } from "react-bootstrap";
+import React, { useState, useEffect, useRef } from "react";
+import { Form, Col, Button, Row,} from "react-bootstrap";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import { Link, useHistory } from "react-router-dom";
 import { getCellars, getCellar, cleanCellar } from "../store/actions/index";
 import { connect } from "react-redux";
+import UDTable from "./UDTable";
+import ModalDelete from "./ModalDelete";
 function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCellar }) {
-	const [deleted, setDelete] = useState({
-		show: false,
-		confirmed: false,
-		msg: "",
-		deleteId: null,
-	});
-	const [warning, setWarninig] = useState({
-		show: false,
-		msg: "",
-	});
+	const history = useHistory();
+	const [modalDelete, throwModal] = useState({
+		show:false,
+		dialog:"",
+	})
 	const [handle, setHandle] = useState("add");
-	const [inputs, setInputs] = useState({
-		name: "",
-		edit: false,
-		nombreBoton: "Agregar",
+	const formik = useFormik({
+		initialValues : {name:""},
+		validate: values =>{
+			const errors ={}
+			!values.name && (errors.name = "se requiere nombre");
+			return errors
+		},
+		onSubmit : values => handleSubmit(values)
 	});
-
-	// Cuando monta el componente, trae todos los celars.
 	useEffect(() => {
 		if (!id) return;
 		getCellar(id);
 		setHandle("edit");
 	}, [id]);
+	// Cuando monta el componente, trae todos los celars.
 	useEffect(() => {
-		async function fetchData() {
-			await getCellars();
-		}
-		fetchData();
+		getCellars();
 		return () => {
 			cleanCellar();
 		};
 	}, []);
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
-		let values = inputs;
-		let nombreBoton = handle === "edit" ? "Actualizar" : "Agregar";
-		if (cellar) values = cellar;
-		setInputs({ ...values, nombreBoton });
+		(handle==="edit") && cellar && formik.setValues(cellar, false);
 	}, [handle, cellar]);
-	useEffect(() => {
-		if (deleted.confirmed && deleted.deleteId)
+	function handleSubmit(values) {
+		if (id) {
 			axios
-				.delete(`http://localhost:3000/cellar/${deleted.deleteId}`)
+				.put(`http://localhost:3000/cellar/${id}`, values)
 				.then(() => {
 					getCellars();
-				})
-				.catch(err => {
-					console.log(err);
-					setWarninig({
-						show: true,
-						msg: "No se puede eliminar",
-					});
-				});
-	}, [deleted.confirmed, deleted.deleteId]);
-	function handleSubmit(e) {
-		e.preventDefault();
-		if (!inputs.name) {
-			setWarninig({ show: true, msg: `name is require` });
-			document.querySelector("#name").focus();
-			return;
-		}
-		if (edit) {
-			axios
-				.put(`http://localhost:3000/cellar/${id}`, inputs)
-				.then(() => {
-					getCellars();
+					formik.resetForm({name:""});
+					history.replace("/admin/formCellar");
 				})
 				.catch(err => console.log("error", err));
 			return;
 		}
 		const url = "http://localhost:3000/cellar";
 		axios
-			.post(url, inputs)
-			.then(res => getCellars())
+			.post(url, values)
+			.then(res => {
+				getCellars();
+				formik.resetForm({name:""});
+			})
 			.catch(e => console.log(e));
-		setInputs({
-			nombreBoton: "Agregar",
-		});
 	}
-	function eliminar(e, id) {
-		e.preventDefault();
-		setDelete({
-			msg: "Esta bodega sera eliminada, ¿Está seguro?",
-			show: true,
-			deleteId: id,
-		});
+	function eliminar(id) {
+		axios
+			.delete(`http://localhost:3000/cellar/${id}`)
+			.then(() => {
+				getCellars();
+				throwModal({...modalDelete, show:false});
+			})
+			.catch(err => {
+				console.log(err);
+			});
 	}
 
 	return (
 		<div id="main" style={{ textAlign: "right" }}>
-			<Alert
-				className="alert"
-				variant="warning"
-				show={warning.show}
-				onClose={() => setWarninig({ ...warning, show: false })}
-				dismissible
-			>
-				<Alert.Heading>Advertencia!</Alert.Heading>
-				<p>{warning.msg}</p>
-			</Alert>
-			<Alert
-				className="alert"
-				variant="danger"
-				show={deleted.show}
-				onClose={() => setDelete({ ...deleted, show: false })}
-				dismissible
-			>
-				<Alert.Heading>Eliminar</Alert.Heading>
-				<p>{deleted.msg}</p>
-				<div className="d-flex justify-content-end">
-					<Button
-						onClick={() =>
-							setDelete({
-								...deleted,
-								show: false,
-								confirmed: true,
-							})
-						}
-						variant="danger"
-					>
-						Eliminar
-					</Button>
-				</div>
-			</Alert>
-			<Form style={{ width: "25rem", marginTop: "8rem", marginBottom: "2rem" }} onSubmit={e => handleSubmit(e)}>
+			<ModalDelete 
+				show={modalDelete.show} 
+				dialog={modalDelete.dialog}
+				header={modalDelete.header}
+				pk={modalDelete.pk}
+				cancel={()=>throwModal({...modalDelete, show:false})}
+				commit={eliminar}
+			/>
+			<Form style={{ width: "25rem", marginTop: "8rem", marginBottom: "2rem" }} onSubmit={formik.handleSubmit}>
 				<Form.Group as={Row}>
 					<Form.Label column sm="2">
 						Bodega
 					</Form.Label>
 					<Col sm="10">
 						<Form.Control
-							value={inputs.name}
+							value={formik.values.name}
 							placeholder="Bodega"
-							id="name"
-							onChange={e => setInputs({ ...inputs, name: e.target.value })}
+							onChange={e => formik.setFieldValue("name", e.target.value)}
+							isInvalid={!!formik.errors.name}
 						/>
+						<Form.Control.Feedback type="invalid" tooltip>
+							{formik.errors.name && formik.errors.name}
+						</Form.Control.Feedback>
 					</Col>
 				</Form.Group>
 				<Button variant="primary" type="submit">
-					{inputs.nombreBoton}
+					{handle==="edit"?"Actualizar":"Agregar"}
 				</Button>
+				{(handle==="edit") && 
+				(<Button variant="secondary" onClick={()=>history.replace("/admin/formCellar")}>
+					Cancelar
+				</Button>)}
 			</Form>
-			<Container id="contenedor" style={{ width: "30rem" }}>
-				{cellars.map(cellar => (
-					<Row rs="">
-						<Col sm="8">{cellar.name}</Col>
-						<Col>
-							<Link to={`/admin/formCellar/edit/${cellar.id}`}>Editar</Link>
-						</Col>
-						<Col>
-							<Form onSubmit={e => eliminar(e, cellar.id)}>
-								<Button variant="danger" type="submit">
-									Eliminar
-								</Button>
-							</Form>
-						</Col>
-					</Row>
-				))}
-			</Container>
+			<UDTable
+				headers={["#","Nombre"]}
+				rows={cellars}
+				attributes={["id","name"]}
+				updateURL="/admin/formCellar/edit" 
+				updatePk="id"
+				deletePk="id"
+				handleDelete={(id)=>{
+					throwModal({
+						show: true,
+						dialog: "La bodega con Pk "+id+" será eliminada.\n¿Desea continuar?",
+						header: "Eliminar Bodega",
+						pk: id
+					})
+				}}
+			/>
 		</div>
 	);
 }

@@ -1,0 +1,15 @@
+.contenedor{
+    justify-content: center;
+}
+
+.login{
+    background:rgba(136, 2, 2, 0.747);
+    margin-top:180px;
+    padding:10px;
+    border-radius: 15px;
+    color:white;
+}
+.login label{
+    text-align: right;
+}
+

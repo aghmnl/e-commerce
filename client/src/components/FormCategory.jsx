@@ -1,29 +1,33 @@
-import React, { useState, useEffect } from "react";
-import { Form, Col, Button, Row, Container, Alert } from "react-bootstrap";
+import React, { useState, useEffect, useRef } from "react";
+import { Form, Col, Button, Row, Container, Alert, Modal } from "react-bootstrap";
 import "../styles/FormCategory.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCategories, getCategory, cleanCategory } from "../store/actions/index";
+import { useFormik } from "formik";
+import UDTable from "./UDTable";
+import ModalDelete from "./ModalDelete";
 function FormCategory({ categories, category, getCategory, getCategories, id, cleanCategory }) {
-	const [deleted, setDelete] = useState({
-		show: false,
-		confirmed: false,
-		msg: "",
-		deleteId: null,
-	});
-	const [warning, setWarninig] = useState({
-		show: false,
-		msg: "",
-	});
+	const history = useHistory();
+	const [modalDelete, throwModal] = useState({
+		show:false,
+	})
 	const [handle, setHandle] = useState("add");
-	const [inputs, setInputs] = useState({
-		name: "",
-		description: "",
-		strainName: "",
-		satrinCategoryId: 0,
-		edit: false,
-		nombreBoton: "Agregar",
+	const formik = useFormik({
+		initialValues : {
+			name: "",
+			description: "",
+			strainName: "",
+		},
+		validate: values =>{
+			const errors ={}
+			!values.name && (errors.name = "se requiere nombre");
+			!values.description && (errors.description = "se requiere descripción");
+			handle === "add" && !values.strainName && (errors.strainName = "se requiere una cepa");
+			return errors
+		},
+		onSubmit : values => handleSubmit(values)
 	});
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
@@ -32,45 +36,18 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 		setHandle("edit");
 	}, [id]);
 	useEffect(() => {
-		async function fetchData() {
-			await getCategories();
-		}
-		fetchData();
+		getCategories();
 		return () => {
 			cleanCategory();
 		};
 	}, []);
 	useEffect(() => {
-		let values = inputs;
-		let nombreBoton = handle === "edit" ? "Actualizar" : "Agregar";
-		if (!!category) values = category;
-		setInputs({ ...values, nombreBoton });
+		(handle==="edit") && category && formik.setValues(category, false);
 	}, [handle, category]);
-	useEffect(() => {
-		if (deleted.confirmed && deleted.deleteId)
-			axios
-				.delete(`http://localhost:3000/category/${deleted.deleteId}`)
-				.then(() => {
-					getCategories();
-				})
-				.catch(err => {
-					console.log(err);
-					setWarninig({
-						show: true,
-						msg: "No se puede eliminar",
-					});
-				});
-	}, [deleted.confirmed, deleted.deleteId]);
-	function handleSubmit(e, id) {
-		e.preventDefault();
-		if (!inputs.name) {
-			setWarninig({ show: true, msg: `name is require` });
-			document.querySelector("#name").focus();
-			return;
-		}
+	function handleSubmit(values) {
 		if (!!id) {
 			axios
-				.put(`http://localhost:3000/category/${id}`, inputs)
+				.put(`http://localhost:3000/category/${id}`, values)
 				.then(() => {
 					getCategories();
 				})
@@ -79,83 +56,55 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 		}
 		const url = "http://localhost:3000/category";
 		const urlStrain = "http://localhost:3000/strain";
-		const newCategoryId = categories[categories.length - 1].id + 1;
-
-		const inputStrain = {
-			name: inputs.strainName,
-			categoryId: newCategoryId,
-		};
 		axios
-			.post(url, inputs)
-			.then(() => {
-				axios.post(urlStrain, inputStrain);
+			.post(url, values)
+			.then((res) => {
+				axios.post(urlStrain, {
+					name: values.strainName,
+					categoryId : res.data
+				});
 				getCategories();
+				throwModal({...modalDelete, show:false});
 			})
 			.catch(e => console.log(e));
-		setInputs({
-			name: "",
-			description: "",
-			strainName: "",
-			strainCategoryId: 0,
-			nombreBoton: "Agregar",
-		});
 	}
-	function eliminar(e, id) {
-		e.preventDefault();
-		setDelete({
-			msg: "Esta categoria sera eliminada, ¿Está seguro?",
-			show: true,
-			deleteId: id,
-		});
+	function eliminar(id) {
+		axios
+			.delete(`http://localhost:3000/category/${id}`)
+			.then(() => {
+				getCategories();
+				throwModal({...modalDelete, show:false})
+			})
+			.catch(err => {
+				console.log(err);
+				throwModal({...modalDelete, show:false})
+			});
 	}
 	return (
 		<div id="main" style={{ marginTop: "8rem" }}>
-			<Alert
-				className="alert"
-				variant="warning"
-				show={warning.show}
-				onClose={() => setWarninig({ ...warning, show: false })}
-				dismissible
-			>
-				<Alert.Heading>Advertencia!</Alert.Heading>
-				<p>{warning.msg}</p>
-			</Alert>
-			<Alert
-				className="alert"
-				variant="danger"
-				show={deleted.show}
-				onClose={() => setDelete({ ...deleted, show: false })}
-				dismissible
-			>
-				<Alert.Heading>Eliminar</Alert.Heading>
-				<p>{deleted.msg}</p>
-				<div className="d-flex justify-content-end">
-					<Button
-						onClick={() =>
-							setDelete({
-								...deleted,
-								show: false,
-								confirmed: true,
-							})
-						}
-						variant="danger"
-					>
-						Eliminar
-					</Button>
-				</div>
-			</Alert>
-			<Form style={{ marginBottom: "2rem", textAlign: "right" }} onSubmit={e => handleSubmit(e, id)}>
+			<ModalDelete 
+				show={modalDelete.show} 
+				dialog={modalDelete.dialog}
+				header={modalDelete.header}
+				pk={modalDelete.pk}
+				cancel={()=>throwModal({...modalDelete, show:false})}
+				commit={eliminar}
+			/>
+			<Form style={{ marginBottom: "2rem", textAlign: "right" }} onSubmit={formik.handleSubmit}>
 				<Form.Group as={Row}>
 					<Form.Label column sm="3">
 						Categoría
 					</Form.Label>
 					<Col>
 						<Form.Control
-							value={inputs.name}
-							id="name"
+							value={formik.values.name}
 							placeholder="Categoría"
-							onChange={e => setInputs({ ...inputs, name: e.target.value })}
+							onChange={e => formik.setFieldValue("name", e.target.value)}
+							isInvalid={!!formik.errors.name}
 						/>
+						<Form.Control.Feedback type="invalid" tooltip>
+							{formik.errors.name && formik.errors.name}
+						</Form.Control.Feedback>
 					</Col>
 				</Form.Group>
 				<Form.Group as={Row}>
@@ -167,13 +116,16 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 					{handle !== "edit" && (
 						<Col>
 							<Form.Control
-								value={inputs.strainName}
-								id="strain"
+								value={formik.values.strainName}
 								placeholder="Cepa"
 								onChange={e => {
-									setInputs({ ...inputs, strainName: e.target.value });
+									formik.setFieldValue("strainName", e.target.value);
 								}}
+								isInvalid={!!formik.errors.strainName}
 							/>
+							<Form.Control.Feedback type="invalid" tooltip>
+								{formik.errors.strainName && formik.errors.strainName}
+							</Form.Control.Feedback>
 						</Col>
 					)}
 				</Form.Group>
@@ -186,33 +138,39 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 							as="textarea"
 							placeholder="Descripción"
 							rows="3"
-							value={inputs.description}
-							onChange={e => setInputs({ ...inputs, description: e.target.value })}
+							isInvalid={!!formik.errors.description}
+							onChange={e => formik.setFieldValue("description", e.target.value)}
+							value={formik.values.description}
 						/>
+						<Form.Control.Feedback type="invalid" tooltip>
+							{formik.errors.description && formik.errors.description}
+						</Form.Control.Feedback>
 					</Col>
 				</Form.Group>
 				<Button variant="primary" type="submit">
-					{inputs.nombreBoton}
+					{handle==="edit"?"Actualizar":"Agregar"}
 				</Button>
+				{(handle==="edit") && 
+				(<Button variant="secondary" onClick={()=>history.replace("/admin/formCategory")}>
+					Cancelar
+				</Button>)}
 			</Form>
-
-			<Container id="contenedor" style={{ width: "20rem" }}>
-				{categories.map(category => (
-					<Row>
-						<Col sm="8">{category.name}</Col>
-						<Col>
-							<Link to={`/admin/formCategory/edit/${category.id}`}>Editar</Link>
-						</Col>
-						<Col>
-							<Form onSubmit={e => eliminar(e, category.id)}>
-								<Button variant="danger" type="submit">
-									Eliminar
-								</Button>
-							</Form>
-						</Col>
-					</Row>
-				))}
-			</Container>
+			<UDTable
+				headers={["#","Nombre"]}
+				rows={categories}
+				attributes={["id","name"]}
+				updatePk="id"
+				updateURL="/admin/formCategory/edit"
+				deletePk="id"
+				handleDelete={(id)=>{
+					throwModal({
+						show: true,
+						dialog: "La categoria con Pk "+id+" será eliminada.\n¿Desea continuar?",
+						header: "Eliminar Categoria",
+						pk: id
+					})
+				}}
+			/>
 		</div>
 	);
 }
