@@ -1,6 +1,6 @@
 const server = require("express").Router();
 const { Purchase, User, Pay_method, Status } = require("../db.js");
-module.exports = server;
+
 
 // S44 : Crear ruta que retorne todas las órdenes
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
@@ -107,3 +107,4 @@ server.get("/", (req, res) => {
     });
 });
 */
+module.exports = server;

@@ -104,7 +104,7 @@ function FormUser({ users, user, getUsers, getUser, id, cleanUser }) {
 			<UDTable
 				headers={["#","Nombre","Apellido","Email","Telefono","Admin"]}
 				rows={users}
-				attributes={["id","name","last_name","email","phone","admin"]}
+				attributes={["id","first_name","last_name","email","phone","admin"]}
 				updateURL="/admin/formUser/edit" 
 				updatePk="id"
 			/>
