@@ -63,6 +63,36 @@ var purchases = [
 		payMethodId: 1,
 		statusId: 1,
 	},
+	{
+		// purchaseId:3,
+		date: "2020-08-19",
+		userId: 3,
+		payMethodId: 1,
+		statusId: 2,
+	},
+
+	{
+		// purchaseId:4,
+		date: "2020-08-19",
+		userId: 1,
+		payMethodId: 1,
+		statusId: 3,
+	},
+	{
+		// purchaseId:5,
+		date: "2020-08-19",
+		userId: 2,
+		payMethodId: 1,
+		statusId: 4,
+	},
+
+	{
+		// purchaseId:6,
+		date: "2020-08-19",
+		userId: 3,
+		payMethodId: 1,
+		statusId: 5,
+	},
 ];
 
 var categories = [
@@ -436,30 +466,33 @@ var products = [
 var users = [
 	{
 		// userId:1,
-		name: "Leo",
+		first_name: "Leo",
 		last_name: "Rufino",
 		email: "rufino_138@hotmail.com",
 		password: "1234",
 		phone: 121312132,
 		admin: true,
+		salt: "asdafasfd",
 	},
 	{
 		// userId:2,
-		name: "Olivert",
+		first_name: "Olivert",
 		last_name: "Borges",
 		email: "olivert.ricardo@gmail.com",
 		password: "1234",
 		phone: 121312132,
 		admin: true,
+		salt: "asdafasfd",
 	},
 	{
 		// userId:3,
-		name: "Agustín",
+		first_name: "Agustín",
 		last_name: "Minetto",
 		email: "agustin.minetto@gmail.com",
 		password: "1234",
 		phone: 121312132,
 		admin: true,
+		salt: "asdafasfd",
 	},
 ];
 
@@ -546,5 +579,33 @@ var purchased_products = [
 		priceProduct: 1100,
 		quantity: 1,
 		// purchased_productId: 4,
+	},
+	{
+		purchaseId: 3,
+		productId: 5,
+		priceProduct: 39,
+		quantity: 5,
+		// purchased_productId: 5,
+	},
+	{
+		purchaseId: 4,
+		productId: 7,
+		priceProduct: 4855,
+		quantity: 3,
+		// purchased_productId: 6,
+	},
+	{
+		purchaseId: 5,
+		productId: 9,
+		priceProduct: 1100,
+		quantity: 2,
+		// purchased_productId: 7,
+	},
+	{
+		purchaseId: 6,
+		productId: 12,
+		priceProduct: 1100,
+		quantity: 1,
+		// purchased_productId: 8,
 	},
 ];
