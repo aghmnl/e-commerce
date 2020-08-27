@@ -11,23 +11,23 @@ import ModalDelete from "./ModalDelete";
 function FormCategory({ categories, category, getCategory, getCategories, id, cleanCategory }) {
 	const history = useHistory();
 	const [modalDelete, throwModal] = useState({
-		show:false,
-	})
+		show: false,
+	});
 	const [handle, setHandle] = useState("add");
 	const formik = useFormik({
-		initialValues : {
+		initialValues: {
 			name: "",
 			description: "",
 			strainName: "",
 		},
-		validate: values =>{
-			const errors ={}
+		validate: values => {
+			const errors = {};
 			!values.name && (errors.name = "se requiere nombre");
 			!values.description && (errors.description = "se requiere descripción");
 			handle === "add" && !values.strainName && (errors.strainName = "se requiere una cepa");
-			return errors
+			return errors;
 		},
-		onSubmit : values => handleSubmit(values)
+		onSubmit: values => handleSubmit(values),
 	});
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
@@ -42,7 +42,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 		};
 	}, []);
 	useEffect(() => {
-		(handle==="edit") && category && formik.setValues(category, false);
+		handle === "edit" && category && formik.setValues(category, false);
 	}, [handle, category]);
 	function handleSubmit(values) {
 		if (!!id) {
@@ -50,6 +50,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 				.put(`http://localhost:3000/category/${id}`, values)
 				.then(() => {
 					getCategories();
+					history.replace("/admin/formCategory");
 				})
 				.catch(err => console.log("error", err));
 			return;
@@ -58,13 +59,13 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 		const urlStrain = "http://localhost:3000/strain";
 		axios
 			.post(url, values)
-			.then((res) => {
+			.then(res => {
 				axios.post(urlStrain, {
 					name: values.strainName,
-					categoryId : res.data
+					categoryId: res.data,
 				});
 				getCategories();
-				throwModal({...modalDelete, show:false});
+				throwModal({ ...modalDelete, show: false });
 			})
 			.catch(e => console.log(e));
 	}
@@ -73,21 +74,21 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 			.delete(`http://localhost:3000/category/${id}`)
 			.then(() => {
 				getCategories();
-				throwModal({...modalDelete, show:false})
+				throwModal({ ...modalDelete, show: false });
 			})
 			.catch(err => {
 				console.log(err);
-				throwModal({...modalDelete, show:false})
+				throwModal({ ...modalDelete, show: false });
 			});
 	}
 	return (
 		<div id="main" style={{ marginTop: "8rem" }}>
-			<ModalDelete 
-				show={modalDelete.show} 
+			<ModalDelete
+				show={modalDelete.show}
 				dialog={modalDelete.dialog}
 				header={modalDelete.header}
 				pk={modalDelete.pk}
-				cancel={()=>throwModal({...modalDelete, show:false})}
+				cancel={() => throwModal({ ...modalDelete, show: false })}
 				commit={eliminar}
 			/>
 			<Form style={{ marginBottom: "2rem", textAlign: "right" }} onSubmit={formik.handleSubmit}>
@@ -148,27 +149,28 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 					</Col>
 				</Form.Group>
 				<Button variant="primary" type="submit">
-					{handle==="edit"?"Actualizar":"Agregar"}
+					{handle === "edit" ? "Actualizar" : "Agregar"}
 				</Button>
-				{(handle==="edit") && 
-				(<Button variant="secondary" onClick={()=>history.replace("/admin/formCategory")}>
-					Cancelar
-				</Button>)}
+				{handle === "edit" && (
+					<Button variant="secondary" onClick={() => history.replace("/admin/formCategory")}>
+						Cancelar
+					</Button>
+				)}
 			</Form>
 			<UDTable
-				headers={["#","Nombre"]}
+				headers={["#", "Nombre"]}
 				rows={categories}
-				attributes={["id","name"]}
+				attributes={["id", "name"]}
 				updatePk="id"
 				updateURL="/admin/formCategory/edit"
 				deletePk="id"
-				handleDelete={(id)=>{
+				handleDelete={id => {
 					throwModal({
 						show: true,
-						dialog: "La categoria con Pk "+id+" será eliminada.\n¿Desea continuar?",
+						dialog: "La categoria con Pk " + id + " será eliminada.\n¿Desea continuar?",
 						header: "Eliminar Categoria",
-						pk: id
-					})
+						pk: id,
+					});
 				}}
 			/>
 		</div>

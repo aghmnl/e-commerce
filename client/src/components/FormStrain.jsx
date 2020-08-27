@@ -10,18 +10,18 @@ import ModalDelete from "./ModalDelete";
 function FormStrain({ strain, strains, getStrains, getStrain, getCategories, categories, id, cleanStrain }) {
 	const history = useHistory();
 	const [modalDelete, throwModal] = useState({
-		show:false,
-		dialog:"",
-	})
+		show: false,
+		dialog: "",
+	});
 	const formik = useFormik({
-		initialValues : {name:"", categoryId: null},
-		validate: values =>{
-			const errors ={}
+		initialValues: { name: "", categoryId: null },
+		validate: values => {
+			const errors = {};
 			!values.name && (errors.name = "se requiere nombre");
 			!values.categoryId && (errors.categoryId = "se requiere una categoria");
-			return errors
+			return errors;
 		},
-		onSubmit : values => handleSubmit(values)
+		onSubmit: values => handleSubmit(values),
 	});
 	const [handle, setHandle] = useState("add");
 	// Cuando monta el componente, trae todos los strains.
@@ -39,7 +39,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 	}, []);
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	useEffect(() => {
-		(handle==="edit") && strain && formik.setValues(strain, true);
+		handle === "edit" && strain && formik.setValues(strain, true);
 	}, [handle, strain]);
 	function handleSubmit(values) {
 		if (!!id) {
@@ -47,6 +47,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 				.put(`http://localhost:3000/strain/${id}`, values)
 				.then(() => {
 					getStrains();
+					history.replace("/admin/formStrain");
 				})
 				.catch(err => console.log("error", err));
 			return;
@@ -68,17 +69,17 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 			.catch(err => {
 				console.log(err);
 			});
-			throwModal({...modalDelete, show:false})
+		throwModal({ ...modalDelete, show: false });
 	}
 
 	return (
 		<div id="main">
-			<ModalDelete 
-				show={modalDelete.show} 
+			<ModalDelete
+				show={modalDelete.show}
 				dialog={modalDelete.dialog}
 				header={modalDelete.header}
 				pk={modalDelete.pk}
-				cancel={()=>throwModal({...modalDelete, show:false})}
+				cancel={() => throwModal({ ...modalDelete, show: false })}
 				commit={eliminar}
 			/>
 			<Form
@@ -131,29 +132,30 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 					</Col>
 				</Form.Group>
 				<Button variant="primary" type="submit">
-					{handle==="edit"?"Actualizar":"Agregar"}
+					{handle === "edit" ? "Actualizar" : "Agregar"}
 				</Button>
-				{(handle==="edit") && 
-				(<Button variant="secondary" onClick={()=>history.replace("/admin/formStrain")}>
-					Cancelar
-				</Button>)}
+				{handle === "edit" && (
+					<Button variant="secondary" onClick={() => history.replace("/admin/formStrain")}>
+						Cancelar
+					</Button>
+				)}
 			</Form>
 			<UDTable
-				headers={["#","Nombre","Categoria"]}
+				headers={["#", "Nombre", "Categoria"]}
 				rows={strains}
-				attributes={["id","name"]}
+				attributes={["id", "name"]}
 				joins={["category"]}
 				joinAttr={["name"]}
-				updateURL="/admin/formStrain/edit" 
+				updateURL="/admin/formStrain/edit"
 				updatePk="id"
 				deletePk="id"
-				handleDelete={(id)=>{
+				handleDelete={id => {
 					throwModal({
 						show: true,
-						dialog: "La bodega con Pk "+id+" será eliminada.\n¿Desea continuar?",
+						dialog: "La bodega con Pk " + id + " será eliminada.\n¿Desea continuar?",
 						header: "Eliminar Bodega",
-						pk: id
-					})
+						pk: id,
+					});
 				}}
 			/>
 		</div>

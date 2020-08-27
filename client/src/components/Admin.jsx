@@ -31,7 +31,7 @@ export default function Admin() {
 			</Nav.Item>
 			<Nav.Item>
 				<Nav.Link>
-					<NavLink to="/admin/purchases">Compras</NavLink>
+					<NavLink to="/admin/formPurchase">Compras</NavLink>
 				</Nav.Link>
 			</Nav.Item>
 		</Nav>
