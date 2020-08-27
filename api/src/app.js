@@ -36,7 +36,6 @@ passport.use(new LocalStrategy({
 			// }
 			
 			const passwordKey = crypto.pbkdf2Sync(password, user.salt, 10000, 64, 'sha512').toString('base64');
-			console.log({ passwordKey, pass: user.password})
       if(passwordKey === user.password){
         return done(null, user);
 			}
@@ -48,10 +47,25 @@ passport.use(new LocalStrategy({
   }
 ));
 
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findByPk(id, function(err, user) {
+    done(err, user);
+  })
+});
+
 server.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 server.use(bodyParser.json({ limit: "50mb" }));
 server.use(cookieParser());
 server.use(morgan("dev"));
+server.use(require('express-session')({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false
+}));
 server.use(passport.initialize());
 server.use(passport.session());
 server.use((req, res, next) => {

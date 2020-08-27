@@ -35,6 +35,8 @@ server.post("/register", async function (req, res, next) {
 			first_name: req.body.first_name,
 			last_name: req.body.last_name,
 			email: req.body.email,
+			phone: req.body.phone,
+			admin: req.body.admin,
 			password: password,
 			salt: salt,
 		});
@@ -46,15 +48,15 @@ server.post("/register", async function (req, res, next) {
 				if (!user) {
 					return res.json({ status: "error", message: info.message });
 				}
-				// req.logIn(user, function(err) {
-				// if (err) { return next(err); }
+				req.logIn(user, function(err) {
+				if (err) { return next(err); }
 				return res.json({ status: "ok" });
-				// });
+				});
 			})(req, res, next);
 		}
 	} catch (err) {
 		console.log({ err });
-		return res.json({ status: "error", message: "Email address already exists." });
+		return res.json({ status: "error", message: "Email address already exists.", err });
 	}
 });
 
@@ -66,11 +68,21 @@ server.post("/login", function (req, res, next) {
 		if (!user) {
 			return res.json({ status: "error", message: info.message });
 		}
-		// req.logIn(user, function(err) {
-		// if (err) { return next(err); }
-		return res.json({ status: "ok" });
-		// });
+		req.login(user, function(err) {
+		if (err) { return next(err); }
+		 return res.json({ status: "ok" });
+		});
 	})(req, res, next);
+});
+
+server.get("/logout", function (req, res, next) {
+		req.logout(user, info => {
+			return res.json({ status: "ok", info });
+		});
+});
+
+server.get("/isauth", function (req, res, next) {
+	return res.json({ isAuth: req.isAuthenticated() });
 });
 
 // S67 : Crear ruta /promote
