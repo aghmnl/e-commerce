@@ -25,7 +25,7 @@ function Login() {
 			document.querySelector("#password").focus();
 			return;
 		}
-		const url = "http://localhost:3000/auth/login";
+		const url = "http://localhost:3001/auth/login";
 		axios
 			.post(url, inputs)
 			.then(res => {

@@ -44,7 +44,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 	function handleSubmit(values) {
 		if (!!id) {
 			axios
-				.put(`http://localhost:3000/strain/${id}`, values)
+				.put(`http://localhost:3001/strain/${id}`, values)
 				.then(() => {
 					getStrains();
 					history.replace("/admin/formStrain");
@@ -53,7 +53,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 			return;
 		}
 
-		const url = "http://localhost:3000/strain";
+		const url = "http://localhost:3001/strain";
 		axios
 			.post(url, values)
 			.then(res => getStrains())
@@ -62,7 +62,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 
 	function eliminar(id) {
 		axios
-			.delete(`http://localhost:3000/strain/${id}`)
+			.delete(`http://localhost:3001/strain/${id}`)
 			.then(() => {
 				getStrains();
 			})

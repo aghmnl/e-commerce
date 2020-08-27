@@ -80,7 +80,7 @@ function FormProduct({
 		// Acá manda mensaje del dato que falta y hace foco en el mismo (sitúa el cursor en ese campo)
 		if (!!id) {
 			axios
-				.put(`http://localhost:3000/product/${id}`, values)
+				.put(`http://localhost:3001/product/${id}`, values)
 				.then(() => {
 					getProducts();
 					history.replace("/admin/formProduct");
@@ -88,7 +88,7 @@ function FormProduct({
 				.catch(err => console.log("error", err));
 			return;
 		}
-		const url = "http://localhost:3000/product";
+		const url = "http://localhost:3001/product";
 		axios
 			.post(url, values)
 			.then(() => {
@@ -99,7 +99,7 @@ function FormProduct({
 	}
 	function eliminar(id) {
 		axios
-			.delete(`http://localhost:3000/product/${id}`)
+			.delete(`http://localhost:3001/product/${id}`)
 			.then(() => {
 				getProducts();
 				throwModal({ ...modalDelete, show: false });

@@ -41,14 +41,14 @@ function FormUser({ users, user, getUsers, getUser, id, cleanUser }) {
 		}
 		if (!!id) {
 			axios
-				.put(`http://localhost:3000/user/${id}`, inputs)
+				.put(`http://localhost:3001/user/${id}`, inputs)
 				.then(() => {
 					getUsers();
 				})
 				.catch(err => console.log("error", err));
 			return;
 		}
-		const url = "http://localhost:3000/user";
+		const url = "http://localhost:3001/user";
 		axios
 			.post(url, inputs)
 			.then(res => getUsers())
@@ -65,7 +65,7 @@ function FormUser({ users, user, getUsers, getUser, id, cleanUser }) {
 				onSubmit={(e) =>{
 					e.preventDefault();
 					axios
-						.put(`http://localhost:3000/user/${id}`, {admin})
+						.put(`http://localhost:3001/user/${id}`, {admin})
 						.then(() => {
 							getUsers();
 						})

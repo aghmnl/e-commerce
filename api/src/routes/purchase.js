@@ -4,7 +4,7 @@ const { Purchase, User, Pay_method, Status } = require("../db.js");
 
 // S44 : Crear ruta que retorne todas las órdenes
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
-// http://localhost:3000/purchase/
+// http://localhost:3001/purchase/
 server.get("/", (req, res, next) => {
 	Purchase.findAll({
 		include: [
@@ -26,7 +26,7 @@ server.get("/", (req, res, next) => {
 		.catch(err => next(err));
 });
 
-// http://localhost:3000/purchase/status?statusId=1
+// http://localhost:3001/purchase/status?statusId=1
 server.get("/status?:statusId", (req, res, next) => {
 	Purchase.findAll({
 		include: [
