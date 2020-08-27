@@ -1,6 +1,6 @@
 const server = require("express").Router();
 const Sequelize = require("sequelize");
-const { Product, Cellar, Strain, Category } = require("../db.js");
+const { Product, Cellar, Strain, Category, Review, User } = require("../db.js");
 const Op = Sequelize.Op;
 // Este get devuelve todos los productos para generar el catálogo
 server.get("/", (req, res, next) => {
@@ -74,6 +74,10 @@ server.get("/detail/:id", (req, res, next) => {
 			{
 				model: Category,
 				as: "category",
+			},
+			{
+				model: User,
+				
 			},
 		],
 	})

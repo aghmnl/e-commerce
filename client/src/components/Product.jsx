@@ -6,6 +6,7 @@ import { Alert, Button, Col, Row, Container, Card, ListGroup, ListGroupItem, Spi
 import "../styles/Product.css";
 import { saveCart, saveTotal } from "../store/localState";
 import store from "../store/index";
+import Review, {ProductRating} from "./Review";
 store.subscribe(() => {
 	const { purchased_products, total } = store.getState();
 	saveCart(purchased_products);
@@ -34,6 +35,7 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 	}
 	if (!productDetail) return <Redirect to="/catelogue" />;
 	return (
+		<div>
 		<Card style={{ width: "55rem", margin: "auto" }} className="mt-3 center">
 			<Container>
 				<Row>
@@ -83,6 +85,12 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 				</Row>
 			</Container>
 		</Card>
+			<ProductRating users={productDetail.users} />
+			{!productDetail.users?<Spinner animation="border" />:productDetail.users.map(({name, review}) => {
+					return(<Review stars={review.stars} user={name} date={review.date} description={review.description}  />)
+				})}
+		</div>
+
 	);
 }
 export default connect(

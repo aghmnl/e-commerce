@@ -496,6 +496,13 @@ var reviews = [
 		date: "2020-08-19",
 	},
 	{
+		productId: 1,
+		userId: 2,
+		stars: 5,
+		description: "Muy bueno!",
+		date: "2020-08-19",
+	},
+	{
 		// reviewId:2,
 		productId: 5,
 		userId: 2,
