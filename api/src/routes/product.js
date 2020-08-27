@@ -28,7 +28,7 @@ server.get("/", (req, res, next) => {
 });
 server.get("/catalogue?:pag", (req, res, next) => {
 	const pag = !parseInt(req.query.pag) ? 0 : parseInt(req.query.pag);
-	const pagsize = 10;
+	const pagsize = 12;
 	const offset = pagsize * (pagsize - (pagsize - pag));
 	console.log(offset);
 	Product.findAndCountAll({
@@ -47,7 +47,6 @@ server.get("/catalogue?:pag", (req, res, next) => {
 				as: "category",
 			},
 		],
-		order:[["id","ASC"]],
 		limit: pagsize,
 		offset,
 	})
