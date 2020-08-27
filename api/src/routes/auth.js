@@ -76,9 +76,9 @@ server.post("/login", function (req, res, next) {
 });
 
 server.get("/logout", function (req, res, next) {
-		req.logout(user, info => {
-			return res.json({ status: "ok", info });
-		});
+		req.logout(); 
+		res.json({ status: "ok" });
+		
 });
 
 server.get("/isauth", function (req, res, next) {
