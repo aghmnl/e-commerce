@@ -24,10 +24,12 @@ function Login () {
 			document.querySelector("#password").focus();
 			return;
 		}
-		const url = "http://localhost:3000/login";
+		const url = "http://localhost:3000/auth/login";
 		axios
 			.post(url, inputs)
-			.then(res => window.location.replace('/admin'))
+			.then(res => {
+                console.log({res})
+            })
 			.catch(e => console.log(e));
     }
     return (
