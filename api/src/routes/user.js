@@ -1,14 +1,20 @@
 const server = require("express").Router();
 const { User, Purchased_product, Purchase } = require("../db.js");
+module.exports = server;
 
 server.get("/", (req, res, next) => {
-	User.findAll()
+	User.findAll({
+		attributes : ["id","name","last_name","email","phone","admin"],
+	})
 		.then(users => res.json(users))
 		.catch(err => next(err));
 });
 
 server.get("/:id", (req, res, next) => {
-	User.findOne({ where: { id: req.params.id } })
+	User.findOne({
+		attributtes : ["id","name","last_name","email","admin"],
+		where: { id: req.params.id } 
+	})
 		.then(users => res.json(users))
 		.catch(err => next(err));
 });
@@ -62,5 +68,3 @@ server.get("/:id/purchase/", (req, res, next) => {
 		.then(purchased_products => res.json(purchased_products))
 		.catch(err => next(err));
 });
-
-module.exports = server;

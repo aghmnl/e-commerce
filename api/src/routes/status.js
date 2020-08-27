@@ -1,5 +1,6 @@
 const server = require("express").Router();
 const { Status } = require("../db.js");
+module.exports = server;
 
 // http://localhost:3000/status
 server.get("/", (req, res, next) => {
@@ -28,4 +29,3 @@ server.put("/:id", (req, res, next) => {
 		.then(() => res.sendStatus(200))
 		.catch(err => next(err));
 });
-module.exports = server;

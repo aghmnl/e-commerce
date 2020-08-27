@@ -74,8 +74,8 @@ function App({ getPurchases }) {
 				path="/admin/formUser/edit/:id"
 				render={({ match }) => <FormUser id={match.params.id} edit={true} />}
 			/>
+			<Route exact path="/login" component={Login} />
 
-			<Route path="/login" component={Login} />
 
 		</div>
 	);

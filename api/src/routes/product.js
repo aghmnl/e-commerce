@@ -2,22 +2,28 @@ const server = require("express").Router();
 const Sequelize = require("sequelize");
 const { Product, Cellar, Strain, Category, Review, User } = require("../db.js");
 const Op = Sequelize.Op;
+module.exports = server;
+
 // Este get devuelve todos los productos para generar el catálogo
 server.get("/", (req, res, next) => {
 	Product.findAll({
+		attributes : {exclude : ["createdAt","updatedAt"]},
 		where: { active: true },
 		include: [
 			{
 				model: Cellar,
 				as: "cellar",
+				attributes : {exclude : ["createdAt","updatedAt"]},
 			},
 			{
 				model: Strain,
 				as: "strain",
+				attributes : {exclude : ["createdAt","updatedAt"]},
 			},
 			{
 				model: Category,
 				as: "category",
+				attributes : {exclude : ["createdAt","updatedAt"]},
 			},
 		],
 	})
@@ -47,7 +53,7 @@ server.get("/catalogue?:pag", (req, res, next) => {
 				as: "category",
 			},
 		],
-		order:[["id","ASC"]],
+		order: [["id", "ASC"]],
 		limit: pagsize,
 		offset,
 	})
@@ -129,20 +135,20 @@ server.get("/search?:query", (req, res, next) => {
 					},
 				},
 				{
-					'$category.name$': {
+					"$category.name$": {
 						[Op.iLike]: value,
-					}
+					},
 				},
 				{
-					'$strain.name$': {
+					"$strain.name$": {
 						[Op.iLike]: value,
-					}
+					},
 				},
 				{
-					'$cellar.name$': {
+					"$cellar.name$": {
 						[Op.iLike]: value,
-					}
-				}
+					},
+				},
 			],
 		},
 		include: [
@@ -163,19 +169,15 @@ server.get("/search?:query", (req, res, next) => {
 		.then(products => res.json(products))
 		.catch(err => next(err));
 });
+
 server.post("/", (req, res, next) => {
-	/*const values = Object.values(req.body);
-	if(!values.length) return res.send("NOT DATA");
-	for(let value of values){
-		if(!value) return res.json({"error_en":value});
-	}*/
-	delete req.body["nombreBoton"];
+	// delete req.body["nombreBoton"];
 	Product.create(req.body)
 		.then(() => res.sendStatus(200))
 		.catch(err => next(err));
 });
 server.put("/:id", (req, res, next) => {
-	delete req.body["nombreBoton"];
+	// delete req.body["nombreBoton"];
 	Product.update(req.body, { where: { id: parseInt(req.params.id) } })
 		.then(() => res.sendStatus(200))
 		.catch(err => next(err));
@@ -185,5 +187,3 @@ server.delete("/:id", (req, res, next) => {
 		.then(() => res.sendStatus(200))
 		.catch(err => next(err));
 });
-
-module.exports = server;
