@@ -26,9 +26,9 @@ function FormProduct({
 	const history = useHistory();
 	const [handle, setHandle] = useState("add");
 	const [modalDelete, throwModal] = useState({
-		show:false,
-		dialog:"",
-	})
+		show: false,
+		dialog: "",
+	});
 	const initialInputs = {
 		name: "",
 		description: "",
@@ -39,24 +39,22 @@ function FormProduct({
 		cellarId: "",
 		strainId: "",
 		active: true,
-	}
+	};
 	const formik = useFormik({
-		initialValues : initialInputs,
-		validate : values =>{
-			const errors={};
-			for(let value in values){
-				if(value !== "active" && !values[value]) errors[value] = "se requiere este campo";
+		initialValues: initialInputs,
+		validate: values => {
+			const errors = {};
+			for (let value in values) {
+				if (value !== "active" && !values[value]) errors[value] = "se requiere este campo";
 			}
 			return errors;
 		},
-		onSubmit : values => handleSubmit(values),
-	})
+		onSubmit: values => handleSubmit(values),
+	});
 
 	// Este useEffect se ejecuta cuando se selecciona una categoría
 	useEffect(() => {
-		formik.values.categoryId &&
-			getStrainsBy(formik.values.categoryId);
-		
+		formik.values.categoryId && getStrainsBy(formik.values.categoryId);
 	}, [formik.values]);
 	useEffect(() => {
 		getProducts();
@@ -85,7 +83,7 @@ function FormProduct({
 				.put(`http://localhost:3000/product/${id}`, values)
 				.then(() => {
 					getProducts();
-					formik.resetForm(initialInputs);
+					history.replace("/admin/formProduct");
 				})
 				.catch(err => console.log("error", err));
 			return;
@@ -104,18 +102,18 @@ function FormProduct({
 			.delete(`http://localhost:3000/product/${id}`)
 			.then(() => {
 				getProducts();
-				throwModal({...modalDelete, show:false});
+				throwModal({ ...modalDelete, show: false });
 			})
 			.catch(err => console.log(err));
 	}
 	return (
 		<div style={{ marginTop: "6rem" }}>
-			<ModalDelete 
-				show={modalDelete.show} 
+			<ModalDelete
+				show={modalDelete.show}
 				dialog={modalDelete.dialog}
 				header={modalDelete.header}
 				pk={modalDelete.pk}
-				cancel={()=>throwModal({...modalDelete, show:false})}
+				cancel={() => throwModal({ ...modalDelete, show: false })}
 				commit={eliminar}
 			/>
 			<Container id="form1" style={{ width: "60rem", marginBottom: "2rem" }}>
@@ -171,16 +169,14 @@ function FormProduct({
 										const input = e.target;
 										const reader = new FileReader();
 										reader.onloadend = () => {
-											formik.setFieldValue("img", reader.result );
+											formik.setFieldValue("img", reader.result);
 										};
 										reader.readAsDataURL(input.files[0]);
 									}}
-									isInvalid={!!formik.errors.img} 
+									isInvalid={!!formik.errors.img}
 									accept="image/png, image/jpeg, image/gif"
 								/>
-								<Form.File.Label>
-									Seleccione Imagen
-								</Form.File.Label>
+								<Form.File.Label>Seleccione Imagen</Form.File.Label>
 								<Form.Control.Feedback type="invalid" tooltip>
 									{formik.errors.img && formik.errors.img}
 								</Form.Control.Feedback>
@@ -264,42 +260,37 @@ function FormProduct({
 						</Form.Group>
 					</Form.Row>
 					<Form.Group>
-					<Form.Check
-						checked={formik.values.active}
-						label="Disponible en tienda"
-						onChange={() =>formik.setFieldValue("active", !formik.values.active)}
-					/>
+						<Form.Check
+							checked={formik.values.active}
+							label="Disponible en tienda"
+							onChange={() => formik.setFieldValue("active", !formik.values.active)}
+						/>
 					</Form.Group>
 					<Button variant="primary" type="submit">
-						{handle === "add"?"Agregar":"Actualizar"}
+						{handle === "add" ? "Agregar" : "Actualizar"}
 					</Button>
 					{handle === "edit" && (
-						<Button variant="primary" onClick={() =>history.replace("/admin/formProduct")}>
+						<Button variant="primary" onClick={() => history.replace("/admin/formProduct")}>
 							Cancelar
 						</Button>
 					)}
 				</Form>
 			</Container>
-			<UDTable headers={[
-				"#",
-				"Nombre",
-				"Precio",
-				"Stock",
-				"Bodega",
-				"Categoria",
-				"Cepa"
-				]}
+			<UDTable
+				headers={["#", "Nombre", "Precio", "Stock", "Bodega", "Categoria", "Cepa"]}
 				rows={products}
-				attributes={["id","name","price","stock"]}
-				joins={["cellar","category","strain"]}
+				attributes={["id", "name", "price", "stock"]}
+				joins={["cellar", "category", "strain"]}
 				joinAttr={["name"]}
 				deletePk="id"
-				handleDelete={(id)=>throwModal({
-					show: true,
-					dialog: "El producto con Pk "+id+" será eliminado.\n¿Desea continuar?",
-					header: "Eliminar Producto",
-					pk: id
-				})}
+				handleDelete={id =>
+					throwModal({
+						show: true,
+						dialog: "El producto con Pk " + id + " será eliminado.\n¿Desea continuar?",
+						header: "Eliminar Producto",
+						pk: id,
+					})
+				}
 				updatePk="id"
 				updateURL="/admin/formProduct/edit"
 			/>
