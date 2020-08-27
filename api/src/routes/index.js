@@ -8,11 +8,9 @@ const userRouter = require("./user.js");
 const purchaseRouter = require("./purchase.js");
 const purchProdRouter = require("./purchProd.js");
 const statusRouter = require("./status.js");
-const reviewRouter = require("./review.js");
+const authRouter = require("./auth.js");
 const router = Router();
-
-module.exports = router;
-
+router.use("/auth", authRouter);
 router.use("/product", productRouter);
 router.use("/category", categoryRouter);
 router.use("/strain", strainRouter);

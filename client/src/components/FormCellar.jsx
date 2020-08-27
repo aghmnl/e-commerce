@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import UDTable from "./UDTable";
 import ModalDelete from "./ModalDelete";
 function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCellar }) {
+
 	const history = useHistory();
 	const [modalDelete, throwModal] = useState({
 		show:false,

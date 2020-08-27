@@ -36,7 +36,7 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 	if (!productDetail) return <Redirect to="/catelogue" />;
 	return (
 		<div>
-		<Card style={{ width: "55rem", margin: "auto"}} className="mt-3 center">
+		<Card style={{ width: "55rem", margin: "auto" }} className="mt-3 center">
 			<Container>
 				<Row>
 					{productDetail.stock === 0 && (

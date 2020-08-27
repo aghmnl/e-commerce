@@ -3,7 +3,7 @@ const { DataTypes } = require("sequelize");
 module.exports = sequelize => {
 	// defino el modelo
 	sequelize.define("user", {
-        name :{
+        first_name :{
             type: DataTypes.TEXT,
             allowNull:false
         },
@@ -13,20 +13,28 @@ module.exports = sequelize => {
         },
         email:{
             type: DataTypes.TEXT,
-            allowNull:false
+            allowNull:false,
+            unique: true,
+            validate: {
+                isEmail: true
+            }
         },
         password:{
             type: DataTypes.TEXT,
             allowNull:false
         },
-        phone:{
-            type: DataTypes.INTEGER,
-            allowNull:false
-        },
-        admin:{
-            type: DataTypes.BOOLEAN,
-            allowNull:false
+        salt: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
+        // phone:{
+        //     type: DataTypes.INTEGER,
+        //     allowNull:false
+        // },
+        // admin:{
+        //     type: DataTypes.BOOLEAN,
+        //     allowNull:false
+        // }
 
 	});
 };
