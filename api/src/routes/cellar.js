@@ -20,7 +20,6 @@ server.delete("/:id", (req, res, next) => {
 		.catch(err => next(err));
 });
 server.post("/", (req, res, next) => {
-	// delete req.body["nombreBoton"];
 	Cellar.create(req.body)
 		.then(() => res.sendStatus(200))
 		.catch(err => {
@@ -29,7 +28,6 @@ server.post("/", (req, res, next) => {
 		});
 });
 server.put("/:id", (req, res, next) => {
-	// delete req.body["nombreBoton"];
 	Cellar.update(req.body, { where: { id: parseInt(req.params.id) } })
 		.then(() => res.sendStatus(201))
 		.catch(err => next(err));
