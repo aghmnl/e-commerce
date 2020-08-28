@@ -24,10 +24,10 @@ server.post("/register", async function (req, res, next) {
 	const password = crypto.pbkdf2Sync(req.body.password, salt, 10000, 64, "sha512").toString("base64");
 
 	if (!isValidPassword(req.body.password)) {
-		return res.json({ status: "error", message: "Password must be 8 or more characters." });
+		return res.status(500).json({ status: "error", message: "Password must be 8 or more characters.", input:"password" });
 	}
 	if (!isValidEmail(req.body.email)) {
-		return res.json({ status: "error", message: "Email address not formed correctly." });
+		return res.status(500).json({ status: "error", message: "Email address not formed correctly.", input:"email" });
 	}
 
 	try {
@@ -36,7 +36,7 @@ server.post("/register", async function (req, res, next) {
 			last_name: req.body.last_name,
 			email: req.body.email,
 			phone: req.body.phone,
-			admin: req.body.admin,
+			admin: false,
 			password: password,
 			salt: salt,
 		});
@@ -56,7 +56,7 @@ server.post("/register", async function (req, res, next) {
 		}
 	} catch (err) {
 		console.log({ err });
-		return res.json({ status: "error", message: "Email address already exists.", err });
+		return res.status(500).json({ status: "error", message: "Email address already exists.", input: "email" , err });
 	}
 });
 
@@ -84,7 +84,12 @@ server.get("/logout", function (req, res, next) {
 server.get("/isauth", function (req, res, next) {
 	return res.json({ isAuth: req.isAuthenticated() });
 });
-
+server.get("/isadmin", async (req, res, next) =>{
+	const admin = await User.findByPk(req.user.id,{
+		attributes: ["admin"]
+	});
+	res.json(admin)
+})
 // S67 : Crear ruta /promote
 // POST /auth/promote/:id
 // Promote convierte al usuario con ID: id a Admin.
