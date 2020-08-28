@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Form, Col, Button, Row } from "react-bootstrap";
 import axios from "axios";
 import { useFormik } from "formik";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { getCellars, getCellar, cleanCellar } from "../store/actions/index";
 import { connect } from "react-redux";
 import UDTable from "./UDTable";

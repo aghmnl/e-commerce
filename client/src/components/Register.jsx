@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Form, Card, Button, Col } from 'react-bootstrap';
 import { useFormik } from 'formik';
@@ -134,3 +135,4 @@ export default function Register(){
         </div>
     );
 }
+

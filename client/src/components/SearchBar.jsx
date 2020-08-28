@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Nav, Navbar, FormControl } from "react-bootstrap";
-import { NavLink, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 export default function SearchBar() {
 	const history = useHistory();
 	const [inputText, setinputText] = useState("");
@@ -13,12 +13,6 @@ export default function SearchBar() {
 					history.replace("/catalogue?search=" + inputText);
 				}}
 			>
-				<NavLink to="/login">
-					<Navbar.Brand>Login</Navbar.Brand>
-				</NavLink>
-				{/* <NavLink to="/admin">
-					<Navbar.Brand>Admin</Navbar.Brand>
-				</NavLink> */}
 				<FormControl
 					type="text"
 					placeholder="Search"

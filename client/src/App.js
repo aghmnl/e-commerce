@@ -19,6 +19,8 @@ import { connect } from "react-redux";
 import Cart from "./components/Cart";
 import User from "./components/User";
 import Purchases from "./components/Purchases";
+import Reset from "./components/Reset";
+import Register from "./components/Register";
 
 function App({ getPurchases }) {
 	useEffect(() => {
@@ -78,6 +80,8 @@ function App({ getPurchases }) {
 			/>
 			<Route exact path="/login" component={Login} />
 			<Route exact path="/user" component={User} />
+			<Route exact path="/reset" component={Reset} />
+			<Route exact path="/register" component={Register} />
 			<Route exact path="/user/purchases" component={Purchases} />
 		</div>
 	);
