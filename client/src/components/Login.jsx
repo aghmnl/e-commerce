@@ -67,7 +67,9 @@ function Login() {
 					Iniciar Sesión
 				</button>
 				<p className="forgot-password text-center mt-2">
-					<Link to="/recover">¿Olvidó su contraseña?</Link>
+					<Link to="/reset">¿Olvidó su contraseña? </Link>
+					&nbsp; &nbsp; &nbsp;
+					<Link to="/register"> Registrar nuevo usuario</Link>
 				</p>
 			</form>
 		</div>
