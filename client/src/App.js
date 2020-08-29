@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import Catalogue from "./components/Catalogue";
 import FormProduct from "./components/FormProduct";
 import Product from "./components/Product";
@@ -12,7 +12,7 @@ import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import CarouselSlider from "./components/CarouselSlider";
-import { getPurchases } from "./store/actions/index";
+import { getPurchases, isAuth, isAdmin } from "./store/actions/index";
 import Admin from "./components/Admin";
 import FormPurchase from "./components/FormPurchase";
 import { connect } from "react-redux";
@@ -22,8 +22,10 @@ import Purchases from "./components/Purchases";
 import Reset from "./components/Reset";
 import Register from "./components/Register";
 
-function App({ getPurchases }) {
+function App({ getPurchases, isAuth, isAdmin }) {
 	useEffect(() => {
+		isAuth();
+		isAdmin();
 		getPurchases();
 	}, []);
 	return (
@@ -72,12 +74,7 @@ function App({ getPurchases }) {
 
 			<Route exact path="/product/:id" render={({ match }) => <Product id={match.params.id} />} />
 
-			<Route exact path="/admin/formUser" render={() => <FormUser />} />
-			<Route
-				exact
-				path="/admin/formUser/edit/:id"
-				render={({ match }) => <FormUser id={match.params.id} edit={true} />}
-			/>
+			<Route exact path="/admin/formUser" render={() =>  <FormUser />} />
 			<Route exact path="/login" component={Login} />
 			<Route exact path="/user" component={User} />
 			<Route exact path="/reset" component={Reset} />
@@ -88,4 +85,6 @@ function App({ getPurchases }) {
 }
 export default connect(null, {
 	getPurchases,
+	isAuth,
+	isAdmin
 })(App);

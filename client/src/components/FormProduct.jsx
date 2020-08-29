@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/FormProduct.css";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 import { ImBin2, ImPencil } from "react-icons/im";
 import { connect } from "react-redux";
 import UDTable from "./UDTable";
@@ -22,6 +22,8 @@ function FormProduct({
 	getCategories,
 	getCellars,
 	cleanProduct,
+	isAuth,
+	isAdmin
 }) {
 	const history = useHistory();
 	const [handle, setHandle] = useState("add");
@@ -80,7 +82,7 @@ function FormProduct({
 		// Acá manda mensaje del dato que falta y hace foco en el mismo (sitúa el cursor en ese campo)
 		if (!!id) {
 			axios
-				.put(`http://localhost:3001/product/${id}`, values)
+				.put(`http://localhost:3001/product_private/${id}`, values, {withCredentials: true})
 				.then(() => {
 					getProducts();
 					history.replace("/admin/formProduct");
@@ -88,9 +90,9 @@ function FormProduct({
 				.catch(err => console.log("error", err));
 			return;
 		}
-		const url = "http://localhost:3001/product";
+		const url = "http://localhost:3001/product_private";
 		axios
-			.post(url, values)
+			.post(url, values, {withCredentials: true})
 			.then(() => {
 				getProducts();
 				formik.resetForm(initialInputs);
@@ -99,13 +101,14 @@ function FormProduct({
 	}
 	function eliminar(id) {
 		axios
-			.delete(`http://localhost:3001/product/${id}`)
+			.delete(`http://localhost:3001/product_private/${id}`, {withCredentials: true})
 			.then(() => {
 				getProducts();
 				throwModal({ ...modalDelete, show: false });
 			})
 			.catch(err => console.log(err));
 	}
+	if(!isAdmin) return(<Redirect to="/login"/>);
 	return (
 		<div style={{ marginTop: "6rem" }}>
 			<ModalDelete
@@ -298,7 +301,7 @@ function FormProduct({
 	);
 }
 export default connect(
-	({ productDetail, products, categories, cellars, strains, strains_by }) => {
+	({ productDetail, products, categories, cellars, strains, strains_by, isAuth, isAdmin }) => {
 		return {
 			productDetail,
 			products,
@@ -306,6 +309,8 @@ export default connect(
 			cellars,
 			strains,
 			strains_by,
+			isAuth,
+			isAdmin
 		};
 	},
 	{ getProduct, getStrainsBy, getProducts, getCategories, getCellars, cleanProduct }

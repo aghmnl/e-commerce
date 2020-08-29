@@ -1,5 +1,5 @@
 const server = require("express").Router();
-const { Purchased_product } = require("../db.js");
+const { Purchased_product } = require("../../db.js");
 
 
 // S38 : Crear Ruta para agregar Item al Carrito

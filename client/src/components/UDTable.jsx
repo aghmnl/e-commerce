@@ -3,7 +3,7 @@ import {Table, Button} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
 import { ImBin2, ImPencil } from "react-icons/im";
 export default function UDTable({
-    headers, rows, attributes, joins, joinAttr, updateURL, updatePk, handleDelete, deletePk
+    headers, rows, attributes, joins, joinAttr, update, updatePk, updateIcon, handleDelete, deletePk
 }){
     const history = useHistory();
     return(
@@ -19,10 +19,14 @@ export default function UDTable({
                         {attributes.map(attr => (<td>{JSON.stringify(row[attr])}</td>))}
                         {joins && joins.map(join => joinAttr.map(attr => (<td>{row[join][attr]}</td>)))}
                         <td>
-                            <Button variant="success" onClick={()=>
-                                history.replace(`${updateURL}/${row[updatePk]}`)}
-                            >
-                                <ImPencil/>
+                            <Button variant="success" onClick={()=>{
+                                    if(typeof update === "string")
+                                    return history.replace(`${update}/${row[updatePk]}`);
+                                    update(row[updatePk]);
+                                }
+                            }
+                            >   
+                                {!updateIcon?(<ImPencil/>):(updateIcon)}
                             </Button>
                         </td>
                         {handleDelete && deletePk && (

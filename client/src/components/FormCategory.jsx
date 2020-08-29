@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { Form, Col, Button, Row, Container, Alert, Modal } from "react-bootstrap";
 import "../styles/FormCategory.css";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCategories, getCategory, cleanCategory } from "../store/actions/index";
 import { useFormik } from "formik";
 import UDTable from "./UDTable";
 import ModalDelete from "./ModalDelete";
-function FormCategory({ categories, category, getCategory, getCategories, id, cleanCategory }) {
+function FormCategory({ categories, category, getCategory, getCategories, id, cleanCategory, isAuth, isAdmin }) {
 	const history = useHistory();
 	const [modalDelete, throwModal] = useState({
 		show: false,
@@ -47,7 +47,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 	function handleSubmit(values) {
 		if (!!id) {
 			axios
-				.put(`http://localhost:3001/category/${id}`, values)
+				.put(`http://localhost:3001/category_private/${id}`, values, {withCredentials:true})
 				.then(() => {
 					getCategories();
 					history.replace("/admin/formCategory");
@@ -55,10 +55,10 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 				.catch(err => console.log("error", err));
 			return;
 		}
-		const url = "http://localhost:3001/category";
-		const urlStrain = "http://localhost:3001/strain";
+		const url = "http://localhost:3001/category_private";
+		const urlStrain = "http://localhost:3001/strain_private";
 		axios
-			.post(url, values)
+			.post(url, values, {withCredentials:true})
 			.then(res => {
 				axios.post(urlStrain, {
 					name: values.strainName,
@@ -71,7 +71,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 	}
 	function eliminar(id) {
 		axios
-			.delete(`http://localhost:3001/category/${id}`)
+			.delete(`http://localhost:3001/category_private/${id}`,{withCredentials:true})
 			.then(() => {
 				getCategories();
 				throwModal({ ...modalDelete, show: false });
@@ -81,6 +81,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 				throwModal({ ...modalDelete, show: false });
 			});
 	}
+	if(!isAdmin) return (<Redirect to="/login"/>)
 	return (
 		<div id="main" style={{ marginTop: "8rem" }}>
 			<ModalDelete
@@ -177,10 +178,11 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 	);
 }
 export default connect(
-	({ category, categories }) => {
+	({ category, categories, isAuth, isAdmin }) => {
 		return {
 			categories,
 			category,
+			isAuth
 		};
 	},
 	{ getCategories, getCategory, cleanCategory }

@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Form, Col, Button, Row, Container, Alert } from "react-bootstrap";
 import axios from "axios";
 import { useFormik } from "formik";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import { getStrains, getStrain, getCategories, cleanStrain } from "../store/actions/index";
 import { connect } from "react-redux";
 import UDTable from "./UDTable";
 import ModalDelete from "./ModalDelete";
-function FormStrain({ strain, strains, getStrains, getStrain, getCategories, categories, id, cleanStrain }) {
+function FormStrain({ strain, strains, getStrains, getStrain, getCategories, categories, id, cleanStrain, isAdmin }) {
 	const history = useHistory();
 	const [modalDelete, throwModal] = useState({
 		show: false,
@@ -44,7 +44,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 	function handleSubmit(values) {
 		if (!!id) {
 			axios
-				.put(`http://localhost:3001/strain/${id}`, values)
+				.put(`http://localhost:3001/strain_private/${id}`, values, {withCredentials: true})
 				.then(() => {
 					getStrains();
 					history.replace("/admin/formStrain");
@@ -53,16 +53,16 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 			return;
 		}
 
-		const url = "http://localhost:3001/strain";
+		const url = "http://localhost:3001/strain_private";
 		axios
-			.post(url, values)
+			.post(url, values, {withCredentials: true})
 			.then(res => getStrains())
 			.catch(e => console.log(e));
 	}
 
 	function eliminar(id) {
 		axios
-			.delete(`http://localhost:3001/strain/${id}`)
+			.delete(`http://localhost:3001/strain_private/${id}`, {withCredentials: true})
 			.then(() => {
 				getStrains();
 			})
@@ -71,7 +71,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 			});
 		throwModal({ ...modalDelete, show: false });
 	}
-
+	if(!isAdmin) return(<Redirect to="\login"/>)
 	return (
 		<div id="main">
 			<ModalDelete
@@ -161,7 +161,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 		</div>
 	);
 }
-export default connect(({ strains, strain, categories }) => ({ strains, strain, categories }), {
+export default connect(({ strains, strain, categories, isAdmin }) => ({ strains, strain, categories, isAdmin }), {
 	getStrains,
 	getStrain,
 	getCategories,

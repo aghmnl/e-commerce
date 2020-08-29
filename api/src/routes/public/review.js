@@ -1,5 +1,5 @@
 const server = require("express").Router();
-const { Review } = require("../db.js");
+const { Review } = require("../../db.js");
 module.exports = server;
 
 // S54: Crear ruta para crear/agregar Review

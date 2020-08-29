@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import "../styles/Login.css";
-
+import {useDispatch, useSelector} from "react-redux";
+import {isAuth, isAdmin} from "../store/actions/index";
 function Login() {
+	const dispatch = useDispatch();
+	const {isAuth} = useSelector(state => state);
 	var history = useHistory();
 	const [inputs, setInputs] = useState({
 		email: "",
@@ -27,13 +30,18 @@ function Login() {
 		}
 		const url = "http://localhost:3001/auth/login";
 		axios
-			.post(url, inputs)
+			.post(url, inputs,{
+				withCredentials: true
+			})
 			.then(res => {
 				console.log({ res });
+				dispatch(isAdmin());
+				dispatch(isAuth());
 				history.replace("/user");
 			})
 			.catch(e => console.log(e));
 	}
+	if(isAuth) return(<Redirect to="/user"/>);
 	return (
 		<div className=" row contenedor">
 			<form className="col-4 login" onSubmit={e => handleSubmit(e)}>
