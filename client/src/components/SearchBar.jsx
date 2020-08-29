@@ -10,6 +10,7 @@ export default function SearchBar() {
 				inline
 				onSubmit={e => {
 					e.preventDefault();
+					setinputText(" ");
 					history.replace("/catalogue?search=" + inputText);
 				}}
 			>
@@ -18,6 +19,7 @@ export default function SearchBar() {
 					placeholder="Search"
 					className="mr-sm-2"
 					value={inputText}
+					id="inputSearch"
 					onChange={e => setinputText(e.target.value)}
 				/>
 				<Button variant="outline-info" type="submit">

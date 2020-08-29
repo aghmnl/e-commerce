@@ -91,6 +91,7 @@ function Catalogue({
 									<Pagination.Item key={i + 1} active={i === parseInt(active)}>
 										<NavLink to={"/catalogue/" + i}>{i + 1}</NavLink>
 									</Pagination.Item>
+									
 								);
 							}
 
