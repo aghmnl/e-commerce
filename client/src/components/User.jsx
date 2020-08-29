@@ -3,15 +3,15 @@ import { Nav, Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { useHistory, Redirect } from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {isAuth, isAdmin} from "../store/actions/index";
+import { useDispatch, useSelector } from "react-redux";
+import { isAuth, isAdmin } from "../store/actions/index";
 import axios from "axios";
 
 export default function User() {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const {isAuth} = useSelector(state => state);
-	if(!isAuth) return(<Redirect to="/login"/>);
+	const { isAuth } = useSelector(state => state);
+	if (!isAuth) return <Redirect to="/login" />;
 	return (
 		<Nav id="navegacion">
 			<Nav.Item>
@@ -24,12 +24,11 @@ export default function User() {
 					variant="primary"
 					onClick={() => {
 						axios
-							.get(`http://localhost:3001/auth/logout`, {withCredentials: true})
+							.get(`http://localhost:3001/auth/logout`, { withCredentials: true })
 							.then(() => {
+								history.replace("/");
 								dispatch(isAuth());
 								dispatch(isAdmin());
-								history.replace("/");
-
 							})
 							.catch(err => console.log("error", err));
 						return;
