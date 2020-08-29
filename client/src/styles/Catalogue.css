@@ -5,7 +5,7 @@
 	flex-wrap: wrap;
 	justify-self: auto;
 
-	margin-top: 40px;
+	margin-top: 20px;
 	margin-right: 80px;
 
 }
@@ -30,4 +30,8 @@ body {
 	background-attachment: fixed;
 	overflow: scroll;
 	background-size: cover;
+}
+
+.page-item .active{
+	color:white !important;
 }
