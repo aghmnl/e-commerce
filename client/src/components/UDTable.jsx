@@ -20,9 +20,10 @@ export default function UDTable({
                         {joins && joins.map(join => joinAttr.map(attr => (<td>{row[join][attr]}</td>)))}
                         <td>
                             <Button variant="success" onClick={()=>{
+                                    console.log(typeof update)
                                     if(typeof update === "string")
                                     return history.replace(`${update}/${row[updatePk]}`);
-                                    update(row[updatePk]);
+                                    if(typeof update === "funciton") update(row[updatePk]);
                                 }
                             }
                             >   

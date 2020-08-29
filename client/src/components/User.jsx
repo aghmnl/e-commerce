@@ -10,8 +10,8 @@ import axios from "axios";
 export default function User() {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const { isAuth } = useSelector(state => state);
-	if (!isAuth) return <Redirect to="/login" />;
+	const { logged } = useSelector(state => state);
+	if (!logged) return <Redirect to="/login" />;
 	return (
 		<Nav id="navegacion">
 			<Nav.Item>

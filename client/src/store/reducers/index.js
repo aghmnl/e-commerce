@@ -196,12 +196,12 @@ export default (state = initialState, action) => {
 		case IS_AUTH:
 			return {
 				...state,
-				isAuth: action.payload,
+				logged: action.payload,
 			};
 		case IS_ADMIN:
 			return {
 				...state,
-				isAdmin: action.payload,
+				Admin: action.payload,
 			};
 		case "CLEAN_PRODUCT":
 			return { ...state, productDetail: {} };
