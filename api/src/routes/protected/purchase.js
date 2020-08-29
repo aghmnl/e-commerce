@@ -1,5 +1,5 @@
 const server = require("express").Router();
-const { Purchase, User, Pay_method, Status } = require("../db.js");
+const { Purchase, User, Pay_method, Status } = require("../../db.js");
 
 
 // S44 : Crear ruta que retorne todas las órdenes

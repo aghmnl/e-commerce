@@ -1,19 +1,5 @@
 const server = require("express").Router();
-const { Strain, Category } = require("../db.js");
-
-
-server.get("/", (req, res, next) => {
-	Strain.findAll({
-		include: [
-			{
-				model: Category,
-				as: "category",
-			},
-		],
-	})
-		.then(strains => res.json(strains))
-		.catch(err => next(err));
-});
+const { Strain } = require("../../db.js");
 server.get("/one/:id", (req, res, next) => {
 	Strain.findOne({ where: { id: parseInt(req.params.id) } })
 		.then(strain => res.json(strain))

@@ -2,8 +2,20 @@ const server = require("express").Router();
 const passport = require("passport");
 const crypto = require("crypto");
 const { User } = require("../db.js");
-
+const { literal } = require("sequelize");
 //checks if password has > 8 chars
+async function isAdmin(req, res, next){
+	const {admin} = await User.findByPk(req.user.id,{
+		attributes : ["admin"]
+	});
+	if(admin) return next();
+	return res.sendStatus(403);
+}
+function isAuthenticated(req, res, next){
+	console.log("usuaio",req.isAuthenticated());
+	if(req.isAuthenticated()) return next();
+	return res.sendStatus(401);
+}
 function isValidPassword(password) {
 	if (password.length >= 8) {
 		return true;
@@ -50,7 +62,7 @@ server.post("/register", async function (req, res, next) {
 				}
 				req.logIn(user, function(err) {
 				if (err) { return next(err); }
-				return res.json({ status: "ok" });
+				return res.json({ status: "ok", user : req.user });
 				});
 			})(req, res, next);
 		}
@@ -70,7 +82,7 @@ server.post("/login", function (req, res, next) {
 		}
 		req.login(user, function(err) {
 		if (err) { return next(err); }
-		 return res.json({ status: "ok" });
+		 return res.json({ status: "ok", user, isAuth: req.isAuthenticated()});
 		});
 	})(req, res, next);
 });
@@ -82,10 +94,11 @@ server.get("/logout", function (req, res, next) {
 });
 
 server.get("/isauth", function (req, res, next) {
+	console.log(req.user);
 	return res.json({ isAuth: req.isAuthenticated() });
 });
-server.get("/isadmin", async (req, res, next) =>{
-	const admin = await User.findByPk(req.user.id,{
+server.get("/isadmin", isAuthenticated, async (req, res, next) =>{
+	const {admin} = await User.findByPk(req.user.id,{
 		attributes: ["admin"]
 	});
 	res.json(admin)
@@ -95,10 +108,10 @@ server.get("/isadmin", async (req, res, next) =>{
 // Promote convierte al usuario con ID: id a Admin.
 // ATENCIÓN, LO IMPLEMENTAMOS COMO PUT YA QUE TENEMOS CAMPO BOOLEAN DE ADMIN
 // Y lo que hay que cambiar es el valor del campo admin a true
-server.put("/promote/:id", (req, res, next) => {
-	User.update(req.body, { where: { id: parseInt(req.params.id) } })
+server.put("/promote/:id", isAuthenticated, isAdmin, (req, res, next) => {
+	User.update({admin: literal('NOT admin')}, { where: { id: parseInt(req.params.id) } })
 		.then(() => res.sendStatus(201))
 		.catch(err => next(err));
 });
 
-module.exports = server;
+module.exports = { server , isAuthenticated, isAdmin };

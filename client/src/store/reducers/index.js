@@ -191,6 +191,16 @@ export default (state = initialState, action) => {
 				...state,
 				purchases: action.payload,
 			};
+        case "IS_AUTH":
+			return {
+				...state,
+				isAuth : action.payload,
+			}
+		case "IS_ADMIN":
+			return {
+				...state,
+				isAdmin : action.payload,
+			}
 		case "CLEAN_PRODUCT":
 			return { ...state, productDetail: {} };
 		case "CLEAN_CATALOGUE":

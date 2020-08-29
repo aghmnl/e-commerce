@@ -1,23 +1,19 @@
 const server = require("express").Router();
-const { Status } = require("../db.js");
-
-
-// http://localhost:3001/status
-server.get("/", (req, res, next) => {
-	Status.findAll()
-		.then(statuses => res.json(statuses))
+const { Cellar } = require("../../db.js");
+server.get("/one/:id", (req, res, next) => {
+	Cellar.findOne({ where: { id: parseInt(req.params.id) } })
+		.then(cellar => res.json(cellar))
 		.catch(err => next(err));
 });
-
 server.delete("/:id", (req, res, next) => {
-	Status.destroy({
+	Cellar.destroy({
 		where: { id: parseInt(req.params.id) },
 	})
 		.then(() => res.sendStatus(200))
 		.catch(err => next(err));
 });
 server.post("/", (req, res, next) => {
-	Status.create(req.body)
+	Cellar.create(req.body)
 		.then(() => res.sendStatus(200))
 		.catch(err => {
 			res.send(400).end(err);
@@ -25,8 +21,8 @@ server.post("/", (req, res, next) => {
 		});
 });
 server.put("/:id", (req, res, next) => {
-	Status.update(req.body, { where: { id: parseInt(req.params.id) } })
-		.then(() => res.sendStatus(200))
+	Cellar.update(req.body, { where: { id: parseInt(req.params.id) } })
+		.then(() => res.sendStatus(201))
 		.catch(err => next(err));
 });
 module.exports = server;

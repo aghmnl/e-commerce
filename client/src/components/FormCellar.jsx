@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { Form, Col, Button, Row } from "react-bootstrap";
 import axios from "axios";
 import { useFormik } from "formik";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import { getCellars, getCellar, cleanCellar } from "../store/actions/index";
 import { connect } from "react-redux";
 import UDTable from "./UDTable";
 import ModalDelete from "./ModalDelete";
-function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCellar }) {
+function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCellar, isAuth, isAdmin }) {
 	const history = useHistory();
 	const [modalDelete, throwModal] = useState({
 		show: false,
@@ -42,7 +42,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 	function handleSubmit(values) {
 		if (id) {
 			axios
-				.put(`http://localhost:3001/cellar/${id}`, values)
+				.put(`http://localhost:3001/cellar_private/${id}`, values, {withCredentials: true})
 				.then(() => {
 					getCellars();
 					history.replace("/admin/formCellar");
@@ -50,9 +50,9 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 				.catch(err => console.log("error", err));
 			return;
 		}
-		const url = "http://localhost:3001/cellar";
+		const url = "http://localhost:3001/cellar_private";
 		axios
-			.post(url, values)
+			.post(url, values, {withCredentials: true})
 			.then(res => {
 				getCellars();
 				formik.resetForm({ name: "" });
@@ -61,7 +61,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 	}
 	function eliminar(id) {
 		axios
-			.delete(`http://localhost:3001/cellar/${id}`)
+			.delete(`http://localhost:3001/cellar_private/${id}`,{withCredentials: true})
 			.then(() => {
 				getCellars();
 				throwModal({ ...modalDelete, show: false });
@@ -70,7 +70,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 				console.log(err);
 			});
 	}
-
+	if(!isAdmin) return (<Redirect to="/login"/>)
 	return (
 		<div id="main" style={{ textAlign: "right" }}>
 			<ModalDelete
@@ -126,6 +126,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 		</div>
 	);
 }
-export default connect(({ cellar, cellars }) => ({ cellar, cellars }), { getCellar, getCellars, cleanCellar })(
+export default connect(({ cellar, cellars, isAuth, isAdmin }) => ({ cellar, cellars, isAuth, isAdmin }), 
+{ getCellar, getCellars, cleanCellar })(
 	FormCellar
 );

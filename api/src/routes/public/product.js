@@ -1,6 +1,6 @@
 const server = require("express").Router();
 const Sequelize = require("sequelize");
-const { Product, Cellar, Strain, Category, Review, User } = require("../db.js");
+const { Product, Cellar, Strain, Category, Review, User } = require("../../db.js");
 const Op = Sequelize.Op;
 
 
@@ -167,24 +167,6 @@ server.get("/search?:query", (req, res, next) => {
 		],
 	})
 		.then(products => res.json(products))
-		.catch(err => next(err));
-});
-
-server.post("/", (req, res, next) => {
-	// delete req.body["nombreBoton"];
-	Product.create(req.body)
-		.then(() => res.sendStatus(200))
-		.catch(err => next(err));
-});
-server.put("/:id", (req, res, next) => {
-	// delete req.body["nombreBoton"];
-	Product.update(req.body, { where: { id: parseInt(req.params.id) } })
-		.then(() => res.sendStatus(200))
-		.catch(err => next(err));
-});
-server.delete("/:id", (req, res, next) => {
-	Product.destroy({ where: { id: parseInt(req.params.id) } })
-		.then(() => res.sendStatus(200))
 		.catch(err => next(err));
 });
 module.exports = server;

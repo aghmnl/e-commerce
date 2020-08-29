@@ -43,7 +43,8 @@ const createRegs = async () => {
 	const pay_methodPromise = pay_methods.map(c => createPromise(Pay_method, c));
 	await Promise.all(pay_methodPromise);
 	const reviewsPromise = reviews.map(c => createPromise(Review, c));
-	await Promise.all(reviewsPromise);
+	await Promise.all(reviewsPromise)
+		.catch(err => console.log(err))
 	const statusPromise = status.map(c => createPromise(Status, c));
 	await Promise.all(statusPromise);
 	const purchasesPromise = purchases.map(c => createPromise(Purchase, c));
