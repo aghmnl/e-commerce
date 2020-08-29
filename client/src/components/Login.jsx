@@ -6,8 +6,7 @@ import { useDispatch, useSelector, connect } from "react-redux";
 import { isAuth, isAdmin } from "../store/actions/index";
 function Login() {
 	const dispatch = useDispatch();
-	const { isAuth } = useSelector(state => state);
-	useEffect(() => {}, [isAuth]);
+	const { logged, Admin } = useSelector(state => state);
 	var history = useHistory();
 	const [inputs, setInputs] = useState({
 		email: "",
@@ -43,10 +42,10 @@ function Login() {
 			.catch(e => console.log(e));
 	}
 
-	if (isAdmin) {
+	if (Admin) {
 		return <Redirect to="/admin" />;
 	} else {
-		if (isAuth) return <Redirect to="/user" />;
+		if (logged) return <Redirect to="/user" />;
 	}
 	return (
 		<div className=" row contenedor">
@@ -90,9 +89,9 @@ function Login() {
 	);
 }
 
-export default connect(({ isAuth, isAdmin }) => {
+export default connect(({ logged, Admin }) => {
 	return {
-		isAuth,
-		isAdmin,
+		logged,
+		Admin,
 	};
 })(Login);

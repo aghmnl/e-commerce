@@ -8,7 +8,7 @@ import { getCategories, getCategory, cleanCategory } from "../store/actions/inde
 import { useFormik } from "formik";
 import UDTable from "./UDTable";
 import ModalDelete from "./ModalDelete";
-function FormCategory({ categories, category, getCategory, getCategories, id, cleanCategory, isAuth, isAdmin }) {
+function FormCategory({ categories, category, getCategory, getCategories, id, cleanCategory, Admin }) {
 	const history = useHistory();
 	const [modalDelete, throwModal] = useState({
 		show: false,
@@ -81,7 +81,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 				throwModal({ ...modalDelete, show: false });
 			});
 	}
-	if(!isAdmin) return (<Redirect to="/login"/>)
+	if(!Admin) return (<Redirect to="/login"/>)
 	return (
 		<div id="main" style={{ marginTop: "8rem" }}>
 			<ModalDelete
@@ -163,7 +163,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 				rows={categories}
 				attributes={["id", "name"]}
 				updatePk="id"
-				updateURL="/admin/formCategory/edit"
+				update="/admin/formCategory/edit"
 				deletePk="id"
 				handleDelete={id => {
 					throwModal({
@@ -178,11 +178,11 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 	);
 }
 export default connect(
-	({ category, categories, isAuth, isAdmin }) => {
+	({ category, categories, Admin }) => {
 		return {
 			categories,
 			category,
-			isAuth
+			Admin
 		};
 	},
 	{ getCategories, getCategory, cleanCategory }

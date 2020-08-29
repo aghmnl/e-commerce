@@ -7,7 +7,7 @@ import { getCellars, getCellar, cleanCellar } from "../store/actions/index";
 import { connect } from "react-redux";
 import UDTable from "./UDTable";
 import ModalDelete from "./ModalDelete";
-function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCellar, isAuth, isAdmin }) {
+function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCellar, Admin }) {
 	const history = useHistory();
 	const [modalDelete, throwModal] = useState({
 		show: false,
@@ -70,7 +70,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 				console.log(err);
 			});
 	}
-	if(!isAdmin) return (<Redirect to="/login"/>)
+	if(!Admin) return (<Redirect to="/login"/>)
 	return (
 		<div id="main" style={{ textAlign: "right" }}>
 			<ModalDelete
@@ -111,7 +111,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 				headers={["#", "Nombre"]}
 				rows={cellars}
 				attributes={["id", "name"]}
-				updateURL="/admin/formCellar/edit"
+				update="/admin/formCellar/edit"
 				updatePk="id"
 				deletePk="id"
 				handleDelete={id => {
@@ -126,7 +126,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 		</div>
 	);
 }
-export default connect(({ cellar, cellars, isAuth, isAdmin }) => ({ cellar, cellars, isAuth, isAdmin }), 
+export default connect(({ cellar, cellars, Admin }) => ({ cellar, cellars, Admin }), 
 { getCellar, getCellars, cleanCellar })(
 	FormCellar
 );
