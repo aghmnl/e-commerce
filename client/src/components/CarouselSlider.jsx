@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 //import Carousel from 'react-bootstrap/Carousel'
 import ProductCardCarousel from "./ProductCardCarousel";
 import Carousel from "react-multi-carousel";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import "react-multi-carousel/lib/styles.css";
 import "../styles/CarouselSlider.css";
-import {getProducts} from "../store/actions/index";
+import { getProducts } from "../store/actions/index";
 function ControlledCarousel({ products, getProducts }) {
 	useEffect(() => {
-		async function fetchData(){
+		async function fetchData() {
 			await getProducts();
 		}
 		fetchData();
@@ -65,98 +65,11 @@ function ControlledCarousel({ products, getProducts }) {
 		</div>
 	);
 }
-export default connect(function ({products}){
-  return {
-    products
-  }
-},{getProducts})(ControlledCarousel)
-/*     const [index, setIndex] = useState(0);
-  
-    const handleSelect = (selectedIndex, e) => {
-      setIndex(selectedIndex);
-    }; */
-
-/*     return (
-  /*     <Carousel className="row" activeIndex={index} onSelect={handleSelect}>
-        <Carousel.Item className="card1">
-          <img
-            
-            src="https://i.ibb.co/GF8Kk2j/bigstock-pouring-pink-rose-blush-wine-t-267299776-1-621x621.jpg"
-            alt="First slide"
-          />
-          <Carousel.Caption>
-            <h3>Primera Slide</h3>
-          </Carousel.Caption>
-        </Carousel.Item>
-        <Carousel.Item className="card1">
-          <img
-            src="https://i.ibb.co/mbyHr09/image.jpg"
-            alt="Second slide"
-          />
-  
-          <Carousel.Caption>
-            <h3>Segunda Slide</h3>
-          </Carousel.Caption>
-        </Carousel.Item>
-        <Carousel.Item className="card1">
-          <img
-            
-            src="https://i.ibb.co/MkQ5dpC/rosado.jpg"
-            alt="Third slide"
-          />
-  
-          <Carousel.Caption>
-            <h3>Tercera Slide</h3>
-          </Carousel.Caption>
-        </Carousel.Item>
-      
-        </Carousel>
-
-        );
-    }  */
-
-/*             <Carousel className="carousel">
-                <Carousel.Item>
-                <img
-                    id="slider1"
-                    className="d-block w-100"
-                    src="https://i.ibb.co/GF8Kk2j/bigstock-pouring-pink-rose-blush-wine-t-267299776-1-621x621.jpg"
-                    alt="First slide"
-                    
-                />
-                <Carousel.Caption>
-                    <h3>Primera</h3>
-                    <p>Algo.</p>
-                </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                <img
-                    id="slider2"
-                    className="d-block w-100"
-                    src="https://i.ibb.co/mbyHr09/image.jpg"
-                    alt="Third slide"
-                />
-            
-                <Carousel.Caption>
-                    <h3>Segunda</h3>
-                    <p>Algo.</p>
-                </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                <img
-                    id="slider3"
-                    className="d-block w-100"
-                    src="https://i.ibb.co/MkQ5dpC/rosado.jpg"
-                    alt="Third slide"
-                />
-            
-                <Carousel.Caption>
-                    <h3>Tercera</h3>
-                    <p>Algo.</p>
-                </Carousel.Caption>
-                </Carousel.Item>
-            </Carousel>
-        )
-    }
-    
-} */
+export default connect(
+	function ({ products }) {
+		return {
+			products,
+		};
+	},
+	{ getProducts }
+)(ControlledCarousel);

@@ -23,7 +23,7 @@ function FormProduct({
 	getCellars,
 	cleanProduct,
 	isAuth,
-	isAdmin
+	isAdmin,
 }) {
 	const history = useHistory();
 	const [handle, setHandle] = useState("add");
@@ -82,7 +82,7 @@ function FormProduct({
 		// Acá manda mensaje del dato que falta y hace foco en el mismo (sitúa el cursor en ese campo)
 		if (!!id) {
 			axios
-				.put(`http://localhost:3001/product_private/${id}`, values, {withCredentials: true})
+				.put(`http://localhost:3001/product_private/${id}`, values, { withCredentials: true })
 				.then(() => {
 					getProducts();
 					history.replace("/admin/formProduct");
@@ -92,7 +92,7 @@ function FormProduct({
 		}
 		const url = "http://localhost:3001/product_private";
 		axios
-			.post(url, values, {withCredentials: true})
+			.post(url, values, { withCredentials: true })
 			.then(() => {
 				getProducts();
 				formik.resetForm(initialInputs);
@@ -101,14 +101,14 @@ function FormProduct({
 	}
 	function eliminar(id) {
 		axios
-			.delete(`http://localhost:3001/product_private/${id}`, {withCredentials: true})
+			.delete(`http://localhost:3001/product_private/${id}`, { withCredentials: true })
 			.then(() => {
 				getProducts();
 				throwModal({ ...modalDelete, show: false });
 			})
 			.catch(err => console.log(err));
 	}
-	if(!isAdmin) return(<Redirect to="/login"/>);
+	if (!isAdmin) return <Redirect to="/login" />;
 	return (
 		<div style={{ marginTop: "6rem" }}>
 			<ModalDelete
@@ -310,7 +310,7 @@ export default connect(
 			strains,
 			strains_by,
 			isAuth,
-			isAdmin
+			isAdmin,
 		};
 	},
 	{ getProduct, getStrainsBy, getProducts, getCategories, getCellars, cleanProduct }

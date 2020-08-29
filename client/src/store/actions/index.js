@@ -21,6 +21,9 @@ export const GET_USER = "GET_USER";
 export const GET_PURCHASES = "GET_PURCHASES";
 export const GET_STATUSES = "GET_STATUSES";
 export const GET_CATALOGUE = "GET_CATALOGUE";
+export const IS_ADMIN = "IS_ADMIN";
+export const IS_AUTH = "IS_AUTH";
+
 export const cleanProduct = () => ({
 	type: "CLEAN_PRODUCT",
 });
@@ -41,25 +44,30 @@ export const cleanStrain = () => ({
 });
 export const getProducts = categoryId => {
 	return dispatch => {
-		const url = !categoryId ? "http://localhost:3001/product_public" : `http://localhost:3001/product_public/category/${categoryId}`;
-		return axios.get(url, {withCredentials: true})
-			.then(({data: products}) => dispatch({ type: GET_PRODUCTS, payload: products }))
+		const url = !categoryId
+			? "http://localhost:3001/product_public"
+			: `http://localhost:3001/product_public/category/${categoryId}`;
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data: products }) => dispatch({ type: GET_PRODUCTS, payload: products }))
 			.catch(err => console.log(err));
 	};
 };
 export const isAuth = () => {
 	return dispatch => {
 		const url = "http://localhost:3001/auth/isauth";
-		return axios.get(url,{ withCredentials: true })
-			.then(({data}) => dispatch({ type: "IS_AUTH", payload: data.isAuth }))
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data }) => dispatch({ type: IS_AUTH, payload: data.isAuth }))
 			.catch(err => console.log(err));
 	};
 };
 export const isAdmin = () => {
 	return dispatch => {
 		const url = "http://localhost:3001/auth/isadmin";
-		return axios.get(url,{ withCredentials: true })
-			.then(({data}) => dispatch({ type: "IS_ADMIN", payload: data }))
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data }) => dispatch({ type: IS_ADMIN, payload: data }))
 			.catch(err => console.log(err));
 	};
 };
@@ -86,16 +94,18 @@ export const getProduct = id => {
 export const getCategories = () => {
 	return dispatch => {
 		const url = "http://localhost:3001/category_public";
-		return axios.get(url, { withCredentials: true })
-			.then(({data}) => dispatch({ type: GET_CATEGORIES, payload: data }))
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data }) => dispatch({ type: GET_CATEGORIES, payload: data }))
 			.catch(err => console.log(err));
 	};
 };
 export const getCategory = id => {
 	return dispatch => {
 		const url = "http://localhost:3001/category_private/one/" + id;
-		return axios.get(url, {withCredentials: true})
-			.then(({data : category}) => dispatch({ type: GET_CATEGORY, payload: category }))
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data: category }) => dispatch({ type: GET_CATEGORY, payload: category }))
 			.catch(err => console.log(err));
 	};
 };
@@ -111,8 +121,9 @@ export const getCellars = () => {
 export const getCellar = id => {
 	return dispatch => {
 		const url = "http://localhost:3001/cellar_private/one/" + id;
-		return axios.get(url,{withCredentials: true})
-			.then(({data:cellar}) => dispatch({ type: GET_CELLAR, payload: cellar }))
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data: cellar }) => dispatch({ type: GET_CELLAR, payload: cellar }))
 			.catch(err => console.log(err));
 	};
 };
@@ -128,8 +139,9 @@ export const getStrains = () => {
 export const getStrain = id => {
 	return dispatch => {
 		const url = "http://localhost:3001/strain_private/one/" + id;
-		return axios.get(url,{withCredentials:true})
-			.then(({data:strain}) => dispatch({ type: GET_STRAIN, payload: strain }))
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data: strain }) => dispatch({ type: GET_STRAIN, payload: strain }))
 			.catch(err => console.log(err));
 	};
 };
@@ -188,16 +200,18 @@ export const emptyCart = () => {
 export const getUsers = () => {
 	return dispatch => {
 		const url = "http://localhost:3001/user_private";
-		return axios.get(url, {withCredentials: true})
-			.then(({data: users}) => dispatch({ type: GET_USERS, payload: users }))
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data: users }) => dispatch({ type: GET_USERS, payload: users }))
 			.catch(err => console.log(err));
 	};
 };
 export const getUser = id => {
 	return dispatch => {
 		const url = "http://localhost:3001/user_private/" + id;
-		return axios.get(url, {withCredentials: true})
-			.then(({data:user}) => dispatch({ type: GET_USER, payload: user }))
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data: user }) => dispatch({ type: GET_USER, payload: user }))
 			.catch(err => console.log(err));
 	};
 };
