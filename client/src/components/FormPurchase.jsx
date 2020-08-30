@@ -72,6 +72,7 @@ function Purchases({ purchases, statuses, statusId, getStatuses, getPurchases })
 							</Container>
 						</Card>
 					</NavLink>
+
 				))}
 			</div>
 		</div>

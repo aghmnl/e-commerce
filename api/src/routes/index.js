@@ -29,9 +29,12 @@ router.use("/cellar_public", cellarPublicRouter);
 router.use("/cellar_private", isAuthenticated, isAdmin, cellarPrivateRouter);
 router.use("/user", isAuthenticated, userRouter);
 router.use("/user_private", isAuthenticated, isAdmin, userPrivateRouter);
+// ATENCIÓN, QUEDÓ SIN VERIFICAR AUTENTICACIÓN!!
 router.use("/purchase_protected", purchaseProtectedRouter);
+// ATENCIÓN, QUEDÓ SIN VERIFICAR AUTENTICACIÓN!!
 router.use("/purchase_private", purchasePrivateRouter);
-router.use("/purchased_products_protected", purchProdProtectedRouter); // ¿¿Se puede esto??
+router.use("/purchased_products_protected", isAuthenticated, purchProdProtectedRouter); // ¿¿Se puede esto??
+// ATENCIÓN, QUEDÓ SIN VERIFICAR AUTENTICACIÓN!!
 router.use("/status_private", statusPrivateRouter);
 router.use("/review", reviewRouter);
 module.exports = router;
