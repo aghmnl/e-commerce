@@ -66,3 +66,4 @@ function FormUser({ users, user, getUsers, getUser, admin }) {
 export default connect(({ user, users, admin }) => ({ user, users, admin }), { getUser, getUsers, cleanUser })(
 	FormUser
 );
+

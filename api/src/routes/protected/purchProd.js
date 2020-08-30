@@ -1,7 +1,8 @@
 const server = require("express").Router();
 const { Purchased_product, Product, Purchase } = require("../../db.js");
 server.post("/add_product", (req, res, next) => {
-	req.body.cart_items.forEach(cart_item => {
+
+	!!req.body.cartId && req.body.cart_items.forEach((cart_item)=>{
 		Purchased_product.findOrCreate({
 			where: {
 				purchaseId: req.body.cartId,
@@ -14,7 +15,7 @@ server.post("/add_product", (req, res, next) => {
 				productId: cart_item.id,
 			},
 		}).then(([purchased_product, created]) => {
-			if (!created) {
+			if(!created){
 				purchased_product.quantity += cart_item.quantity;
 				purchased_product.save();
 			}

@@ -71,7 +71,8 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 			});
 		throwModal({ ...modalDelete, show: false });
 	}
-	if (!admin) return <Redirect to="\login" />;
+
+	if(!admin) return(<Redirect to="\login"/>)
 	return (
 		<div id="main">
 			<ModalDelete

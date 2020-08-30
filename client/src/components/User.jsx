@@ -1,16 +1,19 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Nav, Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { useHistory, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { isAuth, isAdmin } from "../store/actions/index";
+import { isAuth, isAdmin, getMyPurchases } from "../store/actions/index";
 import axios from "axios";
 
 export default function User() {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const { logged } = useSelector(state => state);
+	const { logged, myPurchases } = useSelector(state => state);
+	useEffect(()=>{
+        dispatch(getMyPurchases());
+    },[]);
 	if (!logged) return <Redirect to="/login" />;
 	return (
 		<Nav id="navegacion">
