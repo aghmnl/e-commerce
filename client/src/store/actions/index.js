@@ -239,8 +239,8 @@ export const getCartItems = (cartId) => {
 export const getPurchases = statusId => {
 	return dispatch => {
 		const url = !statusId
-			? "http://localhost:3001/purchase"
-			: `http://localhost:3001/purchase/status?statusId=${statusId}`;
+			? "http://localhost:3001/purchase_private"
+			: `http://localhost:3001/purchase_private/status?statusId=${statusId}`;
 		return fetch(url)
 			.then(r => r.json())
 			.then(purchases => dispatch({ type: GET_PURCHASES, payload: purchases }))

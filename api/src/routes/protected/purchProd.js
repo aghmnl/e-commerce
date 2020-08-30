@@ -52,6 +52,37 @@ server.get("/cart_items/:cartId",(req, res, next)=>{
 	});
 
 })
+
+//Obtenemos los items de una compra
+
+server.get("/purchase/:ID",(req, res, next)=>{
+	Purchase.findOne({
+		where: {
+			id: req.params.ID
+		},
+		include:{
+			model: Product,
+			attributes: ["id","name","stock","img"],
+			through:{
+				attributes: ["priceProduct","quantity"]
+			}
+		}
+	}).then(({products}) => {
+		const purchase_items = [];
+		products.forEach(product =>{
+			purchase_items.push({
+				id: product.id,
+				name: product.name,
+				stock: product.stock,
+				img: product.img,
+				price: product.purchased_product.priceProduct,
+				quantity: product.purchased_product.quantity
+			})
+		})
+		res.json(purchase_items);
+	});
+
+})
 // S38 : Crear Ruta para agregar Item al Carrito
 // ATENCIÓN, el trello pedía POST /users/:idUser/cart
 /* server.post("/", (req, res, next) => {

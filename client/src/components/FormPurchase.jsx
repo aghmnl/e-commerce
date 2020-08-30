@@ -27,7 +27,7 @@ function Purchases({ purchases, statuses, statusId, getStatuses, getPurchases })
 			<Nav id="navegacion2">
 				<Nav.Item>
 					<Nav.Link>
-						<NavLink className="btn btn-light" to="/admin/purchases">
+						<NavLink className="btn btn-light" to="/admin/formPurchase">
 							Todas
 						</NavLink>
 					</Nav.Link>
@@ -36,7 +36,7 @@ function Purchases({ purchases, statuses, statusId, getStatuses, getPurchases })
 				{statuses.map(status => (
 					<Nav.Item>
 						<Nav.Link>
-							<NavLink className="btn btn-light" to={`/admin/purchases/status/${status.id}`}>
+							<NavLink className="btn btn-light" to={`/admin/formPurchase/status/${status.id}`}>
 								{status.name}
 							</NavLink>
 						</Nav.Link>
@@ -45,31 +45,33 @@ function Purchases({ purchases, statuses, statusId, getStatuses, getPurchases })
 			</Nav>
 			<div className="col-10 purchases" style={{ marginTop: "10rem", textAlign: "left" }}>
 				{purchases.map(purchase => (
-					<Card id="card" style={{ width: "40rem", marginTop: "1rem" }}>
-						<Container>
-							<Row>
-								<Col sm="6" style={{ alignSelf: "center" }}>
-									<Card.Title>Compra: {purchase.id}</Card.Title>
-								</Col>
-								<Col sm="6" style={{ alignSelf: "center" }}>
-									<Card.Subtitle className="mb-2 text-muted">Fecha compra: {purchase.date}</Card.Subtitle>
-								</Col>
-							</Row>
-							<Row>
-								<Col sm="4" style={{ alignSelf: "center" }}>
-									<Card.Text>
-										Usuario: {purchase.user.name} {purchase.user.last_name}
-									</Card.Text>
-								</Col>
-								<Col sm="4" style={{ alignSelf: "center" }}>
-									<Card.Text>Estado: {purchase.status.name}</Card.Text>
-								</Col>
-								<Col sm="4" style={{ alignSelf: "center" }}>
-									<Card.Text>Método de pago: {purchase.pay_method.name}</Card.Text>
-								</Col>
-							</Row>
-						</Container>
-					</Card>
+					<NavLink to={`/admin/purchase/${purchase.id}`}>
+						<Card id="card" style={{ width: "40rem", marginTop: "1rem" }}>
+							<Container>
+								<Row>
+									<Col sm="6" style={{ alignSelf: "center" }}>
+										<Card.Title>Compra: {purchase.id}</Card.Title>
+									</Col>
+									<Col sm="6" style={{ alignSelf: "center" }}>
+										<Card.Subtitle className="mb-2 text-muted">Fecha compra: {purchase.date}</Card.Subtitle>
+									</Col>
+								</Row>
+								<Row>
+									<Col sm="4" style={{ alignSelf: "center" }}>
+										<Card.Text>
+											Usuario: {purchase.user.name} {purchase.user.last_name}
+										</Card.Text>
+									</Col>
+									<Col sm="4" style={{ alignSelf: "center" }}>
+										<Card.Text>Estado: {purchase.status.name}</Card.Text>
+									</Col>
+									<Col sm="4" style={{ alignSelf: "center" }}>
+										<Card.Text>Método de pago: {purchase.pay_method.name}</Card.Text>
+									</Col>
+								</Row>
+							</Container>
+						</Card>
+					</NavLink>
 				))}
 			</div>
 		</div>
