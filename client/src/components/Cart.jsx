@@ -1,4 +1,4 @@
-import React, { useContext, createContext } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 //import { PlusCircleIcon, MinusCircleIcon, TrashIcon } from '../components/icons'
 //import  '../store/reducers/index';
@@ -15,18 +15,25 @@ import {
 	emptyCart,
 	increseProduct,
 	decreseProduct,
+	getCartItems,
+	getCart,
 } from "../store/actions/index";
 
 function CartItem({
 	products,
 	total,
+	cartId,
 	deleteProduct,
 	editProduct,
 	emptyCart,
 	addProduct,
 	decreseProduct,
 	increseProduct,
+	getCartItems
 }) {
+	useEffect(()=>{
+		getCartItems(cartId);
+	},[cartId])
 	return (
 		<div style={{ marginTop: "5rem" }}>
 			{products.map(product => (
@@ -94,6 +101,7 @@ export default connect(
 	state => ({
 		products: state.purchased_products,
 		total: state.total,
+		cartId: state.cartId
 	}),
 	{
 		addProduct,
@@ -102,5 +110,7 @@ export default connect(
 		emptyCart,
 		increseProduct,
 		decreseProduct,
+		getCart,
+		getCartItems
 	}
 )(CartItem);

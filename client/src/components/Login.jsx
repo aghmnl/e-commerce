@@ -3,7 +3,7 @@ import { Link, useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import "../styles/Login.css";
 import { useDispatch, useSelector, connect } from "react-redux";
-import { isAuth, isAdmin, emptyCart } from "../store/actions/index";
+import { isAuth, isAdmin, emptyCart, getCart, getCartItems } from "../store/actions/index";
 function Login() {
 	const dispatch = useDispatch();
 	const { logged, admin, purchased_products, cartId } = useSelector(state => state);
@@ -37,29 +37,21 @@ function Login() {
 			.then(res => {
 				console.log({ res });
 				// Al loguearse, carga todos los productos en la DB y resetea el carrito
-				if (purchased_products) {
-					const urlPurchase = "http://localhost:3001/purchase_protected";
-					axios.get();
-
-					const urlProduct = "http://localhost:3001/purchased_products_protected/add_product";
-					purchased_products.forEach(product => {
-						axios.post(
-							urlProduct,
-							{
-								purchaseId: cartId,
-								priceProduct: product.price,
-								quantity: product.quantity,
-							},
-							{ withCredentials: true }
-						);
-					});
-				}
-				emptyCart();
 				dispatch(isAuth());
 				dispatch(isAdmin());
 				if (admin) history.replace("/admin");
 				else history.replace("/user");
+				return dispatch(getCart());
+			}).then(()=>{
+				if(purchased_products.length > 0){
+					console.log(cartId)
+					return axios.post("http://localhost:3001/purchased_products_protected/add_product",{
+						cartId: cartId,
+						cart_items:purchased_products,
+					},{withCredentials:true});
+				}
 			})
+			.then(() => dispatch(getCartItems(cartId)))
 			.catch(err => console.log("error", err));
 	}
 

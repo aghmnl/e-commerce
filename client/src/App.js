@@ -12,7 +12,7 @@ import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import CarouselSlider from "./components/CarouselSlider";
-import { getPurchases, isAuth, isAdmin } from "./store/actions/index";
+import { getPurchases, isAuth, isAdmin, getCart } from "./store/actions/index";
 import Admin from "./components/Admin";
 import FormPurchase from "./components/FormPurchase";
 import { connect } from "react-redux";
@@ -22,11 +22,12 @@ import Purchases from "./components/Purchases";
 import Reset from "./components/Reset";
 import Register from "./components/Register";
 
-function App({ getPurchases, isAuth, isAdmin }) {
+function App({ getPurchases, isAuth, isAdmin, getCart, }) {
 	useEffect(() => {
 		isAuth();
 		isAdmin();
 		getPurchases();
+		getCart()
 	}, []);
 	return (
 		<div className="App">
@@ -86,5 +87,6 @@ function App({ getPurchases, isAuth, isAdmin }) {
 export default connect(null, {
 	getPurchases,
 	isAuth,
-	isAdmin
+	isAdmin,
+	getCart
 })(App);

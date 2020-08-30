@@ -1,6 +1,6 @@
 const server = require("express").Router();
 const { Purchase, User, Pay_method, Status } = require("../../db.js");
-
+const moment = require("moment");
 // S44 : Crear ruta que retorne todas las órdenes
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
 // http://localhost:3001/purchase/
@@ -64,11 +64,11 @@ server.get("/users/:userId", (req, res, next) => {
 //     }
 // });
 // S46 : Crear Ruta que retorne una orden en particular.
-server.get("/:id", (req, res, next) => {
+/* server.get("/:id", (req, res, next) => {
 	Purchase.findByPk(req.params.id)
 		.then(purchase => res.json(purchase))
 		.catch(err => next(err));
-});
+}); */
 // S47 : Crear Ruta para modificar una Orden
 // OTRA OPCIÓN SERÍA
 server.put("/:id", (req, res) => {
@@ -86,18 +86,23 @@ server.delete("/:id/cart", (req, res, next) => {
 });
 
 // Bsca en base de datos el carrito para un usuario determinado (lo saca de req.user)
-server.get("/cart_id", async (req, res, next) => {
-	const { id } = await Purchase.findOne({
+server.get("/cart_id", (req, res, next) => {
+	Purchase.findOrCreate({
 		attributes: ["id"],
 		where: {
 			userId: req.user.id,
 			statusId: 1,
 		},
-	});
-	res.json(id);
+		defaults:{
+			userId: req.user.id,
+			statusId: 1,
+			date: Date.now()
+		}
+	}).then(([cart]) => res.json({cartId : cart.id}))
+	.catch(err => next(err))
 });
 // crea un nuevo carrito
-server.post("/new_cart", (req, res, next) => {
+/* server.post("/new_cart", (req, res, next) => {
 	Purchase.create({
 		userId: req.user.id,
 		statusId: 1,
@@ -105,6 +110,6 @@ server.post("/new_cart", (req, res, next) => {
 	})
 		.then(purchase => res.json(purchase.id))
 		.catch(err => next(err));
-});
+}); */
 
 module.exports = server;
