@@ -20,6 +20,7 @@ import {
 	GET_CATALOGUE,
 	GET_PURCHASES,
 	GET_STATUSES,
+	GET_CART,
 	IS_ADMIN,
 	IS_AUTH,
 } from "../actions";
@@ -38,6 +39,8 @@ const initialState = {
 	purchases: [],
 	reviews: [],
 	total: 0,
+	logged: false,
+	admin: false,
 };
 export default (state = initialState, action) => {
 	switch (action.type) {
@@ -193,6 +196,11 @@ export default (state = initialState, action) => {
 				...state,
 				purchases: action.payload,
 			};
+		case GET_CART:
+			return {
+				...state,
+				cartId: action.payload,
+			};
 		case IS_AUTH:
 			return {
 				...state,
@@ -201,7 +209,7 @@ export default (state = initialState, action) => {
 		case IS_ADMIN:
 			return {
 				...state,
-				Admin: action.payload,
+				admin: action.payload,
 			};
 		case "CLEAN_PRODUCT":
 			return { ...state, productDetail: {} };
