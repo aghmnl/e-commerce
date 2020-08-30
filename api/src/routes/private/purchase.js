@@ -48,5 +48,4 @@ server.get("/status?:statusId", (req, res, next) => {
 		.then(purchases => res.json(purchases))
 		.catch(err => next(err));
 });
-
 module.exports = server;
