@@ -6,7 +6,7 @@ import { getUsers, getUser, cleanUser } from "../store/actions/index";
 import { connect } from "react-redux";
 import { FaUserCog } from "react-icons/fa";
 import UDTable from "./UDTable";
-function FormUser({ users, user, getUsers, getUser, Admin}) {
+function FormUser({ users, user, getUsers, getUser, admin}) {
 	const history = useHistory();
 	const [modal, throwModal] = useState({
 		show: false
@@ -24,7 +24,7 @@ function FormUser({ users, user, getUsers, getUser, Admin}) {
 			.then(res => alert(JSON.stringify(res)))
 			.catch(err => console.log(err));
 	}
-	if(!Admin) return <Redirect to="login"/>
+	if(!admin) return <Redirect to="login"/>
 	return (
 		<div id="main" style={{marginTop: "8rem"}}>
 			<Modal show={modal.show} centered>
@@ -57,4 +57,4 @@ function FormUser({ users, user, getUsers, getUser, Admin}) {
 		</div>
 	);
 }
-export default connect(({ user, users, Admin }) => ({ user, users, Admin }), { getUser, getUsers, cleanUser })(FormUser);
+export default connect(({ user, users, admin }) => ({ user, users, admin }), { getUser, getUsers, cleanUser })(FormUser);

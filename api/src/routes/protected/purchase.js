@@ -1,9 +1,24 @@
 const server = require("express").Router();
-const { Purchase, User, Pay_method, Status } = require("../../db.js");
+const { Purchase, User, Pay_method, Status, Product } = require("../../db.js");
 const moment = require("moment");
+const {Op} = require("sequelize");
 // S44 : Crear ruta que retorne todas las órdenes
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
 // http://localhost:3001/purchase/
+server.get("/my_purchases",(req, res, next)=>{
+	Purchase.findAll({
+		where:{
+			userId: req.user.id,
+			statusId:{[Op.not]:1},
+		},
+		include:{
+			model:Product,
+			through:{
+				attributes: ["priceProduct","quantity"]
+			}
+		}
+	}).then(purchases => res.json(purchases))
+})
 server.get("/", (req, res, next) => {
 	Purchase.findAll({
 		include: [

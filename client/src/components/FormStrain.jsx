@@ -7,7 +7,7 @@ import { getStrains, getStrain, getCategories, cleanStrain } from "../store/acti
 import { connect } from "react-redux";
 import UDTable from "./UDTable";
 import ModalDelete from "./ModalDelete";
-function FormStrain({ strain, strains, getStrains, getStrain, getCategories, categories, id, cleanStrain, Admin }) {
+function FormStrain({ strain, strains, getStrains, getStrain, getCategories, categories, id, cleanStrain, admin }) {
 	const history = useHistory();
 	const [modalDelete, throwModal] = useState({
 		show: false,
@@ -71,7 +71,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 			});
 		throwModal({ ...modalDelete, show: false });
 	}
-	if(!Admin) return(<Redirect to="\login"/>)
+	if(!admin) return(<Redirect to="\login"/>)
 	return (
 		<div id="main">
 			<ModalDelete
@@ -161,7 +161,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 		</div>
 	);
 }
-export default connect(({ strains, strain, categories, Admin }) => ({ strains, strain, categories, Admin }), {
+export default connect(({ strains, strain, categories, admin }) => ({ strains, strain, categories, admin }), {
 	getStrains,
 	getStrain,
 	getCategories,

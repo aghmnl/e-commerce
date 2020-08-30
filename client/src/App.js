@@ -18,7 +18,7 @@ import FormPurchase from "./components/FormPurchase";
 import { connect } from "react-redux";
 import Cart from "./components/Cart";
 import User from "./components/User";
-import Purchases from "./components/Purchases";
+import Mypurchases from "./components/Purchases";
 import Reset from "./components/Reset";
 import Register from "./components/Register";
 
@@ -80,7 +80,7 @@ function App({ getPurchases, isAuth, isAdmin, getCart, }) {
 			<Route exact path="/user" component={User} />
 			<Route exact path="/reset" component={Reset} />
 			<Route exact path="/register" component={Register} />
-			<Route exact path="/user/purchases" component={Purchases} />
+			<Route exact path="/user/purchases" component={Mypurchases} />
 		</div>
 	);
 }
