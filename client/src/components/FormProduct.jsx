@@ -22,7 +22,7 @@ function FormProduct({
 	getCategories,
 	getCellars,
 	cleanProduct,
-	Admin,
+	admin,
 }) {
 	const history = useHistory();
 	const [handle, setHandle] = useState("add");
@@ -107,7 +107,7 @@ function FormProduct({
 			})
 			.catch(err => console.log(err));
 	}
-	if (!Admin) return <Redirect to="/login" />;
+	if (!admin) return <Redirect to="/login" />;
 	return (
 		<div style={{ marginTop: "6rem" }}>
 			<ModalDelete
@@ -300,7 +300,7 @@ function FormProduct({
 	);
 }
 export default connect(
-	({ productDetail, products, categories, cellars, strains, strains_by, Admin }) => {
+	({ productDetail, products, categories, cellars, strains, strains_by, admin }) => {
 		return {
 			productDetail,
 			products,
@@ -308,7 +308,7 @@ export default connect(
 			cellars,
 			strains,
 			strains_by,
-			Admin,
+			admin,
 		};
 	},
 	{ getProduct, getStrainsBy, getProducts, getCategories, getCellars, cleanProduct }

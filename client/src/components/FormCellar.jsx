@@ -7,7 +7,7 @@ import { getCellars, getCellar, cleanCellar } from "../store/actions/index";
 import { connect } from "react-redux";
 import UDTable from "./UDTable";
 import ModalDelete from "./ModalDelete";
-function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCellar, Admin }) {
+function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCellar, admin }) {
 	const history = useHistory();
 	const [modalDelete, throwModal] = useState({
 		show: false,
@@ -42,7 +42,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 	function handleSubmit(values) {
 		if (id) {
 			axios
-				.put(`http://localhost:3001/cellar_private/${id}`, values, {withCredentials: true})
+				.put(`http://localhost:3001/cellar_private/${id}`, values, { withCredentials: true })
 				.then(() => {
 					getCellars();
 					history.replace("/admin/formCellar");
@@ -52,7 +52,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 		}
 		const url = "http://localhost:3001/cellar_private";
 		axios
-			.post(url, values, {withCredentials: true})
+			.post(url, values, { withCredentials: true })
 			.then(res => {
 				getCellars();
 				formik.resetForm({ name: "" });
@@ -61,7 +61,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 	}
 	function eliminar(id) {
 		axios
-			.delete(`http://localhost:3001/cellar_private/${id}`,{withCredentials: true})
+			.delete(`http://localhost:3001/cellar_private/${id}`, { withCredentials: true })
 			.then(() => {
 				getCellars();
 				throwModal({ ...modalDelete, show: false });
@@ -70,7 +70,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 				console.log(err);
 			});
 	}
-	if(!Admin) return (<Redirect to="/login"/>)
+	if (!admin) return <Redirect to="/login" />;
 	return (
 		<div id="main" style={{ textAlign: "right" }}>
 			<ModalDelete
@@ -126,7 +126,8 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 		</div>
 	);
 }
-export default connect(({ cellar, cellars, Admin }) => ({ cellar, cellars, Admin }), 
-{ getCellar, getCellars, cleanCellar })(
-	FormCellar
-);
+export default connect(({ cellar, cellars, admin }) => ({ cellar, cellars, admin }), {
+	getCellar,
+	getCellars,
+	cleanCellar,
+})(FormCellar);
