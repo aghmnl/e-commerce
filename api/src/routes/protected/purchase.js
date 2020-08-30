@@ -55,6 +55,16 @@ server.get("/users/:userId", (req, res, next) => {
 		.catch(err => next(err));
 });
 
+//Retorna la orden de un ID
+server.get("/:id", (req, res, next) => {
+	Purchase.findOne({
+		where: { id: req.params.id } 
+	})
+		.then(purchase => res.json(purchase))
+		.catch(err => next(err));
+});
+
+
 // OTRA OPCIÓN S45 SERÍA:
 // server.get("/users/:userId/status?:statusId", (req, res) => {
 //     if(req.params.statusId){

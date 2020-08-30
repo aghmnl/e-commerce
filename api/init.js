@@ -500,6 +500,16 @@ var users = [
 		admin: true,
 		salt: "asdafasfd",
 	},
+	{
+		// userId:4,
+		first_name: "Juan",
+		last_name: "Sepulveda",
+		email: "juan@sepulveda.com.ar",
+		password: "1234",
+		phone: 121312132,
+		admin: true,
+		salt: "asdafasfd",
+	},
 ];
 
 var status = [
