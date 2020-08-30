@@ -42,13 +42,18 @@ function Login() {
 				if (admin) history.replace("/admin");
 				else history.replace("/user");
 				return dispatch(getCart());
-			}).then(()=>{
-				if(purchased_products.length > 0){
-					console.log(cartId)
-					return axios.post("http://localhost:3001/purchased_products_protected/add_product",{
-						cartId: cartId,
-						cart_items:purchased_products,
-					},{withCredentials:true});
+			})
+			.then(() => {
+				if (purchased_products.length > 0) {
+					console.log(cartId);
+					return axios.post(
+						"http://localhost:3001/purchased_products_protected/add_product",
+						{
+							cartId: cartId,
+							cart_items: purchased_products,
+						},
+						{ withCredentials: true }
+					);
 				}
 			})
 			.then(() => dispatch(getCartItems(cartId)))
@@ -102,9 +107,9 @@ function Login() {
 	);
 }
 
-export default connect(({ logged, Admin }) => {
+export default connect(({ logged, admin }) => {
 	return {
 		logged,
-		Admin,
+		admin,
 	};
 })(Login);

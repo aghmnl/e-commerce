@@ -45,22 +45,29 @@ const initialState = {
 };
 export default (state = initialState, action) => {
 	switch (action.type) {
+		// Agrega 1 producto al carrito desde el detalle del producto, tanto al estado como a la DB
 		case ADD_PRODUCT:
 			var { id, price, name, img, stock } = action.product;
 			var { purchased_products, total } = state;
 			var index = purchased_products.findIndex(pp => pp.id === id);
-			if(state.logged){
-				axios.post("http://localhost:3001/purchased_products_protected/add_product",{
-					cartId: state.cartId,
-					cart_items:[
+			if (state.logged) {
+				axios
+					.post(
+						"http://localhost:3001/purchased_products_protected/add_product",
 						{
-							id,
-							quantity: 1,
-							price,
-						}
-					]
-				},{withCredentials:true}).then((res) => console.log(res.data))
-				.catch(err => console.log(err.response));
+							cartId: state.cartId,
+							cart_items: [
+								{
+									id,
+									quantity: 1,
+									price,
+								},
+							],
+						},
+						{ withCredentials: true }
+					)
+					.then(res => console.log(res.data))
+					.catch(err => console.log(err.response));
 			}
 			if (index < 0) {
 				state = {
@@ -84,15 +91,26 @@ export default (state = initialState, action) => {
 				};
 			}
 			return state;
-			//purchased_products[index].quantity = purchased_products[index].quantity + action.quantity;
-			return {
-				...state,
-			};
+
 		case INCRESE_PRODUCT:
 			var { id, price, stock } = action.product;
 			var { purchased_products, total } = state;
 			var index = purchased_products.findIndex(pp => pp.id === id);
-			purchased_products[index].quantity = purchased_products[index].quantity + 1;
+			// Verifica si el usuario está logueado para sumarlo también en la base de datos.
+			if (state.logged) {
+				axios
+					.post(
+						"http://localhost:3001/purchased_products_protected/increase_product",
+						{
+							cartId: state.cartId,
+							id,
+						},
+						{ withCredentials: true }
+					)
+					.then(res => console.log(res.data))
+					.catch(err => console.log(err.response));
+			}
+			purchased_products[index].quantity += 1;
 			return {
 				...state,
 				total: total + price,
@@ -102,7 +120,21 @@ export default (state = initialState, action) => {
 			var { id, price } = action.product;
 			var { purchased_products, total } = state;
 			var index = purchased_products.findIndex(pp => pp.id === id);
-			purchased_products[index].quantity = purchased_products[index].quantity - 1;
+			// Verifica si el usuario está logueado para sumarlo también en la base de datos.
+			if (state.logged) {
+				axios
+					.post(
+						"http://localhost:3001/purchased_products_protected/decrease_product",
+						{
+							cartId: state.cartId,
+							id,
+						},
+						{ withCredentials: true }
+					)
+					.then(res => console.log(res.data))
+					.catch(err => console.log(err.response));
+			}
+			purchased_products[index].quantity -= 1;
 			return {
 				...state,
 				total: total - price,
@@ -219,7 +251,7 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				purchased_products: action.payload,
-			}
+			};
 		case IS_AUTH:
 			return {
 				...state,
