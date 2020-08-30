@@ -44,7 +44,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 	function handleSubmit(values) {
 		if (!!id) {
 			axios
-				.put(`http://localhost:3001/strain_private/${id}`, values, {withCredentials: true})
+				.put(`http://localhost:3001/strain_private/${id}`, values, { withCredentials: true })
 				.then(() => {
 					getStrains();
 					history.replace("/admin/formStrain");
@@ -55,14 +55,14 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 
 		const url = "http://localhost:3001/strain_private";
 		axios
-			.post(url, values, {withCredentials: true})
+			.post(url, values, { withCredentials: true })
 			.then(res => getStrains())
 			.catch(e => console.log(e));
 	}
 
 	function eliminar(id) {
 		axios
-			.delete(`http://localhost:3001/strain_private/${id}`, {withCredentials: true})
+			.delete(`http://localhost:3001/strain_private/${id}`, { withCredentials: true })
 			.then(() => {
 				getStrains();
 			})
@@ -71,6 +71,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 			});
 		throwModal({ ...modalDelete, show: false });
 	}
+
 	if(!admin) return(<Redirect to="\login"/>)
 	return (
 		<div id="main">

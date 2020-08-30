@@ -21,6 +21,7 @@ import User from "./components/User";
 import Mypurchases from "./components/Purchases";
 import Reset from "./components/Reset";
 import Register from "./components/Register";
+import Purchase from "./components/Purchase";
 
 function App({ getPurchases, isAuth, isAdmin, getCart, }) {
 	useEffect(() => {
@@ -81,6 +82,7 @@ function App({ getPurchases, isAuth, isAdmin, getCart, }) {
 			<Route exact path="/reset" component={Reset} />
 			<Route exact path="/register" component={Register} />
 			<Route exact path="/user/purchases" component={Mypurchases} />
+			<Route exact path="/admin/purchase/:id" render={({ match }) => <Purchase id={match.params.id} />} />
 		</div>
 	);
 }

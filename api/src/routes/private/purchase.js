@@ -1,5 +1,10 @@
 const server = require("express").Router();
 const {Purchase, User, Pay_method, Status, Product} = require("../../db.js");
+const moment = require("moment");
+
+// S44 : Crear ruta que retorne todas las órdenes
+// Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
+// http://localhost:3001/purchase_private/
 server.get("/", (req, res, next) => {
 	Purchase.findAll({
 		include: [
@@ -14,11 +19,11 @@ server.get("/", (req, res, next) => {
 			{
 				model: Status,
 				as: "status",
+
             },
             {
                 model:Product,
             }
-            
 		],
 	})
 		.then(purchases => res.json(purchases))
@@ -40,6 +45,7 @@ server.get("/status?:statusId", (req, res, next) => {
 			{
 				model: Status,
 				as: "status",
+
             },
             {
                 model: Product

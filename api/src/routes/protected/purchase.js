@@ -4,7 +4,6 @@ const moment = require("moment");
 const {Op} = require("sequelize");
 // S44 : Crear ruta que retorne todas las órdenes
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
-// http://localhost:3001/purchase/
 server.get("/my_purchases",(req, res, next)=>{
 	Purchase.findAll({
 		where:{
@@ -40,7 +39,7 @@ server.get("/", (req, res, next) => {
 		.catch(err => next(err));
 });
 
-// http://localhost:3001/purchase/status?statusId=1
+// http://localhost:3001/purchase_protected/status?statusId=1
 server.get("/status?:statusId", (req, res, next) => {
 	Purchase.findAll({
 		include: [
@@ -69,6 +68,16 @@ server.get("/users/:userId", (req, res, next) => {
 		.then(purchases => res.json(purchases))
 		.catch(err => next(err));
 });
+
+//Retorna la orden de un ID
+server.get("/:id", (req, res, next) => {
+	Purchase.findOne({
+		where: { id: req.params.id } 
+	})
+		.then(purchase => res.json(purchase))
+		.catch(err => next(err));
+});
+
 
 // OTRA OPCIÓN S45 SERÍA:
 // server.get("/users/:userId/status?:statusId", (req, res) => {
@@ -108,13 +117,14 @@ server.get("/cart_id", (req, res, next) => {
 			userId: req.user.id,
 			statusId: 1,
 		},
-		defaults:{
+		defaults: {
 			userId: req.user.id,
 			statusId: 1,
-			date: Date.now()
-		}
-	}).then(([cart]) => res.json({cartId : cart.id}))
-	.catch(err => next(err))
+			date: Date.now(),
+		},
+	})
+		.then(([cart]) => res.json({ cartId: cart.id }))
+		.catch(err => next(err));
 });
 // crea un nuevo carrito
 /* server.post("/new_cart", (req, res, next) => {

@@ -1,0 +1,15 @@
+.tabla{
+    margin-top:100px;
+    background-color: whitesmoke;
+    padding:15px;
+    border-radius:5px;
+}
+
+.tabla .PurchaseInfo{
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.boton{
+    text-align: left;
+}
