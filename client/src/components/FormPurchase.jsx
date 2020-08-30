@@ -27,7 +27,7 @@ function Purchases({ purchases, statuses, statusId, getStatuses, getPurchases })
 			<Nav id="navegacion2">
 				<Nav.Item>
 					<Nav.Link>
-						<NavLink className="btn btn-light" to="/admin/purchases">
+						<NavLink className="btn btn-light" to="/admin/formPurchase">
 							Todas
 						</NavLink>
 					</Nav.Link>
@@ -36,7 +36,7 @@ function Purchases({ purchases, statuses, statusId, getStatuses, getPurchases })
 				{statuses.map(status => (
 					<Nav.Item>
 						<Nav.Link>
-							<NavLink className="btn btn-light" to={`/admin/purchases/status/${status.id}`}>
+							<NavLink className="btn btn-light" to={`/admin/formPurchase/status/${status.id}`}>
 								{status.name}
 							</NavLink>
 						</Nav.Link>
@@ -58,7 +58,7 @@ function Purchases({ purchases, statuses, statusId, getStatuses, getPurchases })
 							<Row>
 								<Col sm="4" style={{ alignSelf: "center" }}>
 									<Card.Text>
-										Usuario: {purchase.user.name} {purchase.user.last_name}
+										Usuario: {purchase.user.first_name} {purchase.user.last_name}
 									</Card.Text>
 								</Col>
 								<Col sm="4" style={{ alignSelf: "center" }}>

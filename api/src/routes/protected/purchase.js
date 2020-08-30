@@ -3,7 +3,7 @@ const { Purchase, User, Pay_method, Status } = require("../../db.js");
 const moment = require("moment");
 // S44 : Crear ruta que retorne todas las órdenes
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
-// http://localhost:3001/purchase/
+// http://localhost:3001/purchase_protected/
 server.get("/", (req, res, next) => {
 	Purchase.findAll({
 		include: [
@@ -25,7 +25,7 @@ server.get("/", (req, res, next) => {
 		.catch(err => next(err));
 });
 
-// http://localhost:3001/purchase/status?statusId=1
+// http://localhost:3001/purchase_protected/status?statusId=1
 server.get("/status?:statusId", (req, res, next) => {
 	Purchase.findAll({
 		include: [
@@ -93,13 +93,14 @@ server.get("/cart_id", (req, res, next) => {
 			userId: req.user.id,
 			statusId: 1,
 		},
-		defaults:{
+		defaults: {
 			userId: req.user.id,
 			statusId: 1,
-			date: Date.now()
-		}
-	}).then(([cart]) => res.json({cartId : cart.id}))
-	.catch(err => next(err))
+			date: Date.now(),
+		},
+	})
+		.then(([cart]) => res.json({ cartId: cart.id }))
+		.catch(err => next(err));
 });
 // crea un nuevo carrito
 /* server.post("/new_cart", (req, res, next) => {
