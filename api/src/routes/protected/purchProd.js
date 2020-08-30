@@ -1,7 +1,18 @@
 const server = require("express").Router();
 const { Purchased_product } = require("../../db.js");
-
-
+server.post("/add_product", (req, res, next) => {
+	Purchased_product.findOrCreate({
+		where: {
+			purchaseId: req.body.cartId,
+			productId: req.body.productId,
+		},
+		default: req.body,
+	}).then(([purchased_product]) => {
+		purchased_product.quantity += 1;
+		purchased_product.save();
+		res.json(purchased_product);
+	});
+});
 // S38 : Crear Ruta para agregar Item al Carrito
 // ATENCIÓN, el trello pedía POST /users/:idUser/cart
 /* server.post("/", (req, res, next) => {

@@ -4,16 +4,17 @@ const crypto = require("crypto");
 const { User } = require("../db.js");
 const { literal } = require("sequelize");
 //checks if password has > 8 chars
-async function isAdmin(req, res, next){
-	const {admin} = await User.findByPk(req.user.id,{
-		attributes : ["admin"]
+async function isAdmin(req, res, next) {
+	const { admin } = await User.findByPk(req.user.id, {
+		attributes: ["admin"],
 	});
-	if(admin) return next();
+	if (admin) return next();
 	return res.sendStatus(403);
 }
-function isAuthenticated(req, res, next){
-	console.log("usuaio",req.isAuthenticated());
-	if(req.isAuthenticated()) return next();
+function isAuthenticated(req, res, next) {
+	// isAuthenticated devuelve true cuando está autenticado
+	console.log("usuario", req.isAuthenticated());
+	if (req.isAuthenticated()) return next();
 	return res.sendStatus(401);
 }
 function isValidPassword(password) {
@@ -36,10 +37,12 @@ server.post("/register", async function (req, res, next) {
 	const password = crypto.pbkdf2Sync(req.body.password, salt, 10000, 64, "sha512").toString("base64");
 
 	if (!isValidPassword(req.body.password)) {
-		return res.status(500).json({ status: "error", message: "Password must be 8 or more characters.", input:"password" });
+		return res
+			.status(500)
+			.json({ status: "error", message: "Password must be 8 or more characters.", input: "password" });
 	}
 	if (!isValidEmail(req.body.email)) {
-		return res.status(500).json({ status: "error", message: "Email address not formed correctly.", input:"email" });
+		return res.status(500).json({ status: "error", message: "Email address not formed correctly.", input: "email" });
 	}
 
 	try {
@@ -60,15 +63,17 @@ server.post("/register", async function (req, res, next) {
 				if (!user) {
 					return res.json({ status: "error", message: info.message });
 				}
-				req.logIn(user, function(err) {
-				if (err) { return next(err); }
-				return res.json({ status: "ok", user : req.user });
+				req.logIn(user, function (err) {
+					if (err) {
+						return next(err);
+					}
+					return res.json({ status: "ok", user: req.user });
 				});
 			})(req, res, next);
 		}
 	} catch (err) {
 		console.log({ err });
-		return res.status(500).json({ status: "error", message: "Email address already exists.", input: "email" , err });
+		return res.status(500).json({ status: "error", message: "Email address already exists.", input: "email", err });
 	}
 });
 
@@ -80,38 +85,46 @@ server.post("/login", function (req, res, next) {
 		if (!user) {
 			return res.json({ status: "error", message: info.message });
 		}
-		req.login(user, function(err) {
-		if (err) { return next(err); }
-		 return res.json({ status: "ok", user, isAuth: req.isAuthenticated()});
+		req.login(user, function (err) {
+			if (err) {
+				return next(err);
+			}
+			return res.json({ status: "ok", user, isAuth: req.isAuthenticated() });
 		});
 	})(req, res, next);
 });
 
 server.get("/logout", function (req, res, next) {
-		req.logout(); 
-		res.json({ status: "ok" });
-		
+	// Acá le cambia el valor a isAuthenticated
+	req.logout();
+	res.json({ status: "ok" });
 });
 
+// Ruta que responde true si está autenticado
 server.get("/isauth", function (req, res, next) {
 	console.log(req.user);
+	// isAuthenticated es función dentro del objeto request
 	return res.json({ isAuth: req.isAuthenticated() });
 });
-server.get("/isadmin", isAuthenticated, async (req, res, next) =>{
-	const {admin} = await User.findByPk(req.user.id,{
-		attributes: ["admin"]
+
+// convierta en admin al usuario
+server.get("/isadmin", async (req, res, next) => {
+	// Me fijo si existe user, porque de no estar logueado no existiría
+	if (!req.user) return res.json(false);
+	const { admin } = await User.findByPk(req.user.id, {
+		attributes: ["admin"],
 	});
-	res.json(admin)
-})
+	res.json(admin);
+});
 // S67 : Crear ruta /promote
 // POST /auth/promote/:id
 // Promote convierte al usuario con ID: id a Admin.
 // ATENCIÓN, LO IMPLEMENTAMOS COMO PUT YA QUE TENEMOS CAMPO BOOLEAN DE ADMIN
 // Y lo que hay que cambiar es el valor del campo admin a true
 server.put("/promote/:id", isAuthenticated, isAdmin, (req, res, next) => {
-	User.update({admin: literal('NOT admin')}, { where: { id: parseInt(req.params.id) } })
+	User.update({ admin: literal("NOT admin") }, { where: { id: parseInt(req.params.id) } })
 		.then(() => res.sendStatus(201))
 		.catch(err => next(err));
 });
 
-module.exports = { server , isAuthenticated, isAdmin };
+module.exports = { server, isAuthenticated, isAdmin };

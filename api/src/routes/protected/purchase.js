@@ -1,7 +1,6 @@
 const server = require("express").Router();
 const { Purchase, User, Pay_method, Status } = require("../../db.js");
 
-
 // S44 : Crear ruta que retorne todas las órdenes
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
 // http://localhost:3001/purchase/
@@ -86,12 +85,26 @@ server.delete("/:id/cart", (req, res, next) => {
 		.catch(err => next(err));
 });
 
-/*
-server.get("/", (req, res) => {
-    Purchase.findAll({
-    }).then(purchases => {
-        res.json(purchases);
-    });
+// Bsca en base de datos el carrito para un usuario determinado (lo saca de req.user)
+server.get("/cart_id", async (req, res, next) => {
+	const { id } = await Purchase.findOne({
+		attributes: ["id"],
+		where: {
+			userId: req.user.id,
+			statusId: 1,
+		},
+	});
+	res.json(id);
 });
-*/
+// crea un nuevo carrito
+server.post("/new_cart", (req, res, next) => {
+	Purchase.create({
+		userId: req.user.id,
+		statusId: 1,
+		date: req.body.date,
+	})
+		.then(purchase => res.json(purchase.id))
+		.catch(err => next(err));
+});
+
 module.exports = server;

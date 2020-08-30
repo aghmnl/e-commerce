@@ -23,6 +23,7 @@ export const GET_STATUSES = "GET_STATUSES";
 export const GET_CATALOGUE = "GET_CATALOGUE";
 export const IS_ADMIN = "IS_ADMIN";
 export const IS_AUTH = "IS_AUTH";
+export const GET_CART = "GET_CART";
 
 export const cleanProduct = () => ({
 	type: "CLEAN_PRODUCT",
@@ -163,10 +164,10 @@ export const searchProduct = query => {
 			.catch(err => console.log(err));
 	};
 };
-export const addProduct = (product, quantity) => ({
+
+export const addProduct = product => ({
 	type: ADD_PRODUCT,
 	product: product,
-	quantity: parseInt(quantity),
 });
 export const increseProduct = product => ({
 	type: INCRESE_PRODUCT,
@@ -212,6 +213,15 @@ export const getUser = id => {
 		return axios
 			.get(url, { withCredentials: true })
 			.then(({ data: user }) => dispatch({ type: GET_USER, payload: user }))
+			.catch(err => console.log(err));
+	};
+};
+export const getCart = () => {
+	return dispatch => {
+		const url = "http://localhost:3001/purchase_protected/cart_id";
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data: cartId }) => dispatch({ type: GET_CART, payload: cartId }))
 			.catch(err => console.log(err));
 	};
 };

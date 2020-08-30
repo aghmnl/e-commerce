@@ -3,10 +3,10 @@ import { Link, useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import "../styles/Login.css";
 import { useDispatch, useSelector, connect } from "react-redux";
-import { isAuth, isAdmin } from "../store/actions/index";
+import { isAuth, isAdmin, emptyCart } from "../store/actions/index";
 function Login() {
 	const dispatch = useDispatch();
-	const { logged, Admin } = useSelector(state => state);
+	const { logged, admin, purchased_products, cartId } = useSelector(state => state);
 	var history = useHistory();
 	const [inputs, setInputs] = useState({
 		email: "",
@@ -16,6 +16,7 @@ function Login() {
 		show: false,
 		msg: "",
 	});
+
 	function handleSubmit(e) {
 		e.preventDefault();
 		if (!inputs.email) {
@@ -35,14 +36,34 @@ function Login() {
 			})
 			.then(res => {
 				console.log({ res });
-				history.replace("/user");
+				// Al loguearse, carga todos los productos en la DB y resetea el carrito
+				if (purchased_products) {
+					const urlPurchase = "http://localhost:3001/purchase_protected";
+					axios.get();
+
+					const urlProduct = "http://localhost:3001/purchased_products_protected/add_product";
+					purchased_products.forEach(product => {
+						axios.post(
+							urlProduct,
+							{
+								purchaseId: cartId,
+								priceProduct: product.price,
+								quantity: product.quantity,
+							},
+							{ withCredentials: true }
+						);
+					});
+				}
+				emptyCart();
 				dispatch(isAuth());
 				dispatch(isAdmin());
+				if (admin) history.replace("/admin");
+				else history.replace("/user");
 			})
-			.catch(e => console.log(e));
+			.catch(err => console.log("error", err));
 	}
 
-	if (Admin) {
+	if (admin) {
 		return <Redirect to="/admin" />;
 	} else {
 		if (logged) return <Redirect to="/user" />;
