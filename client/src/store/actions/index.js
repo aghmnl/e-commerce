@@ -222,25 +222,25 @@ export const getCart = () => {
 		const url = "http://localhost:3001/purchase_protected/cart_id";
 		return axios
 			.get(url, { withCredentials: true })
-			.then(({data: {cartId}}) => dispatch({ type: GET_CART, payload: cartId }))
+			.then(({ data: { cartId } }) => dispatch({ type: GET_CART, payload: cartId }))
 			.catch(err => console.log(err));
 	};
 };
-export const getCartItems = (cartId) => {
+export const getCartItems = cartId => {
 	console.log("jasdks");
 	return dispatch => {
-		const url = "http://localhost:3001/purchased_products_protected/cart_items/"+cartId;
+		const url = "http://localhost:3001/purchased_products_protected/cart_items/" + cartId;
 		return axios
 			.get(url, { withCredentials: true })
-			.then(({ data:  cart_items }) => dispatch({ type: GET_CART_ITEMS, payload: cart_items }))
+			.then(({ data: cart_items }) => dispatch({ type: GET_CART_ITEMS, payload: cart_items }))
 			.catch(err => console.log(err));
 	};
 };
 export const getPurchases = statusId => {
 	return dispatch => {
 		const url = !statusId
-			? "http://localhost:3001/purchase"
-			: `http://localhost:3001/purchase/status?statusId=${statusId}`;
+			? "http://localhost:3001/purchase_private"
+			: `http://localhost:3001/purchase_private/status?statusId=${statusId}`;
 		return fetch(url)
 			.then(r => r.json())
 			.then(purchases => dispatch({ type: GET_PURCHASES, payload: purchases }))
