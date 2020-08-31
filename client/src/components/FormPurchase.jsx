@@ -59,7 +59,7 @@ function Purchases({ purchases, statuses, statusId, getStatuses, getPurchases })
 								<Row>
 									<Col sm="4" style={{ alignSelf: "center" }}>
 										<Card.Text>
-											Usuario: {purchase.user.name} {purchase.user.last_name}
+											Usuario: {purchase.user.first_name} {purchase.user.last_name}
 										</Card.Text>
 									</Col>
 									<Col sm="4" style={{ alignSelf: "center" }}>
