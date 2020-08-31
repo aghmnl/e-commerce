@@ -11,6 +11,8 @@
 #categorias {
 	background-color: transparent !important;
 	margin-top: 15rem;
+	width: 100%;
+	height: 10%;
 }
 body {
 	/* The image used */
@@ -28,6 +30,7 @@ body {
 .card{
 	background-color: transparen;
 	border: transparen;
+
 }
 
 .colorText{
@@ -43,10 +46,10 @@ body {
 
 
 .imagenes{
-	width: 410px;
-	height: 350px;
+	width: 250px;
+	height: 200px;
 	margin: 20px;
-	border: 5px solid #eee;
+	border: 3px solid white;
 	-webkit-box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
 	-moz-box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
 	box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
@@ -56,8 +59,5 @@ body {
 }
 
 .imagenes:hover{
-	-webkit-transform: rotate(-7deg);
-	-moz-transform: rotate(-7deg);
-	-ms-transform: rotate(-7deg);
-	transform: rotate(-7deg);
+	-webkit-transform:scale(1.3);transform:scale(1.29);
 }
