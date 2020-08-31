@@ -10,7 +10,7 @@ export default function Mypurchases(){
     if(!logged) return <Redirect to="/login" />
     return(
         <div style={{marginTop:"5rem"}}>
-            {!!my_purchases?my_purchases.map(purchase =>(
+            {!!my_purchases?my_purchases.map(({purchase, total}) =>(
                 purchase.products.map(product =>(
                     <Card style={{width:"50rem",margin:"auto"}}>
                         <Row>
@@ -40,6 +40,11 @@ export default function Mypurchases(){
                                 <Dropdown.Item><NavLink to={`/formReview/${product.id}`}>Review</NavLink></Dropdown.Item>
                                 </Dropdown.Menu>
                                 </Dropdown>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Card.Subtitle>$ {total}</Card.Subtitle>
                             </Col>
                         </Row>
                     </Card>

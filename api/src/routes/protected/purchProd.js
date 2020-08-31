@@ -65,9 +65,9 @@ server.get("/cart_items/:cartId", (req, res, next) => {
 				attributes: ["priceProduct", "quantity"],
 			},
 		},
-	}).then(({ products }) => {
+	}).then(purchase => {
 		const cart_items = [];
-		products.forEach(product => {
+		purchase.products.forEach(product => {
 			cart_items.push({
 				id: product.id,
 				name: product.name,
@@ -77,7 +77,7 @@ server.get("/cart_items/:cartId", (req, res, next) => {
 				quantity: product.purchased_product.quantity,
 			});
 		});
-		res.json(cart_items);
+		res.json({cart_items, total: purchase.getTotal()});
 	})
 		.catch(err => next(err));
 

@@ -16,7 +16,14 @@ server.get("/my_purchases",(req, res, next)=>{
 				attributes: ["priceProduct","quantity"]
 			}
 		}
-	}).then(purchases => res.json(purchases))
+	}).then(purchases => {
+		let compras = [];
+		for(let purchase of purchases){
+			compras.push({purchase, total: purchase.getTotal()});
+		}
+		res.json(compras);
+	})
+
 	.catch(err => next(err));
 })
 server.get("/", (req, res, next) => {

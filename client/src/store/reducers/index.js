@@ -247,7 +247,7 @@ export default (state = initialState, action) => {
 		case GET_PURCHASE:
 			return {
 				...state,
-				purchaseDetail: action.payload,
+				purchaseDetail: {...action.payload.purchase, total : action.payload.total},
 			};
 		case GET_CART:
 			return {
@@ -257,7 +257,8 @@ export default (state = initialState, action) => {
 		case GET_CART_ITEMS:
 			return {
 				...state,
-				purchased_products: action.payload,
+				purchased_products: action.payload.cart_items,
+				total: action.payload.total
 			}
 		case GET_MY_PURCHASES:
 			return {

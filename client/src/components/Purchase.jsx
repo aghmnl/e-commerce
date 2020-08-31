@@ -59,7 +59,7 @@ function Purchase({id}){
                     ))}
                 </tbody>
             </Table>
-                    <div><h2>Total: $ {0}</h2>
+                    <div><h2>Total: $ {purchaseDetail.total}</h2>
                     <Button onClick={() => goBack()}>Volver</Button>
                     </div>
         </div>
