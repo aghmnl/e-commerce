@@ -23,7 +23,7 @@ export default function UDTable({
                                     console.log(typeof update)
                                     if(typeof update === "string")
                                     return history.replace(`${update}/${row[updatePk]}`);
-                                    if(typeof update === "funciton") update(row[updatePk]);
+                                    if(typeof update === "function") update(row[updatePk]);
                                 }
                             }
                             >   
