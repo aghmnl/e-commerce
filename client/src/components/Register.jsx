@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Card, Button, Col } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { isAuth, isAdmin } from "../store/actions";
 import axios from "axios";
@@ -59,9 +59,8 @@ export default function Register(){
     });
     return(
         <div>
-            <Card style={{width:"30rem", margin:"auto", textAlign:"left"}}>
+            <Card style={{width:"30rem", margin:"5rem auto", textAlign:"left"}}>
                 <Card.Body>
-                    <Card.Title>Registrarse</Card.Title>
                     <Form onSubmit={formik.handleSubmit}>
                         <Form.Group as={Col}>
                             <Form.Label>Nombre</Form.Label>
@@ -138,7 +137,10 @@ export default function Register(){
                                 {formik.errors.re_pass && formik.touched.re_pass && formik.errors.re_pass}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Button type="submit" variant="primary" style={{margin:"auto"}}>Registrarse</Button>
+                        <Form.Group as={Col} style={{display:"flex",flexDirection:"column"}} >
+                            <Button type="submit" variant="primary">Registrarse</Button>
+                            <Link to="/login" >Ya tengo cuenta</Link>
+                        </Form.Group>
                     </Form>
                 </Card.Body>
             </Card>

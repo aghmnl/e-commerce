@@ -27,18 +27,16 @@ passport.use(new LocalStrategy({
   async function(email, password, done) {
     try {
       const user = await User.findOne({ where: { email: email } })
-      console.log({ user})
+      console.log({user})
       if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
+        return done(null, false, { message: 'Incorrect username.', input : "email" });
       }
-      // if (!user.validPassword(password)) {
-      //   return done(null, false, { message: 'Incorrect password.' });
-			// }
-			
 			const passwordKey = crypto.pbkdf2Sync(password, user.salt, 10000, 64, 'sha512').toString('base64');
       if(passwordKey === user.password){
         return done(null, user);
-			}
+			}else{
+        return done(null, false, {message: 'Incorrent password', input:"password"})
+      }
 			
       // return done(null, user);
     } catch (err) {

@@ -81,7 +81,7 @@ server.post("/login", function (req, res, next) {
 			return next(err);
 		}
 		if (!user) {
-			return res.json({ status: "error", message: info.message });
+			return res.status(401).json({ status: "error", message: info.message, input: info.input });
 		}
 		req.login(user, function (err) {
 			if (err) {

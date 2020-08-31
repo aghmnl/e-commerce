@@ -3,35 +3,30 @@ import { Link, useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import "../styles/Login.css";
 import { useDispatch, useSelector, connect } from "react-redux";
+import { useFormik } from "formik";
 import { isAuth, isAdmin, emptyCart, getCart, getCartItems } from "../store/actions/index";
+import {Form, Card, Button, Col} from "react-bootstrap"
 function Login() {
 	const dispatch = useDispatch();
 	const { logged, admin, purchased_products, cartId } = useSelector(state => state);
-	var history = useHistory();
-	const [inputs, setInputs] = useState({
-		email: "",
-		password: "",
-	});
-	const [warning, setWarninig] = useState({
-		show: false,
-		msg: "",
-	});
-
-	function handleSubmit(e) {
-		e.preventDefault();
-		if (!inputs.email) {
-			setWarninig({ show: true, msg: `Se requiere email` });
-			document.querySelector("#email").focus();
-			return;
-		}
-		if (!inputs.password) {
-			setWarninig({ show: true, msg: `Se requiere contraseña` });
-			document.querySelector("#password").focus();
-			return;
-		}
+	const history = useHistory();
+	const formik = useFormik({
+		initialValues:{
+			email:"",
+			password:""
+		},
+		validate: values => {
+			const errors = {};
+			!values.email && (errors.email = "Se requiere un Email");
+			!values.password && (errors.password = "Se requiere una contraseña");
+			return errors;
+		},
+		onSubmit: values => handleSubmit(values)
+	})
+	function handleSubmit(values) {
 		const url = "http://localhost:3001/auth/login";
 		axios
-			.post(url, inputs, {
+			.post(url, values, {
 				withCredentials: true,
 			})
 			.then(res => {
@@ -57,7 +52,9 @@ function Login() {
 				}
 			})
 			.then(() => dispatch(getCartItems(cartId)))
-			.catch(err => console.log("error", err));
+			.catch(({response}) => {
+				formik.setFieldError(response.data.input,response.data.message);
+			});
 	}
 
 	if (admin) {
@@ -66,44 +63,44 @@ function Login() {
 		if (logged) return <Redirect to="/user" />;
 	}
 	return (
-		<div className=" row contenedor">
-			<form className="col-4 login" onSubmit={e => handleSubmit(e)}>
-				<h2>INICIAR SESIÓN</h2>
-
-				<div className="form-group">
-					<label>Email</label>
-					<input
-						type="email"
-						className="form-control"
-						id="email"
-						value={inputs.email}
-						onChange={e => setInputs({ ...inputs, email: e.target.value })}
-						placeholder="Ingrese email"
-					/>
-				</div>
-
-				<div className="form-group">
-					<label>Contraseña</label>
-					<input
-						type="password"
-						className="form-control"
-						id="password"
-						value={inputs.password}
-						onChange={e => setInputs({ ...inputs, password: e.target.value })}
-						placeholder="Ingrese contraseña"
-					/>
-				</div>
-
-				<button type="submit" className="btn btn-primary btn-block">
-					Iniciar Sesión
-				</button>
-				<p className="forgot-password text-center mt-2">
-					<Link to="/reset">¿Olvidó su contraseña? </Link>
-					&nbsp; &nbsp; &nbsp;
-					<Link to="/register"> Registrar nuevo usuario</Link>
-				</p>
-			</form>
-		</div>
+		<div>
+            <Card style={{width:"30rem", margin:"5rem auto", textAlign:"left"}}>
+                <Card.Body>
+                    <Form onSubmit={formik.handleSubmit}>
+                        <Form.Group as={Col}>
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control
+                                value={formik.values.email}
+                                onChange={e => formik.setFieldValue("email",e.target.value)}
+                                onBlur={()=> formik.setFieldTouched("email",true)}
+                                isInvalid={formik.touched.email && !!formik.errors.email}
+                            />
+                            <Form.Control.Feedback type="invalid" tooltip>
+                                {formik.errors.email && formik.touched.email && formik.errors.email}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>Contraseña</Form.Label>
+                            <Form.Control
+                                value={formik.values.password}
+                                type="password"
+                                onChange={e => formik.setFieldValue("password",e.target.value)}
+                                onBlur={()=> formik.setFieldTouched("password",true)}
+                                isInvalid={formik.touched.password && !!formik.errors.password}
+                            />
+                            <Form.Control.Feedback type="invalid" tooltip>
+                                {formik.errors.password && formik.touched.password && formik.errors.password}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+						<Form.Group as={Col} style={{display:"flex", flexDirection:"column"}}>
+                        	<Button type="submit" variant="success">Iniciar Sesión</Button>
+							<Link to="/register">Registarse</Link>
+							<Link to="/reset">Olvidé mi contraseña</Link>
+						</Form.Group>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </div>
 	);
 }
 
