@@ -4,14 +4,9 @@ import { connect } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import { Alert, Button, Col, Row, Container, Card, ListGroup, ListGroupItem, Spinner } from "react-bootstrap";
 import "../styles/Product.css";
-import { saveCart, saveTotal } from "../store/localState";
-import store from "../store/index";
+
 import Review, { ProductRating } from "./Review";
-store.subscribe(() => {
-	const { purchased_products, total } = store.getState();
-	saveCart(purchased_products);
-	saveTotal(total);
-});
+
 function Product({ id, productDetail, getProduct, cellar, strain, category, cleanProduct, addProduct }) {
 	var history = useHistory();
 	useEffect(() => {
@@ -89,8 +84,8 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 			{!productDetail.users ? (
 				<Spinner animation="border" />
 			) : (
-				productDetail.users.map(({ name, review }) => {
-					return <Review stars={review.stars} user={name} date={review.date} description={review.description} />;
+				productDetail.users.map(({ email, review }) => {
+					return <Review stars={review.stars} user={email} date={review.date} description={review.description} />;
 				})
 			)}
 		</div>

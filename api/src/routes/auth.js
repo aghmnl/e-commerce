@@ -13,7 +13,6 @@ async function isAdmin(req, res, next) {
 }
 function isAuthenticated(req, res, next) {
 	// isAuthenticated devuelve true cuando está autenticado
-	console.log("usuario", req.isAuthenticated());
 	if (req.isAuthenticated()) return next();
 	return res.sendStatus(401);
 }
@@ -32,7 +31,6 @@ function isValidEmail(email) {
 
 //handles register POST
 server.post("/register", async function (req, res, next) {
-	console.log({ body: req.body });
 	const salt = crypto.randomBytes(64).toString("hex");
 	const password = crypto.pbkdf2Sync(req.body.password, salt, 10000, 64, "sha512").toString("base64");
 
@@ -63,7 +61,7 @@ server.post("/register", async function (req, res, next) {
 				if (!user) {
 					return res.json({ status: "error", message: info.message });
 				}
-				req.logIn(user, function (err) {
+				req.login(user, function (err) {
 					if (err) {
 						return next(err);
 					}
@@ -102,7 +100,6 @@ server.get("/logout", function (req, res, next) {
 
 // Ruta que responde true si está autenticado
 server.get("/isauth", function (req, res, next) {
-	console.log(req.user);
 	// isAuthenticated es función dentro del objeto request
 	return res.json({ isAuth: req.isAuthenticated() });
 });

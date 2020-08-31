@@ -25,6 +25,7 @@ import {
 	IS_ADMIN,
 	IS_AUTH,
 	GET_MY_PURCHASES,
+	GET_PURCHASE,
 } from "../actions";
 import axios from "axios";
 const initialState = {
@@ -242,6 +243,11 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				purchases: action.payload,
+			};
+		case GET_PURCHASE:
+			return {
+				...state,
+				purchaseDetail: action.payload,
 			};
 		case GET_CART:
 			return {

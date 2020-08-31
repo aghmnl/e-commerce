@@ -17,6 +17,7 @@ server.get("/my_purchases",(req, res, next)=>{
 			}
 		}
 	}).then(purchases => res.json(purchases))
+	.catch(err => next(err));
 })
 server.get("/", (req, res, next) => {
 	Purchase.findAll({
@@ -70,13 +71,7 @@ server.get("/users/:userId", (req, res, next) => {
 });
 
 //Retorna la orden de un ID
-server.get("/:id", (req, res, next) => {
-	Purchase.findOne({
-		where: { id: req.params.id } 
-	})
-		.then(purchase => res.json(purchase))
-		.catch(err => next(err));
-});
+
 
 
 // OTRA OPCIÓN S45 SERÍA:
@@ -95,11 +90,17 @@ server.get("/:id", (req, res, next) => {
 }); */
 // S47 : Crear Ruta para modificar una Orden
 // OTRA OPCIÓN SERÍA
-server.put("/:id", (req, res) => {
-	Purchase.update(req.body, { where: { id: parseInt(req.params.id) } })
-		.then(() => res.sendStatus(200))
-		.catch(err => res.json(err));
-});
+
+server.put("/buy",(req, res, next) =>{
+	console.log("usuario")
+	Purchase.update({ statusId: 2 },{
+		where:{
+			id:req.body.cartId,
+			statusId: 1,
+		}
+	}).then((p) => console.log(p))
+	.catch(err => next(err))
+})
 // S40 : Crear Ruta para vaciar el carrito
 // ATENCIÓN, el trello pedía DELETE /users/:idUser/cart/
 server.delete("/:id/cart", (req, res, next) => {
@@ -111,6 +112,7 @@ server.delete("/:id/cart", (req, res, next) => {
 
 // Bsca en base de datos el carrito para un usuario determinado (lo saca de req.user)
 server.get("/cart_id", (req, res, next) => {
+	console.log(req.user.id)
 	Purchase.findOrCreate({
 		attributes: ["id"],
 		where: {

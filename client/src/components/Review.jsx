@@ -20,7 +20,7 @@ export default function Review({stars, user, description, date}){
                     </div>
                 </Card.Title>
                 <Card.Subtitle>
-                   ({date}) ~ @{user} :
+                   ({date}) ~ {user} :
                 </Card.Subtitle>
                 <Card.Text>
                     {description}
@@ -43,6 +43,7 @@ export function ProductRating({users}){
                                     for(let user of users)
                                     sumStars += user.review.stars;
                                     let rating = (sumStars/users.length)
+                                    if(!users.length) rating = 0;
                                     return Number.isInteger(rating)?rating.toFixed(1):rating;
                                 })()
                             }

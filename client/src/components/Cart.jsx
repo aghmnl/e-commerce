@@ -18,7 +18,7 @@ import {
 	getCartItems,
 	getCart,
 } from "../store/actions/index";
-
+import axios from "axios";
 function CartItem({
 	products,
 	total,
@@ -29,10 +29,11 @@ function CartItem({
 	addProduct,
 	decreseProduct,
 	increseProduct,
-	getCartItems
+	getCartItems,
+	logged
 }) {
 	useEffect(()=>{
-		getCartItems(cartId);
+		if(!!cartId) getCartItems(cartId);
 	},[cartId])
 	return (
 		<div style={{ marginTop: "5rem" }}>
@@ -94,6 +95,21 @@ function CartItem({
 					</Button>
 				</Card.Title>
 			</Card>
+			{logged && (<Card>
+				<Card.Title>
+					Total: $ {total}
+					<Button onClick={() =>{
+						axios.put("http://localhost:3001/purchase_protected/buy",{
+							cartId: cartId
+						},{
+							withCredentials: true
+						}).then((res)=> alert(JSON.stringify(res)))
+							.catch(err => console.log(err));
+					}} variant="success">
+						Finalizar Compra
+					</Button>
+				</Card.Title>
+			</Card>)}
 		</div>
 	);
 }
@@ -101,7 +117,8 @@ export default connect(
 	state => ({
 		products: state.purchased_products,
 		total: state.total,
-		cartId: state.cartId
+		cartId: state.cartId,
+		logged: state.logged
 	}),
 	{
 		addProduct,
