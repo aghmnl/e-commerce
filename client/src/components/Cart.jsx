@@ -95,7 +95,7 @@ function CartItem({
 					</Button>
 				</Card.Title>
 			</Card>
-			{logged && (<Card style={{width: "15rem", margin:"auto"}}>
+			{logged && !!products.length && (<Card style={{width: "15rem", margin:"auto"}}>
 				<Card.Body>
 					<Button onClick={() =>{
 						axios.put("http://localhost:3001/purchase_protected/buy",{

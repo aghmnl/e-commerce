@@ -27,7 +27,10 @@ function FormUser({ users, user, getUsers, getUser, admin }) {
 	function promote(id) {
 		axios
 			.put("http://localhost:3001/auth/promote/" + id, null, { withCredentials: true })
-			.then(res => alert(JSON.stringify(res)))
+			.then(res => {
+				getUsers();
+				throwModal({...modal,show:false})
+			})
 			.catch(err => console.log(err));
 	}
 	function eliminar(id) {

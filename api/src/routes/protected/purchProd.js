@@ -37,7 +37,15 @@ server.post("/increase_product", (req, res, next) => {
 		purchased_product.save();
 	});
 });
-
+server.delete("/empty_cart/:cartId", (req, res, next) => {
+	Purchased_product.destroy({
+		where: {
+			purchaseId: req.params.cartId,
+		},
+	}).then(purchased_product => {
+		res.json(purchased_product);
+	});
+});
 // Para decrementar en uno el producto dentro del carrito en la DB
 // "http://localhost:3001/purchased_products_protected/decrease_product"
 server.post("/decrease_product", (req, res, next) => {
@@ -51,7 +59,16 @@ server.post("/decrease_product", (req, res, next) => {
 		purchased_product.save();
 	});
 });
-
+server.put("/delete_product", (req, res, next) => {
+	Purchased_product.destroy({
+		where: {
+			purchaseId: req.body.cartId,
+			productId: req.body.productId
+		},
+	}).then(purchased_product => {
+		res.json(purchased_product);
+	});
+})
 server.get("/cart_items/:cartId", (req, res, next) => {
 	!!req.params.cartId && Purchase.findOne({
 		where: {

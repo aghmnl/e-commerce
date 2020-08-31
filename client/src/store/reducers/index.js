@@ -115,7 +115,7 @@ export default (state = initialState, action) => {
 			purchased_products[index].quantity += 1;
 			return {
 				...state,
-				total: total + price,
+				total: total + parseInt(price),
 				purchased_products,
 			};
 		case DECRESE_PRODUCT:
@@ -139,7 +139,7 @@ export default (state = initialState, action) => {
 			purchased_products[index].quantity -= 1;
 			return {
 				...state,
-				total: total - price,
+				total: total - parseInt(price),
 				purchased_products,
 			};
 		case EDIT_PRODUCT:
@@ -154,6 +154,13 @@ export default (state = initialState, action) => {
 				purchased_products,
 			};
 		case EMPTY_CART:
+			if(state.logged){
+				axios.delete("http://localhost:3001/purchased_products_protected/empty_cart/"+state.cartId, {
+					withCredentials: true
+				})
+					.then(res => console.log(res))
+					.catch(err => console.log(err))
+			}
 			return {
 				...state,
 				purchased_products: [],
@@ -164,6 +171,14 @@ export default (state = initialState, action) => {
 			var { purchased_products } = state;
 			var index = purchased_products.findIndex(pp => pp.id === id);
 			var totalProducto = purchased_products[index].quantity * purchased_products[index].price;
+			if(state.logged){
+				axios.put("http://localhost:3001/purchased_products_protected/delete_product/",{
+					cartId: state.cartId,
+					productId: id
+				},{ withCredentials:true })
+					.then(res => console.log(res))
+					.catch(err => console.log(err))
+			}
 			return {
 				...state,
 				purchased_products: purchased_products.filter(producto => producto.id !== id),
