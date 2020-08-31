@@ -95,9 +95,8 @@ function CartItem({
 					</Button>
 				</Card.Title>
 			</Card>
-			{logged && (<Card>
-				<Card.Title>
-					Total: $ {total}
+			{logged && (<Card style={{width: "15rem", margin:"auto"}}>
+				<Card.Body>
 					<Button onClick={() =>{
 						axios.put("http://localhost:3001/purchase_protected/buy",{
 							cartId: cartId
@@ -108,7 +107,7 @@ function CartItem({
 					}} variant="success">
 						Finalizar Compra
 					</Button>
-				</Card.Title>
+				</Card.Body>
 			</Card>)}
 		</div>
 	);

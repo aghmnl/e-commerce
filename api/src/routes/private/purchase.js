@@ -77,7 +77,9 @@ server.get("/detail/:id", (req, res, next) => {
             }
 		],
 	})
-		.then(purchases => res.json(purchases))
+		.then(purchase => {
+			res.json({purchase, total: purchase.getTotal()})
+		})
         .catch(err => next(err));
 });
 module.exports = server;
