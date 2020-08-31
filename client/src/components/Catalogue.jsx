@@ -42,7 +42,9 @@ function Catalogue({
 			<Nav id="navegacion" activeKey="/catalogue/category/1">
 				<Nav.Item>
 					<Nav.Link>
-						<NavLink to="/catalogue/0">Todos</NavLink>
+						<NavLink style={{ color: "darkgreen" }} to="/catalogue/0">
+							Todos
+						</NavLink>
 					</Nav.Link>
 				</Nav.Item>
 				{categories.map(category => (
@@ -54,10 +56,8 @@ function Catalogue({
 				))}
 			</Nav>
 			<Container>
-
 				<Row>
 					<Col>
-
 						<div className="catalogue">
 							{!!products
 								? products.map(product => (
@@ -76,36 +76,32 @@ function Catalogue({
 										return <Spinner animation="border" />;
 								  })()}
 						</div>
-
-
 					</Col>
-
 				</Row>
 				<Row sm="1">
-						{(() => {
-							if (!products) return;
-							let active = pag;
-							let buttons = [];
-							for (let i = 0; i < Math.ceil(pags / 10); i++) {
-								buttons.push(
-									<Pagination.Item key={i + 1} active={i === parseInt(active)}>
-										<NavLink to={"/catalogue/" + i}>{i + 1}</NavLink>
-									</Pagination.Item>
-									
-								);
-							}
-
-							const paginationBasic = (
-								<div>
-									<Pagination>{buttons}</Pagination>
-									<br />
-								</div>
+					{(() => {
+						if (!products) return;
+						let active = pag;
+						let buttons = [];
+						for (let i = 0; i < Math.ceil(pags / 10); i++) {
+							buttons.push(
+								<Pagination.Item key={i + 1} active={i === parseInt(active)}>
+									<NavLink to={"/catalogue/" + i}>{i + 1}</NavLink>
+								</Pagination.Item>
 							);
-							return paginationBasic;
-							// return buttons.map(button => button);
-						})()}
+						}
 
-						{/* Acá va a selececcionar las cepas
+						const paginationBasic = (
+							<div>
+								<Pagination>{buttons}</Pagination>
+								<br />
+							</div>
+						);
+						return paginationBasic;
+						// return buttons.map(button => button);
+					})()}
+
+					{/* Acá va a selececcionar las cepas
 						<Form>
 						{["checkbox"].map(type => (
 							<div key={`default-${type}`} className="mb-3">
@@ -113,8 +109,7 @@ function Catalogue({
 							</div>
 						))}
 						</Form> */}
-						</Row>
-
+				</Row>
 			</Container>
 		</div>
 	);

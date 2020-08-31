@@ -13,6 +13,13 @@ export default function Admin() {
 		<Nav id="navegacion">
 			<Nav.Item>
 				<Nav.Link>
+					<NavLink style={{ color: "darkgreen" }} to="/user/purchases">
+						Mis compras
+					</NavLink>
+				</Nav.Link>
+			</Nav.Item>
+			<Nav.Item>
+				<Nav.Link>
 					<NavLink to="/admin/formProduct">Productos</NavLink>
 				</Nav.Link>
 			</Nav.Item>
