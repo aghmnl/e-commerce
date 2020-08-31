@@ -56,4 +56,28 @@ server.get("/status?:statusId", (req, res, next) => {
 		.then(purchases => res.json(purchases))
         .catch(err => next(err));
 });
+server.get("/detail/:id", (req, res, next) => {
+	Purchase.findByPk(req.params.id,{
+		include: [
+			{
+				model: User,
+				as: "user",
+			},
+			{
+				model: Pay_method,
+				as: "pay_method",
+			},
+			{
+				model: Status,
+				as: "status",
+
+            },
+            {
+                model: Product
+            }
+		],
+	})
+		.then(purchases => res.json(purchases))
+        .catch(err => next(err));
+});
 module.exports = server;

@@ -83,6 +83,10 @@ server.get("/detail/:id", (req, res, next) => {
 			},
 			{
 				model: User,
+				attributes: ["email"],
+				through:{
+					attributes: ["date", "stars", "description"]
+				}
 				
 			},
 		],

@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { useHistory, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { isAuth, isAdmin, getMyPurchases } from "../store/actions/index";
+import { isAuth, isAdmin, getMyPurchases, emptyCart } from "../store/actions/index";
 import axios from "axios";
 
 export default function User() {
@@ -32,6 +32,7 @@ export default function User() {
 								history.replace("/");
 								dispatch(isAuth());
 								dispatch(isAdmin());
+								dispatch(emptyCart());
 							})
 							.catch(err => console.log("error", err));
 						return;

@@ -19,6 +19,7 @@ export const SEARCH_PRODUCT = "SEARCH_PRODUCT";
 export const GET_USERS = "GET_USERS";
 export const GET_USER = "GET_USER";
 export const GET_PURCHASES = "GET_PURCHASES";
+export const GET_PURCHASE = "GET_PURCHASE";
 export const GET_STATUSES = "GET_STATUSES";
 export const GET_CATALOGUE = "GET_CATALOGUE";
 export const IS_ADMIN = "IS_ADMIN";
@@ -243,6 +244,15 @@ export const getPurchases = statusId => {
 			: `http://localhost:3001/purchase_private/status?statusId=${statusId}`;
 		return axios.get(url,{withCredentials:true})
 			.then(({data: purchases}) => dispatch({ type: GET_PURCHASES, payload: purchases }))
+			.catch(err => console.log(err));
+	};
+};
+export const getPurchase = id => {
+	console.log("aca")
+	return dispatch => {
+		const url = `http://localhost:3001/purchase_private/detail/${id}`;
+		return axios.get(url,{withCredentials:true})
+			.then(({data: purchase}) => dispatch({ type: GET_PURCHASE, payload: purchase }))
 			.catch(err => console.log(err));
 	};
 };

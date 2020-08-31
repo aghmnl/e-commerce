@@ -28,13 +28,16 @@ export default function Mypurchases(){
                             <Col sm="2" style={{ alignSelf: "center" }}>
 								<Card.Subtitle>Cantidad: {product.purchased_product.quantity}</Card.Subtitle>
 							</Col>
+                            <Col sm="2" style={{ alignSelf: "center" }}>
+								<Card.Subtitle>{purchase.date}</Card.Subtitle>
+							</Col>
                             <Col>
                             <Dropdown>
                                 <Dropdown.Toggle variant="success" id="dropdown-basic">
                                     
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                <Dropdown.Item><NavLink to="/" >Review</NavLink></Dropdown.Item>
+                                <Dropdown.Item><NavLink to={`/formReview/${product.id}`}>Review</NavLink></Dropdown.Item>
                                 </Dropdown.Menu>
                                 </Dropdown>
                             </Col>

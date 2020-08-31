@@ -27,7 +27,7 @@ server.post("/add_product", (req, res, next) => {
 // Para incrementar en uno el producto dentro del carrito en la DB
 // "http://localhost:3001/purchased_products_protected/increase_product"
 server.post("/increase_product", (req, res, next) => {
-	Purchase.findOne({
+	Purchased_product.findOne({
 		where: {
 			purchaseId: req.body.cartId,
 			productId: req.body.id,
@@ -41,7 +41,7 @@ server.post("/increase_product", (req, res, next) => {
 // Para decrementar en uno el producto dentro del carrito en la DB
 // "http://localhost:3001/purchased_products_protected/decrease_product"
 server.post("/decrease_product", (req, res, next) => {
-	Purchase.findOne({
+	Purchased_product.findOne({
 		where: {
 			purchaseId: req.body.cartId,
 			productId: req.body.id,
@@ -53,7 +53,7 @@ server.post("/decrease_product", (req, res, next) => {
 });
 
 server.get("/cart_items/:cartId", (req, res, next) => {
-	Purchase.findOne({
+	!!req.params.cartId && Purchase.findOne({
 		where: {
 			id: req.params.cartId,
 			statusId: 1,
@@ -78,7 +78,8 @@ server.get("/cart_items/:cartId", (req, res, next) => {
 			});
 		});
 		res.json(cart_items);
-	});
+	})
+		.catch(err => next(err));
 
 });
 

@@ -22,7 +22,14 @@ import Mypurchases from "./components/Purchases";
 import Reset from "./components/Reset";
 import Register from "./components/Register";
 import Purchase from "./components/Purchase";
-
+import { saveCart, saveTotal } from "./store/localState";
+import store from "./store/index";
+import FormReview from "./components/FormReview";
+store.subscribe(() => {
+	const { purchased_products, total } = store.getState();
+	saveCart(purchased_products);
+	saveTotal(total);
+});
 function App({ getPurchases, isAuth, isAdmin, getCart, }) {
 	useEffect(() => {
 		isAuth();
@@ -75,7 +82,7 @@ function App({ getPurchases, isAuth, isAdmin, getCart, }) {
 			/>
 
 			<Route exact path="/product/:id" render={({ match }) => <Product id={match.params.id} />} />
-
+			<Route exact path="/formReview/:product" render={({ match }) => <FormReview product={match.params.product} />} />
 			<Route exact path="/admin/formUser" render={() =>  <FormUser />} />
 			<Route exact path="/login" component={Login} />
 			<Route exact path="/user" component={User} />

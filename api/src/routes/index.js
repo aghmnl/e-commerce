@@ -16,7 +16,7 @@ const purchProdProtectedRouter = require("./protected/purchProd.js");
 const statusPrivateRouter = require("./private/status.js");
 const authRouter = require("./auth.js").server;
 const { isAuthenticated, isAdmin } = require("./auth.js");
-const reviewRouter = require("./public/review.js");
+const reviewRouter = require("./protected/review.js");
 const router = Router();
 router.use("/auth", authRouter);
 router.use("/product_public", productPublicRouter);
@@ -33,5 +33,5 @@ router.use("/purchase_protected", isAuthenticated, purchaseProtectedRouter);
 router.use("/purchase_private", isAuthenticated, isAdmin, purchasePrivateRouter);
 router.use("/purchased_products_protected", isAuthenticated, purchProdProtectedRouter); // ¿¿Se puede esto??
 router.use("/status_private", isAuthenticated, isAdmin, statusPrivateRouter);
-router.use("/review", reviewRouter);
+router.use("/review",isAuthenticated, reviewRouter);
 module.exports = router;

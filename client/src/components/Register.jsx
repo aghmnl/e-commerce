@@ -1,9 +1,13 @@
-
 import React from 'react';
 import { Form, Card, Button, Col } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import { useHistory, Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { isAuth, isAdmin } from "../store/actions";
 import axios from "axios";
 export default function Register(){
+    const dispatch = useDispatch();
+    const history = useHistory();
     const formik = useFormik({
         initialValues:{
             first_name: "",
@@ -45,15 +49,18 @@ export default function Register(){
         onSubmit: (values) =>{
             axios
                 .post("http://localhost:3001/auth/register", values)
-                .then(()=>alert("OK"))
+                .then( async ()=>{
+                    await dispatch(isAuth());
+                    await dispatch(isAdmin());
+                    history.replace("/user");
+                })
                 .catch(err => formik.setFieldError(err.response.data.input, err.response.data.message))
         } 
     });
     return(
         <div>
-            <Card style={{width:"30rem", margin:"auto", textAlign:"left"}}>
+            <Card style={{width:"30rem", margin:"5rem auto", textAlign:"left"}}>
                 <Card.Body>
-                    <Card.Title>Registrarse</Card.Title>
                     <Form onSubmit={formik.handleSubmit}>
                         <Form.Group as={Col}>
                             <Form.Label>Nombre</Form.Label>
@@ -108,6 +115,7 @@ export default function Register(){
                             <Form.Label>Contraseña</Form.Label>
                             <Form.Control
                                 value={formik.values.password}
+                                type="password"
                                 onChange={e => formik.setFieldValue("password",e.target.value)}
                                 onBlur={()=> formik.setFieldTouched("password",true)}
                                 isInvalid={formik.touched.password && !!formik.errors.password}
@@ -120,6 +128,7 @@ export default function Register(){
                             <Form.Label>Repita Contraseña</Form.Label>
                             <Form.Control
                                 value={formik.values.re_pass}
+                                type="password"
                                 onChange={e => formik.setFieldValue("re_pass",e.target.value)}
                                 onBlur={()=> formik.setFieldTouched("re_pass",true)}
                                 isInvalid={(formik.touched.re_pass && !!formik.errors.re_pass)}
@@ -128,7 +137,10 @@ export default function Register(){
                                 {formik.errors.re_pass && formik.touched.re_pass && formik.errors.re_pass}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Button type="submit" variant="primary" style={{margin:"auto"}}>Registrarse</Button>
+                        <Form.Group as={Col} style={{display:"flex",flexDirection:"column"}} >
+                            <Button type="submit" variant="primary">Registrarse</Button>
+                            <Link to="/login" >Ya tengo cuenta</Link>
+                        </Form.Group>
                     </Form>
                 </Card.Body>
             </Card>
