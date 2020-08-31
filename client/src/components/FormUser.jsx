@@ -22,12 +22,15 @@ function FormUser({ users, user, getUsers, getUser, admin }) {
 	function promote(id) {
 		axios
 			.put("http://localhost:3001/auth/promote/" + id, null, { withCredentials: true })
-			.then(res => alert(JSON.stringify(res)))
+			.then(res => {
+				getUsers();
+				throwModal({...modal,show:false})
+			})
 			.catch(err => console.log(err));
 	}
 	if (!admin) return <Redirect to="login" />;
 	return (
-		<div id="main" style={{ marginTop: "8rem" }}>
+		<div style={{ margin: "8rem auto", width: "55rem" }}>
 			<Modal show={modal.show} centered>
 				<Modal.Header>{!!user && user.admin ? "Quitar privilegios" : "Hacer Admin"}</Modal.Header>
 				<Modal.Body>

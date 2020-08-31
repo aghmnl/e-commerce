@@ -66,7 +66,7 @@ function Purchases({ purchases, statuses, statusId, getStatuses, getPurchases })
 										<Card.Text>Estado: {purchase.status.name}</Card.Text>
 									</Col>
 									<Col sm="4" style={{ alignSelf: "center" }}>
-										<Card.Text>Método de pago: {purchase.pay_method.name}</Card.Text>
+										<Card.Text>Método de pago: {!!purchase.pay_method && purchase.pay_method.name}</Card.Text>
 									</Col>
 								</Row>
 							</Container>
