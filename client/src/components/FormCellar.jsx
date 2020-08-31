@@ -118,7 +118,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 					throwModal({
 						show: true,
 						dialog: "La bodega con Pk " + id + " será eliminada.\n¿Desea continuar?",
-						header: "Eliminar Bodega",
+						header: "Eliminar bodega",
 						pk: id,
 					});
 				}}

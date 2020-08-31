@@ -227,7 +227,7 @@ export const getCart = () => {
 			.catch(err => console.log(err));
 	};
 };
-export const getCartItems = (cartId) => {
+export const getCartItems = cartId => {
 	return dispatch => {
 		const url = "http://localhost:3001/purchased_products_protected/cart_items/" + cartId;
 		return axios
@@ -237,38 +237,42 @@ export const getCartItems = (cartId) => {
 	};
 };
 export const getPurchases = statusId => {
-	console.log("aca")
+	console.log("Llama a getPurchases (action)");
 	return dispatch => {
 		const url = !statusId
 			? "http://localhost:3001/purchase_private"
 			: `http://localhost:3001/purchase_private/status?statusId=${statusId}`;
-		return axios.get(url,{withCredentials:true})
-			.then(({data: purchases}) => dispatch({ type: GET_PURCHASES, payload: purchases }))
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data: purchases }) => dispatch({ type: GET_PURCHASES, payload: purchases }))
 			.catch(err => console.log(err));
 	};
 };
 export const getPurchase = id => {
-	console.log("aca")
+	console.log("Llama a getPurchase (action)");
 	return dispatch => {
 		const url = `http://localhost:3001/purchase_private/detail/${id}`;
-		return axios.get(url,{withCredentials:true})
-			.then(({data: purchase}) => dispatch({ type: GET_PURCHASE, payload: purchase }))
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data: purchase }) => dispatch({ type: GET_PURCHASE, payload: purchase }))
 			.catch(err => console.log(err));
 	};
 };
 export const getMyPurchases = () => {
 	return dispatch => {
 		const url = "http://localhost:3001/purchase_protected/my_purchases";
-		return axios.get(url,{withCredentials:true})
-			.then(({data: purchases}) => dispatch({ type: GET_MY_PURCHASES, payload: purchases }))
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data: purchases }) => dispatch({ type: GET_MY_PURCHASES, payload: purchases }))
 			.catch(err => console.log(err));
 	};
 };
 export const getStatuses = () => {
 	return dispatch => {
 		const url = "http://localhost:3001/status_private";
-		return axios.get(url, {withCredentials:true})
-			.then(({data: statuses}) => dispatch({ type: GET_STATUSES, payload: statuses }))
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data: statuses }) => dispatch({ type: GET_STATUSES, payload: statuses }))
 			.catch(err => console.log(err));
 	};
 };

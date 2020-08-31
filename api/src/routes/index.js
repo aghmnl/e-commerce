@@ -1,5 +1,4 @@
 const { Router } = require("express");
-// import all routers;
 const productPublicRouter = require("./public/product.js");
 const productPrivateRouter = require("./private/product.js");
 const categoryPublicRouter = require("./public/category.js");
@@ -31,7 +30,7 @@ router.use("/user", isAuthenticated, userRouter);
 router.use("/user_private", isAuthenticated, isAdmin, userPrivateRouter);
 router.use("/purchase_protected", isAuthenticated, purchaseProtectedRouter);
 router.use("/purchase_private", isAuthenticated, isAdmin, purchasePrivateRouter);
-router.use("/purchased_products_protected", isAuthenticated, purchProdProtectedRouter); // ¿¿Se puede esto??
+router.use("/purchased_products_protected", isAuthenticated, purchProdProtectedRouter);
 router.use("/status_private", isAuthenticated, isAdmin, statusPrivateRouter);
-router.use("/review",isAuthenticated, reviewRouter);
+router.use("/review", isAuthenticated, reviewRouter);
 module.exports = router;

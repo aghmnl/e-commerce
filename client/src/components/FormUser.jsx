@@ -6,8 +6,13 @@ import { getUsers, getUser, cleanUser } from "../store/actions/index";
 import { connect } from "react-redux";
 import { FaUserCog } from "react-icons/fa";
 import UDTable from "./UDTable";
+import ModalDelete from "./ModalDelete";
 function FormUser({ users, user, getUsers, getUser, admin }) {
 	const history = useHistory();
+	const [modalDelete, throwModalDelete] = useState({
+		show: false,
+		dialog: "",
+	});
 	const [modal, throwModal] = useState({
 		show: false,
 	});
@@ -28,9 +33,29 @@ function FormUser({ users, user, getUsers, getUser, admin }) {
 			})
 			.catch(err => console.log(err));
 	}
+	function eliminar(id) {
+		axios
+			.delete(`http://localhost:3001/user_private/${id}`, { withCredentials: true })
+			.then(() => {
+				getUsers();
+				throwModalDelete({ ...modalDelete, show: false });
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	}
+
 	if (!admin) return <Redirect to="login" />;
 	return (
-		<div style={{ margin: "8rem auto", width: "55rem" }}>
+		<div id="main" style={{ marginTop: "8rem" }}>
+			<ModalDelete
+				show={modalDelete.show}
+				dialog={modalDelete.dialog}
+				header={modalDelete.header}
+				pk={modalDelete.pk}
+				cancel={() => throwModal({ ...modalDelete, show: false })}
+				commit={eliminar}
+			/>
 			<Modal show={modal.show} centered>
 				<Modal.Header>{!!user && user.admin ? "Quitar privilegios" : "Hacer Admin"}</Modal.Header>
 				<Modal.Body>
@@ -60,6 +85,15 @@ function FormUser({ users, user, getUsers, getUser, admin }) {
 						show: true,
 					});
 				}}
+				deletePk="id"
+				handleDelete={id => {
+					throwModalDelete({
+						show: true,
+						dialog: "El usuario " + id + " será eliminado.\n¿Desea continuar?",
+						header: "Eliminar usuario",
+						pk: id,
+					});
+				}}
 				updateIcon={<FaUserCog />}
 				updatePk="id"
 			/>
@@ -69,4 +103,3 @@ function FormUser({ users, user, getUsers, getUser, admin }) {
 export default connect(({ user, users, admin }) => ({ user, users, admin }), { getUser, getUsers, cleanUser })(
 	FormUser
 );
-

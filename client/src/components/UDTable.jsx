@@ -1,6 +1,6 @@
 import React from "react";
-import {Table, Button} from "react-bootstrap";
-import {useHistory} from "react-router-dom";
+import { Table, Button } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import { ImBin2, ImPencil } from "react-icons/im";
 export default function UDTable({
     headers, rows, attributes, joins, joinAttr, update, updatePk, updateIcon, handleDelete, deletePk
