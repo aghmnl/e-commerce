@@ -6,9 +6,7 @@ const { userInfo } = require("os");
 const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
 
 const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/development`, {
-	logging: false
-	
-	, // set to console.log to see the raw SQL queries
+	logging: false, // set to console.log to see the raw SQL queries
 	//native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
 const basename = path.basename(__filename);
@@ -43,45 +41,43 @@ const {
 	Purchased_product,
 	Status,
 } = sequelize.models;
-Cellar.hasMany(Product,{
-	onDelete : "NO ACTION"
+Cellar.hasMany(Product, {
+	onDelete: "NO ACTION",
 });
 Product.belongsTo(Cellar);
-Strain.hasMany(Product,{
-	onDelete : "NO ACTION"
+Strain.hasMany(Product, {
+	onDelete: "NO ACTION",
 });
 Product.belongsTo(Strain);
-Category.hasMany(Product,{
-	onDelete: "NO ACTION"
+Category.hasMany(Product, {
+	onDelete: "NO ACTION",
 });
 Product.belongsTo(Category);
-Category.hasMany(Strain,{
-	onDelete : "NO ACTION"
+Category.hasMany(Strain, {
+	onDelete: "NO ACTION",
 });
 Strain.belongsTo(Category);
-User.hasMany(Purchase, {
-	onDelete : "NO ACTION"
-});
+User.hasMany(Purchase);
 Purchase.belongsTo(User);
 Purchase.belongsToMany(Product, { through: Purchased_product });
 Product.belongsToMany(Purchase, { through: Purchased_product });
-Pay_method.hasMany(Purchase,{
-	onDelete : "NO ACTION"
+Pay_method.hasMany(Purchase, {
+	onDelete: "NO ACTION",
 });
 Purchase.belongsTo(Pay_method);
 User.belongsToMany(Product, { through: Review });
 Product.belongsToMany(User, { through: Review });
 Status.hasMany(Purchase, {
-	onDelete : "NO ACTION"
+	onDelete: "NO ACTION",
 });
 Purchase.belongsTo(Status);
-Purchase.prototype.getTotal= function(){
+Purchase.prototype.getTotal = function () {
 	let total = 0;
-	for(let product of this.products){
+	for (let product of this.products) {
 		total += parseInt(product.purchased_product.priceProduct) * product.purchased_product.quantity;
 	}
 	return total;
-}
+};
 module.exports = {
 	...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
 	conn: sequelize, // para importart la conexión { conn } = require('./db.js');

@@ -1,31 +1,34 @@
 const server = require("express").Router();
 const { Purchase, User, Pay_method, Status, Product } = require("../../db.js");
 const moment = require("moment");
-const {Op} = require("sequelize");
+const { Op } = require("sequelize");
 // S44 : Crear ruta que retorne todas las órdenes
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
-server.get("/my_purchases",(req, res, next)=>{
+// http://localhost:3001/purchase_protected/my_purchases
+server.get("/my_purchases", (req, res, next) => {
 	Purchase.findAll({
-		where:{
+		where: {
 			userId: req.user.id,
-			statusId:{[Op.not]:1},
+			statusId: { [Op.not]: 1 },
 		},
-		include:{
-			model:Product,
-			through:{
-				attributes: ["priceProduct","quantity"]
-			}
-		}
-	}).then(purchases => {
-		let compras = [];
-		for(let purchase of purchases){
-			compras.push({purchase, total: purchase.getTotal()});
-		}
-		res.json(compras);
+		include: {
+			model: Product,
+			through: {
+				attributes: ["priceProduct", "quantity"],
+			},
+		},
 	})
+		.then(purchases => {
+			let compras = [];
+			for (let purchase of purchases) {
+				compras.push({ purchase, total: purchase.getTotal() });
+			}
+			res.json(compras);
+		})
+		.catch(err => next(err));
+});
 
-	.catch(err => next(err));
-})
+// http://localhost:3001/purchase_protected/
 server.get("/", (req, res, next) => {
 	Purchase.findAll({
 		include: [
@@ -79,8 +82,6 @@ server.get("/users/:userId", (req, res, next) => {
 
 //Retorna la orden de un ID
 
-
-
 // OTRA OPCIÓN S45 SERÍA:
 // server.get("/users/:userId/status?:statusId", (req, res) => {
 //     if(req.params.statusId){
@@ -98,16 +99,20 @@ server.get("/users/:userId", (req, res, next) => {
 // S47 : Crear Ruta para modificar una Orden
 // OTRA OPCIÓN SERÍA
 
-server.put("/buy",(req, res, next) =>{
-	console.log("usuario")
-	Purchase.update({ statusId: 2 },{
-		where:{
-			id:req.body.cartId,
-			statusId: 1,
+server.put("/buy", (req, res, next) => {
+	console.log("usuario");
+	Purchase.update(
+		{ statusId: 2 },
+		{
+			where: {
+				id: req.body.cartId,
+				statusId: 1,
+			},
 		}
-	}).then((p) => console.log(p))
-	.catch(err => next(err))
-})
+	)
+		.then(p => console.log(p))
+		.catch(err => next(err));
+});
 // S40 : Crear Ruta para vaciar el carrito
 // ATENCIÓN, el trello pedía DELETE /users/:idUser/cart/
 server.delete("/:id/cart", (req, res, next) => {
@@ -119,7 +124,7 @@ server.delete("/:id/cart", (req, res, next) => {
 
 // Bsca en base de datos el carrito para un usuario determinado (lo saca de req.user)
 server.get("/cart_id", (req, res, next) => {
-	console.log(req.user.id)
+	console.log(req.user.id);
 	Purchase.findOrCreate({
 		attributes: ["id"],
 		where: {
