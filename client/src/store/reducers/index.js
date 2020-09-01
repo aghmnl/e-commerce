@@ -26,6 +26,7 @@ import {
 	IS_AUTH,
 	GET_MY_PURCHASES,
 	GET_PURCHASE,
+	SET_IS_ADMIN,
 } from "../actions";
 import axios from "axios";
 const initialState = {
@@ -154,12 +155,13 @@ export default (state = initialState, action) => {
 				purchased_products,
 			};
 		case EMPTY_CART:
-			if(state.logged){
-				axios.delete("http://localhost:3001/purchased_products_protected/empty_cart/"+state.cartId, {
-					withCredentials: true
-				})
+			if (state.logged) {
+				axios
+					.delete("http://localhost:3001/purchased_products_protected/empty_cart/" + state.cartId, {
+						withCredentials: true,
+					})
 					.then(res => console.log(res))
-					.catch(err => console.log(err))
+					.catch(err => console.log(err));
 			}
 			return {
 				...state,
@@ -171,13 +173,18 @@ export default (state = initialState, action) => {
 			var { purchased_products } = state;
 			var index = purchased_products.findIndex(pp => pp.id === id);
 			var totalProducto = purchased_products[index].quantity * purchased_products[index].price;
-			if(state.logged){
-				axios.put("http://localhost:3001/purchased_products_protected/delete_product/",{
-					cartId: state.cartId,
-					productId: id
-				},{ withCredentials:true })
+			if (state.logged) {
+				axios
+					.put(
+						"http://localhost:3001/purchased_products_protected/delete_product/",
+						{
+							cartId: state.cartId,
+							productId: id,
+						},
+						{ withCredentials: true }
+					)
 					.then(res => console.log(res))
-					.catch(err => console.log(err))
+					.catch(err => console.log(err));
 			}
 			return {
 				...state,
@@ -262,7 +269,7 @@ export default (state = initialState, action) => {
 		case GET_PURCHASE:
 			return {
 				...state,
-				purchaseDetail: {...action.payload.purchase, total : action.payload.total},
+				purchaseDetail: { ...action.payload.purchase, total: action.payload.total },
 			};
 		case GET_CART:
 			return {
@@ -273,13 +280,13 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				purchased_products: action.payload.cart_items,
-				total: action.payload.total
-			}
+				total: action.payload.total,
+			};
 		case GET_MY_PURCHASES:
 			return {
 				...state,
 				my_purchases: action.payload,
-			}
+			};
 		case IS_AUTH:
 			return {
 				...state,
@@ -303,6 +310,8 @@ export default (state = initialState, action) => {
 			return { ...state, category: {} };
 		case "CLEAN_STRAIN":
 			return { ...state, strain: {} };
+		case SET_IS_ADMIN:
+			return { ...state, admin: action.payload };
 		default:
 			return { ...state };
 	}

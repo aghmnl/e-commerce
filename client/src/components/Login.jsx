@@ -4,7 +4,7 @@ import axios from "axios";
 import "../styles/Login.css";
 import { useDispatch, useSelector, connect } from "react-redux";
 import { useFormik } from "formik";
-import { isAuth, isAdmin, emptyCart, getCart, getCartItems } from "../store/actions/index";
+import { isAuth, isAdmin, emptyCart, getCart, getCartItems, setIsAdmin } from "../store/actions/index";
 import { Form, Card, Button, Col } from "react-bootstrap";
 function Login() {
 	const dispatch = useDispatch();
@@ -23,6 +23,7 @@ function Login() {
 		},
 		onSubmit: values => handleSubmit(values),
 	});
+
 	function handleSubmit(values) {
 		const url = "http://localhost:3001/auth/login";
 		axios
@@ -31,10 +32,11 @@ function Login() {
 			})
 			.then(res => {
 				console.log({ res });
+				const is_admin = res.data.user.admin;
 				// Al loguearse, carga todos los productos en la DB y resetea el carrito
 				dispatch(isAuth());
-				dispatch(isAdmin());
-				if (admin) history.replace("/admin");
+				dispatch(setIsAdmin(is_admin));
+				if (is_admin) history.replace("/admin");
 				else history.replace("/user");
 				return dispatch(getCart());
 			})
@@ -57,7 +59,7 @@ function Login() {
 			});
 	}
 
-	if (admin) {
+	if (logged && admin) {
 		return <Redirect to="/admin" />;
 	} else {
 		if (logged) return <Redirect to="/user" />;
