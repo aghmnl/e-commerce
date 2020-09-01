@@ -1,4 +1,5 @@
 .bg-dark {
+	display: flex;
 	background-color: var(--color1) !important;
 	height: 50px;
 	position: fixed; /* Set the navbar to fixed position */
@@ -11,10 +12,4 @@
 	margin-left: 1rem;
 	margin-bottom: 0.5rem;
 	transform: scale(1.5);
-}
-
-#login {
-	margin-left: 1rem;
-	margin-bottom: 0.5rem;
-	transform: scale(1.4);
 }

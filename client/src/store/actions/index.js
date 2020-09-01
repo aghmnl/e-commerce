@@ -27,6 +27,7 @@ export const IS_AUTH = "IS_AUTH";
 export const GET_CART = "GET_CART";
 export const GET_CART_ITEMS = "GET_CART_ITEMS";
 export const GET_MY_PURCHASES = "GET_MY_PURCHASES";
+export const SET_IS_ADMIN = "SET_IS_ADMIN";
 export const cleanProduct = () => ({
 	type: "CLEAN_PRODUCT",
 });
@@ -74,6 +75,11 @@ export const isAdmin = () => {
 			.catch(err => console.log(err));
 	};
 };
+
+export const setIsAdmin = isAdmin => ({
+	type: SET_IS_ADMIN,
+	payload: isAdmin,
+});
 
 export const getCatalogue = pag => {
 	return dispatch => {
