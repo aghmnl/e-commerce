@@ -13,23 +13,25 @@ function NavBar() {
 	const { logged } = useSelector(state => state);
 
 	return (
-		<Navbar bg="dark" variant="dark">
-			<Link to="/">
-				<Navbar.Brand>ToniWines</Navbar.Brand>
-			</Link>
+		<Navbar id="navMain" bg="dark" variant="dark">
 			<Nav>
-				<Link to="/catalogue/0">
-					<Navbar.Brand>Catálogo</Navbar.Brand>
+				<Link to="/">
+					<Navbar.Brand>ToniWines</Navbar.Brand>
 				</Link>
-			</Nav>
-			<Nav>
-				{logged && (
-					<Link to="/user/purchases">
-						<Navbar.Brand>Mis compras</Navbar.Brand>
+				<Nav>
+					<Link to="/catalogue/0">
+						<Navbar.Brand>Catálogo</Navbar.Brand>
 					</Link>
-				)}
+				</Nav>
+				<Nav>
+					{logged && (
+						<Link to="/user/purchases">
+							<Navbar.Brand>Mis compras</Navbar.Brand>
+						</Link>
+					)}
+				</Nav>
 			</Nav>
-			<Nav className="mr-sm-2">
+			<Nav id="navega">
 				<Nav>
 					<Link to="/login">
 						<Navbar.Brand>
