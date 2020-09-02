@@ -25,22 +25,24 @@ import Purchase from "./components/Purchase";
 import { saveCart, saveTotal } from "./store/localState";
 import store from "./store/index";
 import FormReview from "./components/FormReview";
+import Settings from "./components/Settings";
 store.subscribe(() => {
 	const { purchased_products, total } = store.getState();
 	saveCart(purchased_products);
 	saveTotal(total);
 });
-function App({ getPurchases, isAuth, isAdmin, getCart, }) {
+function App({ getPurchases, isAuth, isAdmin, getCart }) {
 	useEffect(() => {
 		isAuth();
 		isAdmin();
 		getPurchases();
-		getCart()
+		getCart();
 	}, []);
 	return (
 		<div className="App">
 			<Route path="/" render={() => <NavBar />} />
 			<Route exact path="/" component={Home} />
+			<Route exact path="/settings" component={Settings} />
 			<Route exact path="/" component={CarouselSlider} />
 			<Route path="/admin" component={Admin} />
 			<Route exact path="/admin/formPurchase" component={FormPurchase} />
@@ -83,7 +85,7 @@ function App({ getPurchases, isAuth, isAdmin, getCart, }) {
 
 			<Route exact path="/product/:id" render={({ match }) => <Product id={match.params.id} />} />
 			<Route exact path="/formReview/:product" render={({ match }) => <FormReview product={match.params.product} />} />
-			<Route exact path="/admin/formUser" render={() =>  <FormUser />} />
+			<Route exact path="/admin/formUser" render={() => <FormUser />} />
 			<Route exact path="/login" component={Login} />
 			<Route exact path="/user" component={User} />
 			<Route exact path="/reset" component={Reset} />
@@ -97,5 +99,5 @@ export default connect(null, {
 	getPurchases,
 	isAuth,
 	isAdmin,
-	getCart
+	getCart,
 })(App);

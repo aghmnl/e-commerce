@@ -10,7 +10,7 @@ import { FaUser } from "react-icons/fa";
 // https://react-icons.github.io/react-icons/
 
 function NavBar() {
-	const { logged } = useSelector(state => state);
+	const { logged, admin } = useSelector(state => state);
 
 	return (
 		<Navbar id="navMain" bg="dark" variant="dark">
@@ -27,6 +27,13 @@ function NavBar() {
 					{logged && (
 						<Link to="/user/purchases">
 							<Navbar.Brand>Mis compras</Navbar.Brand>
+						</Link>
+					)}
+				</Nav>
+				<Nav>
+					{admin && (
+						<Link to="/admin">
+							<Navbar.Brand>Formularios</Navbar.Brand>
 						</Link>
 					)}
 				</Nav>
@@ -51,8 +58,9 @@ function NavBar() {
 	);
 }
 
-export default connect(({ logged }) => {
+export default connect(({ logged, admin }) => {
 	return {
 		logged,
+		admin,
 	};
 })(NavBar);
