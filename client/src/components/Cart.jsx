@@ -7,7 +7,7 @@ import { VscAdd } from "react-icons/vsc";
 import { GrSubtract } from "react-icons/gr";
 import "../styles/Cart.css";
 import { Card, Container, Row, Col, Button } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import {
 	addProduct,
 	deleteProduct,
@@ -30,11 +30,12 @@ function CartItem({
 	decreseProduct,
 	increseProduct,
 	getCartItems,
-	logged
+	logged,
 }) {
-	useEffect(()=>{
-		if(!!cartId) getCartItems(cartId);
-	},[cartId])
+	const history = useHistory();
+	useEffect(() => {
+		if (!!cartId) getCartItems(cartId);
+	}, [cartId]);
 	return (
 		<div style={{ marginTop: "5rem" }}>
 			{products.map(product => (
@@ -95,20 +96,33 @@ function CartItem({
 					</Button>
 				</Card.Title>
 			</Card>
-			{logged && !!products.length && (<Card style={{width: "15rem", margin:"auto"}}>
-				<Card.Body>
-					<Button onClick={() =>{
-						axios.put("http://localhost:3001/purchase_protected/buy",{
-							cartId: cartId
-						},{
-							withCredentials: true
-						}).then((res)=> alert(JSON.stringify(res)))
-							.catch(err => console.log(err));
-					}} variant="success">
-						Finalizar Compra
-					</Button>
-				</Card.Body>
-			</Card>)}
+			{logged && !!products.length && (
+				<Card style={{ width: "15rem", margin: "auto" }}>
+					<Card.Body>
+						<Button
+							onClick={() => {
+								axios
+									.put(
+										"http://localhost:3001/purchase_protected/buy",
+										{
+											cartId: cartId,
+										},
+										{
+											withCredentials: true,
+										}
+									)
+									.then(res => alert(JSON.stringify(res)))
+									.catch(err => console.log(err));
+
+								history.replace("/user/purchases");
+							}}
+							variant="success"
+						>
+							Finalizar Compra
+						</Button>
+					</Card.Body>
+				</Card>
+			)}
 		</div>
 	);
 }
@@ -117,7 +131,7 @@ export default connect(
 		products: state.purchased_products,
 		total: state.total,
 		cartId: state.cartId,
-		logged: state.logged
+		logged: state.logged,
 	}),
 	{
 		addProduct,
@@ -127,6 +141,6 @@ export default connect(
 		increseProduct,
 		decreseProduct,
 		getCart,
-		getCartItems
+		getCartItems,
 	}
 )(CartItem);

@@ -11,7 +11,7 @@ const {
 	Review,
 	Status,
 } = require("./src/db");
-const crypto = require("crypto")
+const crypto = require("crypto");
 // const servidor = require("./src/app.js");
 /* const salt = crypto.randomBytes(64).toString("hex");
 	const password = crypto.pbkdf2Sync(req.body.password, salt, 10000, 64, "sha512").toString("base64"); */
@@ -37,14 +37,13 @@ const createRegs = async () => {
 	const usersPromise = users.map(c => {
 		c.salt = crypto.randomBytes(64).toString("hex");
 		c.password = crypto.pbkdf2Sync(c.password, c.salt, 10000, 64, "sha512").toString("base64");
-		createPromise(User, c)
+		createPromise(User, c);
 	});
 	await Promise.all(usersPromise);
 	const pay_methodPromise = pay_methods.map(c => createPromise(Pay_method, c));
 	await Promise.all(pay_methodPromise);
 	const reviewsPromise = reviews.map(c => createPromise(Review, c));
-	await Promise.all(reviewsPromise)
-		.catch(err => console.log(err))
+	await Promise.all(reviewsPromise).catch(err => console.log(err));
 	const statusPromise = status.map(c => createPromise(Status, c));
 	await Promise.all(statusPromise);
 	const purchasesPromise = purchases.map(c => createPromise(Purchase, c));
@@ -508,6 +507,16 @@ var users = [
 		password: "1234",
 		phone: 121312132,
 		admin: true,
+		salt: "asdafasfd",
+	},
+	{
+		// userId:4,
+		first_name: "Agus",
+		last_name: "Min",
+		email: "aghmnl@gmail.com",
+		password: "1234",
+		phone: 121312132,
+		admin: false,
 		salt: "asdafasfd",
 	},
 ];

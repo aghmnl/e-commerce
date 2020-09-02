@@ -59,11 +59,10 @@ function Login() {
 			});
 	}
 
-	if (logged && admin) {
-		return <Redirect to="/admin" />;
-	} else {
-		if (logged) return <Redirect to="/user" />;
+	if (logged) {
+		return <Redirect to="/settings" />;
 	}
+
 	return (
 		<div>
 			<Card style={{ width: "30rem", margin: "5rem auto", textAlign: "left" }}>

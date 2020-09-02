@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Nav, Button } from "react-bootstrap";
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import { NavLink } from "react-router-dom";
 import { isAuth, isAdmin } from "../store/actions/index";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -11,36 +10,6 @@ export default function Admin() {
 	const history = useHistory();
 	return (
 		<Nav id="navegacion">
-			<Nav.Item>
-				<Nav.Link>
-					<NavLink to="/admin/formProduct">Productos</NavLink>
-				</Nav.Link>
-			</Nav.Item>
-			<Nav.Item>
-				<Nav.Link>
-					<NavLink to="/admin/formCategory">Categorías</NavLink>
-				</Nav.Link>
-			</Nav.Item>
-			<Nav.Item>
-				<Nav.Link>
-					<NavLink to="/admin/formCellar">Bodegas</NavLink>
-				</Nav.Link>
-			</Nav.Item>
-			<Nav.Item>
-				<Nav.Link>
-					<NavLink to="/admin/formStrain">Cepas</NavLink>
-				</Nav.Link>
-			</Nav.Item>
-			<Nav.Item>
-				<Nav.Link>
-					<NavLink to="/admin/formUser">Usuarios</NavLink>
-				</Nav.Link>
-			</Nav.Item>
-			<Nav.Item>
-				<Nav.Link>
-					<NavLink to="/admin/formPurchase">Compras</NavLink>
-				</Nav.Link>
-			</Nav.Item>
 			<Nav.Item style={{ marginLeft: "auto", paddingRight: "1rem", paddingTop: "0.2rem" }}>
 				<Button
 					variant="primary"
