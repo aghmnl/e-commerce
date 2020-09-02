@@ -77,9 +77,13 @@ server.use("/", routes);
 server.use((err, req, res, next) => {
 	// eslint-disable-line no-unused-vars
 	const status = err.status || 500;
-	const message = err.message || err;
+  let message = "";
+  let errTable = "";
+  if(!!err.original && err.original.table === "products") errTable = "Productos";
+  if(!!err.original && err.original.table === "strains") errTable = "Cepas";
+  if(!!err.original && err.original.code === "23503") message=`No se puede eliminar este dato, se necesita en ${errTable || err.original.table}`
 	console.log(err);
-	res.status(status).send(message);
+	res.status(status).send(message || err.message);
 });
 
 module.exports = server;

@@ -61,6 +61,7 @@ function FormProduct({
 		getProducts();
 		getCategories();
 		getCellars();
+		document.body.id="bg_form";
 		return () => {
 			cleanProduct();
 		};

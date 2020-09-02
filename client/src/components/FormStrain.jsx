@@ -6,9 +6,10 @@ import { useHistory, Redirect } from "react-router-dom";
 import { getStrains, getStrain, getCategories, cleanStrain } from "../store/actions/index";
 import { connect } from "react-redux";
 import UDTable from "./UDTable";
-import ModalDelete from "./ModalDelete";
+import ModalDelete, { ErrorModal } from "./ModalDelete";
 function FormStrain({ strain, strains, getStrains, getStrain, getCategories, categories, id, cleanStrain, admin }) {
 	const history = useHistory();
+	const [errModal, throwErrModal] = useState({ show:false });
 	const [modalDelete, throwModal] = useState({
 		show: false,
 		dialog: "",
@@ -33,6 +34,7 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 	useEffect(() => {
 		getCategories();
 		getStrains();
+		document.body.id="bg_form";
 		return () => {
 			cleanStrain();
 		};
@@ -67,9 +69,9 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 				getStrains();
 			})
 			.catch(err => {
-				console.log(err);
+				throwErrModal({ ...errModal, show: true, msg: err.response.data });
+				throwModal({ ...modalDelete, show: false });
 			});
-		throwModal({ ...modalDelete, show: false });
 	}
 
 	if(!admin) return(<Redirect to="\login"/>)
@@ -82,6 +84,11 @@ function FormStrain({ strain, strains, getStrains, getStrain, getCategories, cat
 				pk={modalDelete.pk}
 				cancel={() => throwModal({ ...modalDelete, show: false })}
 				commit={eliminar}
+			/>
+			<ErrorModal
+				show={errModal.show}
+				msg={errModal.msg}
+				close={() => throwErrModal({ ...errModal, show:false })}
 			/>
 			<Form
 				style={{ width: "25rem", marginTop: "8rem", textAlign: "right", marginBottom: "2rem" }}

@@ -20,6 +20,7 @@ function Purchases({ purchases, statuses, statusId, getStatuses, getPurchases })
 	}, [statusId]);
 	useEffect(() => {
 		getStatuses();
+		document.body.id="bg_form";
 		if (!statusId) getPurchases();
 	}, []);
 	return (

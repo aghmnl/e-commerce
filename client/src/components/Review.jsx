@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Rating from 'react-rating';
 import { Card, Spinner } from 'react-bootstrap';
-import { FaStar, FaRegStar, FaStarAndCrescent } from 'react-icons/fa';
+import { RiStarLine, RiStarFill } from 'react-icons/ri';
 import "../styles/Review.css";
 export default function Review({stars, user, description, date}){
     return(
@@ -13,8 +13,8 @@ export default function Review({stars, user, description, date}){
                     <div className="rating">
                     <Rating
                         initialRating={stars}
-                        emptySymbol={<FaRegStar/>}
-                        fullSymbol={<FaStar/>}
+                        emptySymbol={<RiStarLine/>}
+                        fullSymbol={<RiStarFill/>}
                         readonly
                     />
                     </div>
@@ -59,8 +59,8 @@ export function ProductRating({users}){
                                     return rating;
                                 })()
                             }
-                            emptySymbol={<FaRegStar/>}
-                            fullSymbol={<FaStar/>}
+                            emptySymbol={<RiStarLine/>}
+                            fullSymbol={<RiStarFill/>}
                             readonly
                         />
                         </div>
@@ -77,8 +77,8 @@ export function ProductRating({users}){
                                                 user.review.stars === i)).length}
                                         </span>}
                                         <Rating initialRating={i} 
-                                            emptySymbol={<FaRegStar/>} 
-                                            fullSymbol={<FaStar/>} 
+                                            emptySymbol={<RiStarLine/>} 
+                                            fullSymbol={<RiStarFill/>} 
                                             readonly />
                                     </div>
                                 );

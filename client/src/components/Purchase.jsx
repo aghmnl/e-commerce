@@ -10,6 +10,9 @@ function Purchase({id}){
     useEffect(()=>{
         dispatch(getPurchase(id));
     },[id])
+    useEffect(()=>{
+		document.body.id="bg_form";
+    },[])
     function goBack() {
 		window.history.back();
     }

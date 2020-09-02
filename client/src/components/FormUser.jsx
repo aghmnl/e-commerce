@@ -19,6 +19,7 @@ function FormUser({ users, user, getUsers, getUser, admin }) {
 	// Cuando monta el componente, trae todos los usuarios.
 	useEffect(() => {
 		getUsers();
+		document.body.id="bg_form";
 		return () => {
 			cleanUser();
 		};

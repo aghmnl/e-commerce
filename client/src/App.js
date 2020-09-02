@@ -18,7 +18,7 @@ import FormPurchase from "./components/FormPurchase";
 import { connect } from "react-redux";
 import Cart from "./components/Cart";
 import User from "./components/User";
-import Mypurchases from "./components/Purchases";
+import Mypurchases from "./components/MyPurchases";
 import Reset from "./components/Reset";
 import Register from "./components/Register";
 import Purchase from "./components/Purchase";

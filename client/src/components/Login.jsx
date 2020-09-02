@@ -9,6 +9,10 @@ import { Form, Card, Button, Col } from "react-bootstrap";
 function Login() {
 	const dispatch = useDispatch();
 	const { logged, admin, purchased_products, cartId } = useSelector(state => state);
+    useEffect(()=>{
+
+		document.body.id="bg_user";
+    },[]);
 	const history = useHistory();
 	const formik = useFormik({
 		initialValues: {
@@ -42,7 +46,6 @@ function Login() {
 			})
 			.then(() => {
 				if (purchased_products.length > 0) {
-					console.log(cartId);
 					return axios.post(
 						"http://localhost:3001/purchased_products_protected/add_product",
 						{
@@ -52,10 +55,12 @@ function Login() {
 						{ withCredentials: true }
 					);
 				}
+				return dispatch(getCart());
 			})
 			.then(() => dispatch(getCartItems(cartId)))
-			.catch(({ response }) => {
-				formik.setFieldError(response.data.input, response.data.message);
+			.catch(err => {
+				console.log(err)
+				formik.setFieldError(err.response.data.input, err.response.data.message);
 			});
 	}
 

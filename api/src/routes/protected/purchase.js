@@ -100,9 +100,8 @@ server.get("/users/:userId", (req, res, next) => {
 // OTRA OPCIÓN SERÍA
 
 server.put("/buy", (req, res, next) => {
-	console.log("usuario");
 	Purchase.update(
-		{ statusId: 2 },
+		{ statusId: 2,  date: Date.now() },
 		{
 			where: {
 				id: req.body.cartId,
@@ -110,7 +109,7 @@ server.put("/buy", (req, res, next) => {
 			},
 		}
 	)
-		.then(p => console.log(p))
+		.then(p => res.json(p))
 		.catch(err => next(err));
 });
 // S40 : Crear Ruta para vaciar el carrito
