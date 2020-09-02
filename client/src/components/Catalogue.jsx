@@ -30,6 +30,7 @@ function Catalogue({
 		getProducts(category);
 	}, [category]);
 	useEffect(() => {
+		document.body.id="bg_cat";
 		getCategories();
 	}, []);
 	useEffect(() => {

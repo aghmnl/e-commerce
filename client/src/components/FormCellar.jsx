@@ -6,9 +6,10 @@ import { useHistory, Redirect } from "react-router-dom";
 import { getCellars, getCellar, cleanCellar } from "../store/actions/index";
 import { connect } from "react-redux";
 import UDTable from "./UDTable";
-import ModalDelete from "./ModalDelete";
+import ModalDelete, {ErrorModal} from "./ModalDelete";
 function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCellar, admin }) {
 	const history = useHistory();
+	const [errModal, throwErrModal] = useState({ show:false });
 	const [modalDelete, throwModal] = useState({
 		show: false,
 		dialog: "",
@@ -31,6 +32,7 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 	// Cuando monta el componente, trae todos los celars.
 	useEffect(() => {
 		getCellars();
+		document.body.id="bg_form";
 		return () => {
 			cleanCellar();
 		};
@@ -68,6 +70,8 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 			})
 			.catch(err => {
 				console.log(err);
+				throwModal({ ...modalDelete, show: false });
+				throwErrModal({ ...errModal, show: true, msg: err.response.data });
 			});
 	}
 	if (!admin) return <Redirect to="/login" />;
@@ -80,6 +84,11 @@ function FormCellar({ cellars, cellar, getCellars, getCellar, id, edit, cleanCel
 				pk={modalDelete.pk}
 				cancel={() => throwModal({ ...modalDelete, show: false })}
 				commit={eliminar}
+			/>
+			<ErrorModal
+				show={errModal.show}
+				msg={errModal.msg}
+				close={() => throwErrModal({ ...errModal, show:false })}
 			/>
 			<Form style={{ width: "25rem", marginTop: "8rem", marginBottom: "2rem" }} onSubmit={formik.handleSubmit}>
 				<Form.Group as={Row}>

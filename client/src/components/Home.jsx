@@ -7,6 +7,7 @@ import { getCategories } from "../store/actions/index";
 function Home({ categories, getCategories }) {
 	const [cats, setCats] = useState([]);
 	useEffect(() => {
+		document.body.id="bg_home";
 		async function fetchData() {
 			await getCategories();
 		}

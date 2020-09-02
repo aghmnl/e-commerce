@@ -66,7 +66,6 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 									<Button
 										onClick={() => {
 											addProduct(productDetail);
-											history.replace("/cart");
 										}}
 									>
 										Añadir al carrito

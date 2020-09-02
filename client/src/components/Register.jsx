@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Card, Button, Col } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useHistory, Link } from "react-router-dom";
@@ -6,6 +6,10 @@ import { useDispatch } from "react-redux";
 import { isAuth, isAdmin } from "../store/actions";
 import axios from "axios";
 export default function Register(){
+    useEffect(()=>{
+
+		document.body.id="bg_user";
+    },[])
     const dispatch = useDispatch();
     const history = useHistory();
     const formik = useFormik({

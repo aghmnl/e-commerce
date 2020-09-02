@@ -14,18 +14,7 @@
 	width: 100%;
 	height: 10%;
 }
-body {
-	/* The image used */
-	background-image: var(--imgPrinc) !important;
-	/* Half height */
-	height: 50%;
 
-	/* Center and scale the image nicely */
-	/*background-position: center; */
-	background-attachment: fixed;
-	overflow: scroll;
-	background-size: cover;
-}
 
 .card{
 	background-color: transparen;

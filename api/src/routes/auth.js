@@ -9,12 +9,12 @@ async function isAdmin(req, res, next) {
 		attributes: ["admin"],
 	});
 	if (admin) return next();
-	return res.sendStatus(403);
+	return res.status(403).send("No esta autorizado, por favor reinicie su sessión");
 }
 function isAuthenticated(req, res, next) {
 	// isAuthenticated devuelve true cuando está autenticado
 	if (req.isAuthenticated()) return next();
-	return res.sendStatus(401);
+	return res.status(401).send("No esta autorizado, por favor reinicie su sessión");
 }
 function isValidPassword(password) {
 	if (password.length >= 8) {

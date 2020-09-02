@@ -111,10 +111,9 @@ function CartItem({
 											withCredentials: true,
 										}
 									)
-									.then(res => alert(JSON.stringify(res)))
+									.then(res => history.replace("/user/purchases"))
 									.catch(err => console.log(err));
 
-								history.replace("/user/purchases");
 							}}
 							variant="success"
 						>

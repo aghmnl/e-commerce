@@ -14,3 +14,13 @@ export default function ModalDelete({show, dialog, header, cancel, commit, pk}){
         </Modal>
     </div>);
 }
+export function ErrorModal({msg, show, close}){
+    return(<div>
+        <Modal show={show} centered onHide={close}>
+            <Modal.Header closeButton>
+                <b>Ha ocurrido un error</b>
+            </Modal.Header>
+            <Modal.Body>{msg}</Modal.Body>
+        </Modal>
+    </div>)
+}

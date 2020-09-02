@@ -21,10 +21,8 @@
 }
 body {
 	/* The image used */
-	background-image: var(--imgCat);
 	/* Half height */
 	height: 50%;
-
 	/* Center and scale the image nicely */
 	/*background-position: center; */
 	background-attachment: fixed;

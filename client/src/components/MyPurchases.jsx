@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { Card, Row, Col, Dropdown } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { BiMenu } from "react-icons/bi";
+import { getMyPurchases } from "../store/actions";
 export default function Mypurchases() {
 	const { my_purchases, logged } = useSelector(state => state);
 	const dispatch = useDispatch();
+	useEffect(()=>{
+        dispatch(getMyPurchases());
+		document.body.id="bg_user";
+	},[])
 	if (!logged) return <Redirect to="/login" />;
 	return (
 		<div style={{ marginTop: "5rem" }}>
