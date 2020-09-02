@@ -13,3 +13,8 @@
 	margin-bottom: 0.5rem;
 	transform: scale(1.5);
 }
+
+#navMain {
+	display: flex;
+	justify-content: space-between;
+}
