@@ -87,7 +87,11 @@ server.get("/status?:statusId", (req, res, next) => {
 		.then(purchases => res.json(purchases))
 		.catch(err => next(err));
 });
-
+server.get("/pay_methods",(req, res, next) => {
+	Pay_method.findAll()
+		.then(pm => res.json(pm))
+		.catch(err => next(err))
+})
 // S45 : Crear Ruta que retorne todas las Ordenes de los usuarios
 server.get("/users/:userId", (req, res, next) => {
 	Purchase.findAll({ where: { userId: parseInt(req.params.userId) } })

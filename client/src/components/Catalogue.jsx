@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import { connect, useDispatch } from "react-redux";
 import { getCategories, getCatalogue, getProducts, cleanCatalogue, searchProduct, getStrain, getStrainsBy } from "../store/actions/index";
-import { Nav, Spinner, Pagination, Container, Row, Col, Button, Form } from "react-bootstrap";
+import { Nav, Spinner, Pagination, Container, Row, Col, Button, Form, Card } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router-dom";
 import "../styles/Catalogue.css";
 function Catalogue({
@@ -19,6 +19,7 @@ function Catalogue({
 	pag,
 	pags,
 }) {
+	const [Strains, setStrains] = useState(Array.from(new Set([])));
 	const location = useLocation();
 	useEffect(() => {
 		if (!pag) return;
@@ -31,6 +32,7 @@ function Catalogue({
 		if (!category) return;
 		getProducts(category);
 		getStrainsBy(category)
+		setStrains(Array.from(new Set([])))
 	}, [category]);
 	useEffect(() => {
 		document.body.id="bg_cat";
@@ -42,6 +44,13 @@ function Catalogue({
 		const searchParams = new URLSearchParams(location.search);
 		searchProduct(searchParams.get("search"));
 	}, [location]);
+	useEffect(()=>{
+		if(!Strains.length && !category) return;
+		getProducts(category, Strains);
+	},[Strains])
+	function handleChange(e){
+		setStrains(Array.from(new Set([...Strains, e.target.value])))
+	}
 	return (
 		<div style={{ marginTop: "8rem" }}>
 			<Nav id="navegacion" activeKey="/catalogue/category/1">
@@ -72,6 +81,7 @@ function Catalogue({
 											price={product.price}
 											cellar={product.cellar}
 											img={product.img}
+											raiting={product.raiting}
 										/>
 								  ))
 								: (() => {
@@ -81,13 +91,16 @@ function Catalogue({
 										return <Spinner animation="border" />;
 								  })()}
 						</div>
-						<Form>
-						{!!strains && strains.map(type => (
-							<div key={`default-${type}`} className="mb-3">
-								<Form.Check type="checkbox" id={`default-dddd`} label={`default ddddd`} />
-							</div>
-						))}
-						</Form>
+						{!!strains && <Card className="strains">
+							<Card.Body>
+								<Form onChange={handleChange}>
+									{strains.map(strain => (
+										<Form.Check custom type="checkbox" id={`strain_${strain.id}`} label={strain.name} value={strain.id} />
+									))}
+								</Form>
+							</Card.Body>
+						</Card>}
+						
 					</Col>
 				</Row>
 				<Row sm="1">

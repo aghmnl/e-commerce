@@ -29,36 +29,16 @@ export default function Review({stars, user, description, date}){
         </Card>
     </div>);
 }
-export function ProductRating({users}){
+export function ProductRating({raiting, stadistics}){
     return(
         <div>
             <Card className="content-review">
                 <Card.Body className="body-review">
                     <Card.Title className="title-review"> 
-                        <h1>
-                            {!users?
-                                <Spinner animation="border" />:
-                                (()=>{
-                                    let sumStars = 0;
-                                    for(let user of users)
-                                    sumStars += user.review.stars;
-                                    let rating = (sumStars/users.length)
-                                    if(!users.length) rating = 0;
-                                    return Number.isInteger(rating)?rating.toFixed(1):rating;
-                                })()
-                            }
-                        </h1>
+                    <h1>{!raiting?0.0:parseInt(raiting).toFixed(1)}</h1>
                         <div className="rating">
                         <Rating
-                            initialRating={!users?0:
-                                (()=>{
-                                    let sumStars = 0;
-                                    for(let user of users)
-                                    sumStars += user.review.stars;
-                                    let rating = (sumStars/users.length)
-                                    return rating;
-                                })()
-                            }
+                            initialRating={raiting || 0}
                             emptySymbol={<RiStarLine/>}
                             fullSymbol={<RiStarFill/>}
                             readonly
@@ -67,22 +47,20 @@ export function ProductRating({users}){
                     </Card.Title>
                     <div className="stadist">
                         {(()=>{
-                            let st = [];
-                            let c = [];
-                            for(let i=1;i<=5;i++)
-                                st.push(
+                            let results= [];
+                            for(let st of stadistics)
+                                results.push(
                                     <div>
-                                        {<span style={{marginRight:"0.5rem"}} >{!users?0:
-                                            (users.filter((user) => 
-                                                user.review.stars === i)).length}
+                                        {<span style={{marginRight:"0.5rem"}} >
+                                            {st || 0}
                                         </span>}
-                                        <Rating initialRating={i} 
+                                        <Rating initialRating={st || 0} 
                                             emptySymbol={<RiStarLine/>} 
                                             fullSymbol={<RiStarFill/>} 
                                             readonly />
                                     </div>
                                 );
-                            return st.map((e)=>e);
+                            return results.map((e)=>e);
                         })()}
                     </div>
                 </Card.Body>
