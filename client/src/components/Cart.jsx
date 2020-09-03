@@ -16,7 +16,6 @@ import {
 	increseProduct,
 	decreseProduct,
 	getCartItems,
-	getCart,
 } from "../store/actions/index";
 import axios from "axios";
 function CartItem({
@@ -139,7 +138,6 @@ export default connect(
 		emptyCart,
 		increseProduct,
 		decreseProduct,
-		getCart,
 		getCartItems,
 	}
 )(CartItem);

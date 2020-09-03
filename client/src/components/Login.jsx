@@ -4,11 +4,11 @@ import axios from "axios";
 import "../styles/Login.css";
 import { useDispatch, useSelector, connect } from "react-redux";
 import { useFormik } from "formik";
-import { isAuth, isAdmin, emptyCart, getCart, getCartItems, setIsAdmin } from "../store/actions/index";
+import { isAuth, isAdmin, emptyCart, setCart, getCartItems, setIsAdmin } from "../store/actions/index";
 import { Form, Card, Button, Col } from "react-bootstrap";
 function Login() {
 	const dispatch = useDispatch();
-	const { logged, admin, purchased_products, cartId } = useSelector(state => state);
+	const { logged, purchased_products,  } = useSelector(state => state);
     useEffect(()=>{
 
 		document.body.id="bg_user";
@@ -25,43 +25,31 @@ function Login() {
 			!values.password && (errors.password = "Se requiere una contraseña");
 			return errors;
 		},
-		onSubmit: values => handleSubmit(values),
+		onSubmit: values => Login(values)
 	});
 
-	function handleSubmit(values) {
+	async function Login(values) {
 		const url = "http://localhost:3001/auth/login";
-		axios
+		const res = await axios
 			.post(url, values, {
 				withCredentials: true,
-			})
-			.then(res => {
-				console.log({ res });
-				const is_admin = res.data.user.admin;
-				// Al loguearse, carga todos los productos en la DB y resetea el carrito
-				dispatch(isAuth());
-				dispatch(setIsAdmin(is_admin));
-				if (is_admin) history.replace("/admin");
-				else history.replace("/user");
-				return dispatch(getCart());
-			})
-			.then(() => {
-				if (purchased_products.length > 0) {
-					return axios.post(
-						"http://localhost:3001/purchased_products_protected/add_product",
-						{
-							cartId: cartId,
-							cart_items: purchased_products,
-						},
-						{ withCredentials: true }
-					);
-				}
-				return dispatch(getCart());
-			})
-			.then(() => dispatch(getCartItems(cartId)))
-			.catch(err => {
+			}).catch(err => {
 				console.log(err)
 				formik.setFieldError(err.response.data.input, err.response.data.message);
 			});
+		const is_admin = res.data.user.admin;
+		await dispatch(isAuth());
+		dispatch(setIsAdmin(is_admin));
+		const { data:{cartId}} = await axios.get("http://localhost:3001/purchase_protected/cart_id",{ withCredentials: true });
+		dispatch(setCart(cartId));
+		if(purchased_products.length > 0) await axios.post("http://localhost:3001/purchased_products_protected/add_product",
+		{
+			cart: cartId,
+			cart_items: purchased_products
+		},{
+			withCredentials: true
+		}).catch(err => console.log(err))
+		await dispatch(getCartItems(cartId));
 	}
 
 	if (logged) {

@@ -10,14 +10,14 @@ server.get("/", (req, res, next) => {
 		.catch(err => next(err));
 });
 
-server.get("/:id", (req, res, next) => {
+/* server.get("/:id", (req, res, next) => {
 	User.findOne({
 		attributtes : ["id","first_name","last_name","email","admin","phone"],
 		where: { id: req.params.id } 
 	})
 		.then(users => res.json(users))
 		.catch(err => next(err));
-});
+}); */
 
 // Para borrar un usuario
 // http://localhost:3001/user_private/1

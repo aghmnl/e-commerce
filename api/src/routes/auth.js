@@ -3,6 +3,8 @@ const passport = require("passport");
 const crypto = require("crypto");
 const { User } = require("../db.js");
 const { literal } = require("sequelize");
+const mailgun = require("mailgun-js");
+const nodemailer = require("nodemailer");
 //checks if password has > 8 chars
 async function isAdmin(req, res, next) {
 	const { admin } = await User.findByPk(req.user.id, {
@@ -123,5 +125,35 @@ server.put("/promote/:id", isAuthenticated, isAdmin, (req, res, next) => {
 		.then(() => res.sendStatus(201))
 		.catch(err => next(err));
 });
-
+server.post("/recovery", async (req, res, next) =>{
+	const user = await User.findOne({ where: {email: req.body.email} });
+	if(!user) return res.status(404).json({ input:"email", message:"No tenemos registrado ningún usuario con ese email" })
+	const newSalt = crypto.randomBytes(64).toString("hex");
+	const tempPass = crypto.randomBytes(8).toString('hex');
+	const tempPassHash = crypto.pbkdf2Sync(tempPass, newSalt, 10000, 64, "sha512").toString("base64");
+	user.salt = newSalt;
+	user.password = tempPassHash;
+	await user.save();
+	const DOMAIN = "sandboxdffeb621bd62410eb7c2076e0be9741d.mailgun.org";
+	const mg = mailgun({apiKey: "21104ae61a01274914c25259682fe3d1-7cd1ac2b-37cc0e69", domain: DOMAIN});
+	const data = {
+		from: "Toni Wines Recovery <toniwines_recovery@sandboxe98883ab8de24b92a0e573e260891894.mailgun.org>",
+		to: user.email,
+		subject: "Recovery",
+		html:`<html>
+			<title>Recovery</title>
+			<meta charset='utf-8'>
+			<body>
+				<b> Su contraseña es  :</b>${tempPass}</br>
+				<i>Cambiarla por una de su gusto</i>
+			</body>
+		</html>`
+	};
+	mg.messages().send(data, function (error, body) {
+		if(error) console.log("error", error)
+		console.log("body", body);
+		console.log(crypto.randomBytes(8).toString('ascii'))
+		res.status(200).send("Enviamos un email con su nueva contraseña, revise su casilla de spam")
+	});
+})
 module.exports = { server, isAuthenticated, isAdmin };

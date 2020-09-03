@@ -1,11 +1,10 @@
 const server = require("express").Router();
 const { Purchased_product, Product, Purchase } = require("../../db.js");
 server.post("/add_product", (req, res, next) => {
-
-	!!req.body.cartId && req.body.cart_items.forEach((cart_item)=>{
-		Purchased_product.findOrCreate({
+	const addProducts = req.body.cart_items.map((cart_item)=>{
+		return Purchased_product.findOrCreate({
 			where: {
-				purchaseId: req.body.cartId,
+				purchaseId: req.body.cart,
 				productId: cart_item.id,
 			},
 			defaults: {
@@ -17,11 +16,12 @@ server.post("/add_product", (req, res, next) => {
 		}).then(([purchased_product, created]) => {
 			if(!created){
 				purchased_product.quantity += cart_item.quantity;
-				purchased_product.save();
+				return purchased_product.save();
 			}
-			//res.json(purchased_product);
 		});
 	});
+	Promise.all(addProducts).then( () => res.sendStatus(201))
+		.catch(err => next(err));
 });
 
 // Para incrementar en uno el producto dentro del carrito en la DB

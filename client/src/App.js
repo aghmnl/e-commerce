@@ -12,7 +12,7 @@ import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import CarouselSlider from "./components/CarouselSlider";
-import { getPurchases, isAuth, isAdmin, getCart } from "./store/actions/index";
+import { getPurchases, isAuth, isAdmin,  } from "./store/actions/index";
 import Admin from "./components/Admin";
 import FormPurchase from "./components/FormPurchase";
 import { connect } from "react-redux";
@@ -36,7 +36,6 @@ function App({ getPurchases, isAuth, isAdmin, getCart }) {
 		isAuth();
 		isAdmin();
 		getPurchases();
-		getCart();
 	}, []);
 	return (
 		<div className="App">
@@ -99,5 +98,4 @@ export default connect(null, {
 	getPurchases,
 	isAuth,
 	isAdmin,
-	getCart,
 })(App);

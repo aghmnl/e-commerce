@@ -19,7 +19,7 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require("./src/app.js");
 const { conn } = require("./src/db.js");
-const createRegs = require("./init.js")
+const { createRegs } = require("./init.js")
 // Syncing all the models at once.
 //Importante NO PONER force: false
 conn.sync({ force: true }).then( async () => {
