@@ -1,5 +1,6 @@
 const server = require("express").Router();
 const { Purchased_product, Product, Purchase } = require("../../db.js");
+const {literal} = require("sequelize");
 server.post("/add_product", (req, res, next) => {
 	const addProducts = req.body.cart_items.map((cart_item)=>{
 		return Purchased_product.findOrCreate({
@@ -71,13 +72,16 @@ server.put("/delete_product", (req, res, next) => {
 })
 server.get("/cart_items/:cartId", (req, res, next) => {
 	!!req.params.cartId && Purchase.findOne({
+		attributes:[
+			"id",
+		],
 		where: {
 			id: req.params.cartId,
 			statusId: 1,
 		},
 		include: {
 			model: Product,
-			attributes: ["id", "name", "stock", "img"],
+			attributes: ["id", "name", "stock", "img", "price"],
 			through: {
 				attributes: ["priceProduct", "quantity"],
 			},

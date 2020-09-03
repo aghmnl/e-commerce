@@ -26,6 +26,7 @@ import { saveCart, saveTotal } from "./store/localState";
 import store from "./store/index";
 import FormReview from "./components/FormReview";
 import Settings from "./components/Settings";
+import Checkout from "./components/Checkout";
 store.subscribe(() => {
 	const { purchased_products, total } = store.getState();
 	saveCart(purchased_products);
@@ -91,6 +92,7 @@ function App({ getPurchases, isAuth, isAdmin, getCart }) {
 			<Route exact path="/register" component={Register} />
 			<Route exact path="/user/purchases" component={Mypurchases} />
 			<Route exact path="/admin/purchase/:id" render={({ match }) => <Purchase id={match.params.id} />} />
+			<Route exact path="/checkout" render={()=> <Checkout/>}/>
 		</div>
 	);
 }

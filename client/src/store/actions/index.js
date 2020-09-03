@@ -46,13 +46,16 @@ export const cleanCategory = () => ({
 export const cleanStrain = () => ({
 	type: "CLEAN_STRAIN",
 });
-export const getProducts = categoryId => {
+export const getProducts = (categoryId, strains = []) => {
 	return dispatch => {
 		const url = !categoryId
 			? "http://localhost:3001/product_public"
 			: `http://localhost:3001/product_public/category/${categoryId}`;
-		return axios
+		if(!strains.length)return axios
 			.get(url, { withCredentials: true })
+			.then(({ data: products }) => dispatch({ type: GET_PRODUCTS, payload: products }))
+			.catch(err => console.log(err));
+		axios.post("http://localhost:3001/product_public/strains",{strains: strains, categoryId: categoryId})
 			.then(({ data: products }) => dispatch({ type: GET_PRODUCTS, payload: products }))
 			.catch(err => console.log(err));
 	};

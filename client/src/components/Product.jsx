@@ -104,7 +104,13 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 					</Row>
 				</Container>
 			</Card>
-			<ProductRating users={productDetail.users} />
+			<ProductRating raiting={productDetail.raiting} stadistics={[
+					productDetail["1star"],
+					productDetail["2star"],
+					productDetail["3star"],
+					productDetail["4star"],
+					productDetail["5star"],
+				]}/>
 			{!productDetail.users ? (
 				<Spinner animation="border" />
 			) : (

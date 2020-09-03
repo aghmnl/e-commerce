@@ -95,28 +95,14 @@ function CartItem({
 					</Button>
 				</Card.Title>
 			</Card>
-			{logged && !!products.length && (
+			{!!products.length && (
 				<Card style={{ width: "15rem", margin: "auto" }}>
 					<Card.Body>
 						<Button
-							onClick={() => {
-								axios
-									.put(
-										"http://localhost:3001/purchase_protected/buy",
-										{
-											cartId: cartId,
-										},
-										{
-											withCredentials: true,
-										}
-									)
-									.then(res => history.replace("/user/purchases"))
-									.catch(err => console.log(err));
-
-							}}
+							onClick={() => history.replace("/checkout")}
 							variant="success"
 						>
-							Finalizar Compra
+							Checkout
 						</Button>
 					</Card.Body>
 				</Card>

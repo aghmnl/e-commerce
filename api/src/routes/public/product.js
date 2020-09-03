@@ -1,13 +1,24 @@
 const server = require("express").Router();
-const Sequelize = require("sequelize");
+const {Op, literal} = require("sequelize");
 const { Product, Cellar, Strain, Category, Review, User } = require("../../db.js");
-const Op = Sequelize.Op;
 
 
 // Este get devuelve todos los productos para generar el catálogo
 server.get("/", (req, res, next) => {
 	Product.findAll({
-		attributes : {exclude : ["createdAt","updatedAt"]},
+		attributes:[
+			"id",
+			"name",
+			"img",
+			"cellarId",
+			"price",
+			"description",
+			"categoryId",
+			"strainId",
+			"active",
+			"stock",
+			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'),"raiting"],
+		],
 		where: { active: true },
 		include: [
 			{
@@ -26,6 +37,7 @@ server.get("/", (req, res, next) => {
 				attributes : {exclude : ["createdAt","updatedAt"]},
 			},
 		],
+		//order: [["raiting","DESC"]]
 	})
 		.then(products => {
 			res.json(products);
@@ -38,6 +50,19 @@ server.get("/catalogue?:pag", (req, res, next) => {
 	const offset = pagsize * (pagsize - (pagsize - pag));
 	console.log(offset);
 	Product.findAndCountAll({
+		attributes:[
+			"id",
+			"name",
+			"img",
+			"cellarId",
+			"price",
+			"description",
+			"categoryId",
+			"strainId",
+			"active",
+			"stock",
+			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'),"raiting"],
+		],
 		where: { active: true },
 		include: [
 			{
@@ -64,6 +89,24 @@ server.get("/catalogue?:pag", (req, res, next) => {
 });
 server.get("/detail/:id", (req, res, next) => {
 	Product.findOne({
+		attributes:[
+			"id",
+			"name",
+			"img",
+			"cellarId",
+			"price",
+			"description",
+			"categoryId",
+			"strainId",
+			"active",
+			"stock",
+			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'),"raiting"],
+			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 1 GROUP BY "productId" )'),"1star"],
+			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 2 GROUP BY "productId" )'),"2star"],
+			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 3 GROUP BY "productId" )'),"3star"],
+			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 4 GROUP BY "productId" )'),"4star"],
+			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 5 GROUP BY "productId" )'),"5star"],
+		],
 		where: {
 			active: true,
 			id: parseInt(req.params.id),
@@ -96,9 +139,61 @@ server.get("/detail/:id", (req, res, next) => {
 		})
 		.catch(err => next(err));
 });
+server.post("/strains",(req, res, next) =>{
+	Product.findAll({
+		attributes:[
+			"id",
+			"name",
+			"img",
+			"cellarId",
+			"price",
+			"description",
+			"categoryId",
+			"strainId",
+			"active",
+			"stock",
+			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'),"raiting"],
+		],
+		include: [
+			{
+				model: Cellar,
+				as: "cellar",
+			},
+			{
+				model: Strain,
+				as: "strain",
+			},
+			{
+				model: Category,
+				as: "category",
+			},
+		],
+		where:{
+			strainId:{
+				[Op.in]: req.body.strains
+			},
+			categoryId:req.body.categoryId
+		}
+	})
+		.then(products => res.json(products))
+		.catch(err => next(err))
+})
 // http://localhost:3001/products/category/1
 server.get("/category/:categoryId", (req, res, next) => {
 	Product.findAll({
+		attributes:[
+			"id",
+			"name",
+			"img",
+			"cellarId",
+			"price",
+			"description",
+			"categoryId",
+			"strainId",
+			"active",
+			"stock",
+			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'),"raiting"],
+		],
 		include: [
 			{
 				model: Cellar,
@@ -126,6 +221,19 @@ server.get("/search?:query", (req, res, next) => {
 	const value = "%" + req.query.query + "%";
 	console.log(value);
 	Product.findAll({
+		attributes:[
+			"id",
+			"name",
+			"img",
+			"cellarId",
+			"price",
+			"description",
+			"categoryId",
+			"strainId",
+			"active",
+			"stock",
+			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'),"raiting"],
+		],
 		where: {
 			[Op.or]: [
 				{
