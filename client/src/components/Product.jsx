@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import { Alert, Button, Col, Row, Container, Card, ListGroup, ListGroupItem, Spinner } from "react-bootstrap";
 import "../styles/Product.css";
-
+import axios from "axios";
 import Review, { ProductRating } from "./Review";
 
-function Product({ id, productDetail, getProduct, cellar, strain, category, cleanProduct, addProduct }) {
+function Product({ id, productDetail, getProduct, cellar, strain, category, cleanProduct, addProduct, logged, cartId }) {
 	var history = useHistory();
 	useEffect(() => {
 		getProduct(id);
@@ -65,7 +65,32 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 								{productDetail.stock > 0 && (
 									<Button
 										onClick={() => {
+											if(logged){
+												axios
+													.post(
+														"http://localhost:3001/purchased_products_protected/add_product",
+														{
+															cartId,
+															cart_items: [
+																{
+																	id,
+																	quantity: 1,
+																	price: productDetail.price,
+																},
+															],
+														},
+														{ withCredentials: true }
+													)
+													.then(res => {
+														history.replace("/cart");
+														console.log(res.data)
+													})
+													.catch(err => console.log(err.response));
+												return;
+											}
 											addProduct(productDetail);
+											history.replace("/cart");
+
 										}}
 									>
 										Añadir al carrito
@@ -91,11 +116,13 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 	);
 }
 export default connect(
-	({ productDetail }) => ({
+	({ productDetail, logged, cartId }) => ({
 		productDetail,
 		cellar: productDetail.cellar,
 		category: productDetail.category,
 		strain: productDetail.strain,
+		logged,
+		cartId
 	}),
 	{ getProduct, addProduct, cleanProduct }
 )(Product);

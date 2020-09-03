@@ -24,7 +24,7 @@ export const GET_STATUSES = "GET_STATUSES";
 export const GET_CATALOGUE = "GET_CATALOGUE";
 export const IS_ADMIN = "IS_ADMIN";
 export const IS_AUTH = "IS_AUTH";
-export const GET_CART = "GET_CART";
+export const SET_CART = "SET_CART";
 export const GET_CART_ITEMS = "GET_CART_ITEMS";
 export const GET_MY_PURCHASES = "GET_MY_PURCHASES";
 export const SET_IS_ADMIN = "SET_IS_ADMIN";
@@ -224,15 +224,12 @@ export const getUser = id => {
 			.catch(err => console.log(err));
 	};
 };
-export const getCart = () => {
-	return dispatch => {
-		const url = "http://localhost:3001/purchase_protected/cart_id";
-		return axios
-			.get(url, { withCredentials: true })
-			.then(({ data: { cartId } }) => dispatch({ type: GET_CART, payload: cartId }))
-			.catch(err => console.log(err));
-	};
-};
+export const setCart =(cartId) =>{
+	return {
+		type: SET_CART,
+		payload: cartId
+	}
+}
 export const getCartItems = cartId => {
 	return dispatch => {
 		const url = "http://localhost:3001/purchased_products_protected/cart_items/" + cartId;

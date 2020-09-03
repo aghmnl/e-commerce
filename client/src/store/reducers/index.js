@@ -20,7 +20,7 @@ import {
 	GET_CATALOGUE,
 	GET_PURCHASES,
 	GET_STATUSES,
-	GET_CART,
+	SET_CART,
 	GET_CART_ITEMS,
 	IS_ADMIN,
 	IS_AUTH,
@@ -53,25 +53,6 @@ export default (state = initialState, action) => {
 			var { id, price, name, img, stock } = action.product;
 			var { purchased_products, total } = state;
 			var index = purchased_products.findIndex(pp => pp.id === id);
-			if (state.logged) {
-				axios
-					.post(
-						"http://localhost:3001/purchased_products_protected/add_product",
-						{
-							cartId: state.cartId,
-							cart_items: [
-								{
-									id,
-									quantity: 1,
-									price,
-								},
-							],
-						},
-						{ withCredentials: true }
-					)
-					.then(res => console.log(res.data))
-					.catch(err => console.log(err.response));
-			}
 			if (index < 0) {
 				state = {
 					...state,
@@ -271,7 +252,7 @@ export default (state = initialState, action) => {
 				...state,
 				purchaseDetail: { ...action.payload.purchase, total: action.payload.total },
 			};
-		case GET_CART:
+		case SET_CART:
 			return {
 				...state,
 				cartId: action.payload,

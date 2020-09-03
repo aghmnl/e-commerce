@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, literal } = require("sequelize");
 
 module.exports = sequelize => {
 	// defino el modelo
@@ -10,6 +10,6 @@ module.exports = sequelize => {
 		quantity: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
-		}
+		},
 	});
 };

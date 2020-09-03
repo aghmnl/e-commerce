@@ -15,8 +15,8 @@ export default function Mypurchases() {
 	if (!logged) return <Redirect to="/login" />;
 	return (
 		<div style={{ marginTop: "5rem" }}>
-			{!!my_purchases ? (
-				my_purchases.map(({ purchase, total }) =>
+			{!!my_purchases?(
+				my_purchases.map((purchase) =>
 					purchase.products.map(product => (
 						<Card style={{ width: "50rem", margin: "auto" }}>
 							<Row>
@@ -50,7 +50,7 @@ export default function Mypurchases() {
 							</Row>
 							<Row>
 								<Col>
-									<Card.Subtitle>$ {total}</Card.Subtitle>
+									<Card.Subtitle>$ {product.total}</Card.Subtitle>
 								</Col>
 							</Row>
 						</Card>

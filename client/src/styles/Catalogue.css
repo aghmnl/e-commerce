@@ -9,8 +9,10 @@
 	margin-right: 80px;
 
 }
-
-
+.espumante{ color: var(--espumante) }
+.rose{ color: var(--rose) }
+.blanco{ color: var(--blanco) }
+.tinto{ color: var(--tinto) }
 #navegacion {
 	font-size: 20px !important;
 	background-color: #ffffff6b !important;

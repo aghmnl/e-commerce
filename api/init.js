@@ -634,4 +634,4 @@ var purchased_products = [
 		// purchased_productId: 8,
 	},
 ];
-module.exports = createRegs;
+module.exports = { createRegs, createPromise };

@@ -1,7 +1,7 @@
 const server = require("express").Router();
 const { Purchase, User, Pay_method, Status, Product } = require("../../db.js");
 const moment = require("moment");
-const { Op } = require("sequelize");
+const { Op, literal } = require("sequelize");
 // S44 : Crear ruta que retorne todas las órdenes
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
 // http://localhost:3001/purchase_protected/my_purchases
@@ -11,19 +11,34 @@ server.get("/my_purchases", (req, res, next) => {
 			userId: req.user.id,
 			statusId: { [Op.not]: 1 },
 		},
+		attributes:[
+			"id",
+			"date",
+			"userId",
+			"statusId",
+			"payMethodId"
+		],
 		include: {
 			model: Product,
+			attributes:[
+				"id",
+				"img",
+				"name",
+				"categoryId",
+				"cellarId",
+				"strainId",
+				[literal('(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'),"total"]
+			],
 			through: {
-				attributes: ["priceProduct", "quantity"],
+				attributes: [
+					"priceProduct", 
+					"quantity",
+				],
 			},
 		},
 	})
 		.then(purchases => {
-			let compras = [];
-			for (let purchase of purchases) {
-				compras.push({ purchase, total: purchase.getTotal() });
-			}
-			res.json(compras);
+			res.json(purchases);
 		})
 		.catch(err => next(err));
 });

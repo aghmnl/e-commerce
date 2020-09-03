@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import { connect, useDispatch } from "react-redux";
-import { getCategories, getCatalogue, getProducts, cleanCatalogue, searchProduct } from "../store/actions/index";
-import { Nav, Spinner, Pagination, Container, Row, Col } from "react-bootstrap";
+import { getCategories, getCatalogue, getProducts, cleanCatalogue, searchProduct, getStrain, getStrainsBy } from "../store/actions/index";
+import { Nav, Spinner, Pagination, Container, Row, Col, Button, Form } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router-dom";
 import "../styles/Catalogue.css";
 function Catalogue({
@@ -13,7 +13,9 @@ function Catalogue({
 	cleanCatalogue,
 	getCategories,
 	getProducts,
+	getStrainsBy,
 	searchProduct,
+	strains,
 	pag,
 	pags,
 }) {
@@ -28,10 +30,12 @@ function Catalogue({
 	useEffect(() => {
 		if (!category) return;
 		getProducts(category);
+		getStrainsBy(category)
 	}, [category]);
 	useEffect(() => {
 		document.body.id="bg_cat";
 		getCategories();
+		
 	}, []);
 	useEffect(() => {
 		if (!location.search) return;
@@ -51,7 +55,7 @@ function Catalogue({
 				{categories.map(category => (
 					<Nav.Item>
 						<Nav.Link>
-							<NavLink to={`/catalogue/category/${category.id}`}>{category.name}</NavLink>
+							<NavLink to={`/catalogue/category/${category.id}`} activeClassName={category.name.toLowerCase()} >{category.name}</NavLink>
 						</Nav.Link>
 					</Nav.Item>
 				))}
@@ -77,6 +81,13 @@ function Catalogue({
 										return <Spinner animation="border" />;
 								  })()}
 						</div>
+						<Form>
+						{!!strains && strains.map(type => (
+							<div key={`default-${type}`} className="mb-3">
+								<Form.Check type="checkbox" id={`default-dddd`} label={`default ddddd`} />
+							</div>
+						))}
+						</Form>
 					</Col>
 				</Row>
 				<Row sm="1">
@@ -101,26 +112,18 @@ function Catalogue({
 						return paginationBasic;
 						// return buttons.map(button => button);
 					})()}
-
-					{/* Acá va a selececcionar las cepas
-						<Form>
-						{["checkbox"].map(type => (
-							<div key={`default-${type}`} className="mb-3">
-								<Form.Check type={type} id={`default-${type}`} label={`default ${type}`} />
-							</div>
-						))}
-						</Form> */}
 				</Row>
 			</Container>
 		</div>
 	);
 }
 export default connect(
-	({ catalogue, products, categories }) => {
+	({ catalogue, products, categories, strains_by }) => {
 		return {
 			pags: catalogue.count,
 			products: !Object.values(catalogue).length ? products : catalogue.rows,
 			categories: categories,
+			strains: strains_by 
 		};
 	},
 	{
@@ -129,5 +132,6 @@ export default connect(
 		cleanCatalogue,
 		getProducts,
 		searchProduct,
+		getStrainsBy
 	}
 )(Catalogue);
