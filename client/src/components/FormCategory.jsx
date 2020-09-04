@@ -7,10 +7,10 @@ import { connect } from "react-redux";
 import { getCategories, getCategory, cleanCategory } from "../store/actions/index";
 import { useFormik } from "formik";
 import UDTable from "./UDTable";
-import ModalDelete,{ ErrorModal } from "./ModalDelete";
+import ModalDelete, { ErrorModal } from "./ModalDelete";
 function FormCategory({ categories, category, getCategory, getCategories, id, cleanCategory, admin }) {
 	const history = useHistory();
-	const [errModal, throwErrModal] = useState({ show:false });
+	const [errModal, throwErrModal] = useState({ show: false });
 	const [modalDelete, throwModal] = useState({
 		show: false,
 	});
@@ -38,7 +38,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 	}, [id]);
 	useEffect(() => {
 		getCategories();
-		document.body.id="bg_form";
+		document.body.id = "bg_form";
 		return () => {
 			cleanCategory();
 		};
@@ -49,7 +49,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 	function handleSubmit(values) {
 		if (!!id) {
 			axios
-				.put(`http://localhost:3001/category_private/${id}`, values, {withCredentials:true})
+				.put(`http://localhost:3001/category_private/${id}`, values, { withCredentials: true })
 				.then(() => {
 					getCategories();
 					history.replace("/admin/formCategory");
@@ -60,7 +60,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 		const url = "http://localhost:3001/category_private";
 		const urlStrain = "http://localhost:3001/strain_private";
 		axios
-			.post(url, values, {withCredentials:true})
+			.post(url, values, { withCredentials: true })
 			.then(res => {
 				axios.post(urlStrain, {
 					name: values.strainName,
@@ -73,7 +73,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 	}
 	function eliminar(id) {
 		axios
-			.delete(`http://localhost:3001/category_private/${id}`,{withCredentials:true})
+			.delete(`http://localhost:3001/category_private/${id}`, { withCredentials: true })
 			.then(() => {
 				getCategories();
 				throwModal({ ...modalDelete, show: false });
@@ -83,7 +83,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 				throwErrModal({ ...errModal, show: true, msg: err.response.data });
 			});
 	}
-	if(!admin) return (<Redirect to="/login"/>)
+	if (!admin) return <Redirect to="/login" />;
 	return (
 		<div id="main" style={{ marginTop: "8rem" }}>
 			<ModalDelete
@@ -94,11 +94,7 @@ function FormCategory({ categories, category, getCategory, getCategories, id, cl
 				cancel={() => throwModal({ ...modalDelete, show: false })}
 				commit={eliminar}
 			/>
-			<ErrorModal
-				show={errModal.show}
-				msg={errModal.msg}
-				close={() => throwErrModal({ ...errModal, show:false })}
-			/>
+			<ErrorModal show={errModal.show} msg={errModal.msg} close={() => throwErrModal({ ...errModal, show: false })} />
 			<Form style={{ marginBottom: "2rem", textAlign: "right" }} onSubmit={formik.handleSubmit}>
 				<Form.Group as={Row}>
 					<Form.Label column sm="3">
@@ -189,7 +185,7 @@ export default connect(
 		return {
 			categories,
 			category,
-			admin
+			admin,
 		};
 	},
 	{ getCategories, getCategory, cleanCategory }

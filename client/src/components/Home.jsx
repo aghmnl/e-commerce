@@ -4,10 +4,17 @@ import "../styles/Home.css";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { getCategories } from "../store/actions/index";
+import logo from "../images/logoHome.png";
+import marca from "../images/toni-Black.png";
+import tinto from "../images/tinto.jpg";
+import blanco from "../images/blanco.jpg";
+import rose from "../images/rose.jpg";
+import espumante from "../images/espumante.jpg";
+import otra_categoria from "../images/otra-categoria.jpg";
 function Home({ categories, getCategories }) {
 	const [cats, setCats] = useState([]);
 	useEffect(() => {
-		document.body.id="bg_home";
+		document.body.id = "bg_home";
 		async function fetchData() {
 			await getCategories();
 		}
@@ -19,19 +26,19 @@ function Home({ categories, getCategories }) {
 				let img = "";
 				switch (category.name) {
 					case "Tinto":
-						img = "https://i.ibb.co/p3S1zX2/red-wine-benefits-1592243220.jpg";
+						img = tinto;
 						break;
 					case "Blanco":
-						img = "https://i.ibb.co/87HwZx7/istock-1147260427.jpg";
+						img = blanco;
 						break;
 					case "Rose":
-						img = "https://i.ibb.co/dbRbL0Z/rose-wine-splashing-on-white-background.jpg";
+						img = rose;
 						break;
 					case "Espumante":
-						img = "https://i.ibb.co/CBjkSDD/champagne-verre-1-1024x682.jpg";
+						img = espumante;
 						break;
 					default:
-						img = "https://cdn.pariscityvision.com/library/image/5731.jpg";
+						img = otra_categoria;
 						break;
 				}
 				return { ...category, img: img };
@@ -41,15 +48,15 @@ function Home({ categories, getCategories }) {
 	return (
 		<div>
 			<Card id="logo">
-				<Card.Img src="https://i.ibb.co/k9pSWmx/default-removebg-preview.png" />
-				<Card.Img src="https://i.ibb.co/gMbh6ZK/toni-Black.png" />
+				<Card.Img src={logo} />
+				<Card.Img src={marca} />
 			</Card>
 			<CardGroup id="categorias">
 				{cats.map(cat => (
 					<Card>
 						<Nav.Link>
 							<Link to={`/catalogue/category/${cat.id}`}>
-								<Card.Img variant="top" src={cat.img} className="imagenes"/>
+								<Card.Img variant="top" src={cat.img} className="imagenes" />
 								<Card.Body>
 									<Card.Title className="colorText">{cat.name}</Card.Title>
 								</Card.Body>

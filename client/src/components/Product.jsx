@@ -7,12 +7,24 @@ import "../styles/Product.css";
 import axios from "axios";
 import Review, { ProductRating } from "./Review";
 
-function Product({ id, productDetail, getProduct, cellar, strain, category, cleanProduct, addProduct, logged, cartId }) {
+function Product({
+	id,
+	productDetail,
+	getProduct,
+	cellar,
+	strain,
+	category,
+	cleanProduct,
+	addProduct,
+	logged,
+	cartId,
+}) {
 	var history = useHistory();
 	useEffect(() => {
 		getProduct(id);
 	}, [id]);
 	useEffect(() => {
+		document.body.id = "bg_cart";
 		return () => {
 			cleanProduct();
 		};
@@ -65,7 +77,7 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 								{productDetail.stock > 0 && (
 									<Button
 										onClick={() => {
-											if(logged){
+											if (logged) {
 												axios
 													.post(
 														"http://localhost:3001/purchased_products_protected/add_product",
@@ -83,14 +95,13 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 													)
 													.then(res => {
 														history.replace("/cart");
-														console.log(res.data)
+														console.log(res.data);
 													})
 													.catch(err => console.log(err.response));
 												return;
 											}
 											addProduct(productDetail);
 											history.replace("/cart");
-
 										}}
 									>
 										Añadir al carrito
@@ -104,13 +115,16 @@ function Product({ id, productDetail, getProduct, cellar, strain, category, clea
 					</Row>
 				</Container>
 			</Card>
-			<ProductRating raiting={productDetail.raiting} stadistics={[
+			<ProductRating
+				raiting={productDetail.raiting}
+				stadistics={[
 					productDetail["1star"],
 					productDetail["2star"],
 					productDetail["3star"],
 					productDetail["4star"],
 					productDetail["5star"],
-				]}/>
+				]}
+			/>
 			{!productDetail.users ? (
 				<Spinner animation="border" />
 			) : (
@@ -128,7 +142,7 @@ export default connect(
 		category: productDetail.category,
 		strain: productDetail.strain,
 		logged,
-		cartId
+		cartId,
 	}),
 	{ getProduct, addProduct, cleanProduct }
 )(Product);

@@ -10,11 +10,10 @@ import {FaGoogle} from "react-icons/fa"
 import {ImGithub} from "react-icons/im"
 function Login() {
 	const dispatch = useDispatch();
-	const { logged, purchased_products,  } = useSelector(state => state);
-    useEffect(()=>{
-
-		document.body.id="bg_user";
-    },[]);
+	const { logged, purchased_products } = useSelector(state => state);
+	useEffect(() => {
+		document.body.id = "bg_user";
+	}, []);
 	const history = useHistory();
 	const formik = useFormik({
 		initialValues: {
@@ -27,29 +26,38 @@ function Login() {
 			!values.password && (errors.password = "Se requiere una contraseña");
 			return errors;
 		},
-		onSubmit: values => Login(values)
+		onSubmit: values => Login(values),
 	});
 	async function Login(values) {
 		const url = "http://localhost:3001/auth/login";
 		const res = await axios
 			.post(url, values, {
 				withCredentials: true,
-			}).catch(err => {
-				console.log(err)
+			})
+			.catch(err => {
+				console.log(err);
 				formik.setFieldError(err.response.data.input, err.response.data.message);
 			});
 		const is_admin = res.data.user.admin;
 		await dispatch(isAuth());
 		dispatch(setIsAdmin(is_admin));
-		const { data:{cartId}} = await axios.get("http://localhost:3001/purchase_protected/cart_id",{ withCredentials: true });
+		const {
+			data: { cartId },
+		} = await axios.get("http://localhost:3001/purchase_protected/cart_id", { withCredentials: true });
 		dispatch(setCart(cartId));
-		if(purchased_products.length > 0) await axios.post("http://localhost:3001/purchased_products_protected/add_product",
-		{
-			cartId: cartId,
-			cart_items: purchased_products
-		},{
-			withCredentials: true
-		}).catch(err => console.log(err))
+		if (purchased_products.length > 0)
+			await axios
+				.post(
+					"http://localhost:3001/purchased_products_protected/add_product",
+					{
+						cart: cartId,
+						cart_items: purchased_products,
+					},
+					{
+						withCredentials: true,
+					}
+				)
+				.catch(err => console.log(err));
 		await dispatch(getCartItems(cartId));
 	}
 
