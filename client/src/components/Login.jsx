@@ -6,6 +6,8 @@ import { useDispatch, useSelector, connect } from "react-redux";
 import { useFormik } from "formik";
 import { isAuth, isAdmin, emptyCart, setCart, getCartItems, setIsAdmin } from "../store/actions/index";
 import { Form, Card, Button, Col } from "react-bootstrap";
+import {FaGoogle} from "react-icons/fa"
+import {ImGithub} from "react-icons/im"
 function Login() {
 	const dispatch = useDispatch();
 	const { logged, purchased_products } = useSelector(state => state);
@@ -26,7 +28,6 @@ function Login() {
 		},
 		onSubmit: values => Login(values),
 	});
-
 	async function Login(values) {
 		const url = "http://localhost:3001/auth/login";
 		const res = await axios
@@ -98,6 +99,20 @@ function Login() {
 							<Button type="submit" variant="success">
 								Iniciar Sesión
 							</Button>
+						</Form.Group>
+						<Form.Group as={Col} style={{ display: "flex", flexDirection: "column" }}>
+							<Button variant="primary" onClick={() =>window.location="http://localhost:3001/auth/google/login"}>
+								<FaGoogle/> 
+								Iniciar Sesión con Google
+							</Button>
+						</Form.Group>
+						<Form.Group as={Col} style={{ display: "flex", flexDirection: "column" }}>
+							<Button variant="success" onClick={() =>window.location="http://localhost:3001/auth/github/login"}>
+								<ImGithub/> 
+								Iniciar Sesión con GitHub
+							</Button>
+						</Form.Group>
+						<Form.Group as={Col} style={{ display: "flex", flexDirection: "column" }}>
 							<Link to="/register">Registarse</Link>
 							<Link to="/reset">Olvidé mi contraseña</Link>
 						</Form.Group>

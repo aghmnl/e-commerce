@@ -1,16 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav, Image } from "react-bootstrap";
 import { connect, useSelector } from "react-redux";
 import SearchBar from "./SearchBar";
 import { NavLink } from "react-router-dom";
 import "../styles/NavBar.css";
 import { FiShoppingCart } from "react-icons/fi";
-import { FaUser } from "react-icons/fa";
+import { FaUser,FaSignInAlt  } from "react-icons/fa";
 // https://react-icons.github.io/react-icons/
 
 function NavBar() {
-	const { logged, admin } = useSelector(state => state);
+	const { logged, admin, user_info } = useSelector(state => state);
 
 	return (
 		<Navbar id="navMain" bg="dark" variant="dark">
@@ -42,7 +42,21 @@ function NavBar() {
 				<Nav>
 					<Link to="/login">
 						<Navbar.Brand>
-							<FaUser></FaUser>
+							{
+								(()=>{
+									if(logged){
+										if(!!user_info && !user_info.imgProfile)
+											return(<span><FaUser/>{user_info.alias}</span>);
+										return(!!user_info && 
+											<span>
+											<Image style={{width:"2rem"}} src={user_info.imgProfile} roundedCircle />
+												{user_info.alias}
+											</span>
+										)
+									}
+									return(<FaSignInAlt/>)
+								})()
+							}
 						</Navbar.Brand>
 					</Link>
 				</Nav>

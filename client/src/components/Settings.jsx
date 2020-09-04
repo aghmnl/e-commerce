@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Nav, Button, Card, Form, Col, ListGroup } from "react-bootstrap";
 import { RiLogoutBoxRLine, RiAdminLine } from "react-icons/ri";
+import { FaPowerOff } from "react-icons/fa";
 import { isAuth, isAdmin, emptyCart, setIsAdmin } from "../store/actions/index";
 import { useHistory, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -159,7 +160,7 @@ export default function Settings() {
 										return;
 									}}
 								>
-									Cerrar Sessión <RiLogoutBoxRLine style={{ transform: "scale(1.4)", marginBottom: "0.3rem" }} />
+								<FaPowerOff style={{ transform: "scale(1.4)", marginBottom: "0.3rem" }} />
 								</Button>
 							</div>
 						</ListGroup.Item>

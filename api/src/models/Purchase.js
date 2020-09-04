@@ -11,5 +11,8 @@ module.exports = sequelize => {
 				return moment.utc(this.getDataValue("date")).format("DD/MM/YYYY");
 			},
 		},
+		address:{
+			type: DataTypes.STRING,
+		}
 	});
 };

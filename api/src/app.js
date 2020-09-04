@@ -6,14 +6,29 @@ const routes = require("./routes/index.js");
 const passport = require('passport');
 const cors = require('cors');
 const LocalStrategy = require('passport-local').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const GitHubStrategy = require('passport-github2').Strategy;
 const crypto = require('crypto');
 const { User } = require('./db.js');
+const { callbackPromise } = require("nodemailer/lib/shared");
 require("./db.js");
 
 const server = express();
-
+server.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+  allowedHeaders: "Authorization, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method",
+  methods: "GET, POST, OPTIONS, PUT, DELETE",
+}));
 server.name = "API";
-
+const { 
+  GOOGLE_CLIENT_ID, 
+  GOOGLE_CLIENT_SECRET, 
+  GOOGLE_CALLBACK,
+  GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET,
+  GITHUB_CALLBACK 
+} = process.env
 // Configure the local strategy for use by Passport.
 //
 // The local strategy require a `verify` function which receives the credentials
@@ -44,7 +59,55 @@ passport.use(new LocalStrategy({
     }
   }
 ));
-
+passport.use(new GoogleStrategy({
+  clientID: GOOGLE_CLIENT_ID,
+  clientSecret: GOOGLE_CLIENT_SECRET,
+  callbackURL: GOOGLE_CALLBACK,
+},(accessToken, refreshToken, profile, done) =>{
+  console.log(profile);
+  const newUser = {
+    first_name: profile.name.givenName,
+    last_name: profile.name.familyName,
+    email: profile.emails[0].value,
+    phone: 00000,
+    admin: false,
+    password: "not value",
+    salt: "not salt",
+    provider: profile.provider,
+    imgProfile: profile.photos[0].value
+  }
+  User.findOrCreate({
+    where: { providerId: profile.id },
+    defaults: newUser
+  }) 
+    .then(([user]) => done(null, user))
+    .catch(err => done(err, false))
+}))
+passport.use(new GitHubStrategy({
+  clientID: GITHUB_CLIENT_ID,
+  clientSecret: GITHUB_CLIENT_SECRET,
+  callbackURL: GITHUB_CALLBACK,
+  scope: ['user:email'],
+},(accessToken, refreshToken, profile, done) =>{
+  console.log(profile);
+   const newUser = {
+    first_name: profile.username,
+    last_name: profile.username,
+    email: profile.emails[0].value,
+    phone: 00000,
+    admin: false,
+    password: "not value",
+    salt: "not salt",
+    provider: profile.provider,
+    imgProfile: profile.photos[0].value
+  }
+  User.findOrCreate({
+    where: { providerId: profile.id },
+    defaults:newUser
+  }) 
+    .then(([user]) => done(null, user))
+    .catch(err => done(err, false)) 
+}))
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
@@ -66,12 +129,7 @@ server.use(require('express-session')({
 }));
 server.use(passport.initialize());
 server.use(passport.session());
-server.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true,
-  allowedHeaders: "Authorization, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method",
-  methods: "GET, POST, OPTIONS, PUT, DELETE",
-}));
+
 server.use("/", routes);
 // Error catching endware.
 server.use((err, req, res, next) => {

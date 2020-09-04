@@ -12,7 +12,7 @@ import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import CarouselSlider from "./components/CarouselSlider";
-import { getPurchases, isAuth, isAdmin,  } from "./store/actions/index";
+import { getPurchases, isAuth, isAdmin, getCartItems, setCart, setUserInfo  } from "./store/actions/index";
 import Admin from "./components/Admin";
 import FormPurchase from "./components/FormPurchase";
 import { connect } from "react-redux";
@@ -27,17 +27,47 @@ import store from "./store/index";
 import FormReview from "./components/FormReview";
 import Settings from "./components/Settings";
 import Checkout from "./components/Checkout";
+import axios from "axios";
 store.subscribe(() => {
 	const { purchased_products, total } = store.getState();
 	saveCart(purchased_products);
 	saveTotal(total);
 });
-function App({ getPurchases, isAuth, isAdmin, getCart }) {
+function App({ getPurchases, isAuth, isAdmin, getCartItems, setCart, setUserInfo, cartId, purchased_products }) {
+	const getUserInfo = () =>{
+		axios.get("http://localhost:3001/user/me",{ withCredentials: true })
+			.then(user => setUserInfo(user))
+			.catch(err => console.log(err.response))
+	}
+	const getCartId = () =>{
+		axios.get("http://localhost:3001/purchase_protected/cart_id",{withCredentials:true})
+			.then(res => setCart(res.data.cartId))
+			.catch(err => console.log(err.response))
+	}
+	const setCartItems = async () =>{
+		return axios.post("http://localhost:3001/purchased_products_protected/add_product",
+			{
+				cartId: cartId,
+				cart_items: purchased_products
+			},{
+				withCredentials: true
+			})
+	} 
 	useEffect(() => {
+		getUserInfo();
+		getCartId();
 		isAuth();
 		isAdmin();
 		getPurchases();
 	}, []);
+	useEffect(()=>{
+		if(!cartId) return;
+		if(!purchased_products) return;
+		console.log(cartId)
+		setCartItems()
+			.then(() => getCartItems(cartId))
+			.catch(err => console.log(err.response))
+	},[cartId])
 	return (
 		<div className="App">
 			<Route path="/" render={() => <NavBar />} />
@@ -96,8 +126,17 @@ function App({ getPurchases, isAuth, isAdmin, getCart }) {
 		</div>
 	);
 }
-export default connect(null, {
+export default connect(({
+	cartId,
+	purchased_products,
+})=>({
+	cartId,
+	purchased_products
+}), {
 	getPurchases,
+	getCartItems,
 	isAuth,
 	isAdmin,
+	setCart,
+	setUserInfo
 })(App);
