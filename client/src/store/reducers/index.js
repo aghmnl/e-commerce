@@ -278,6 +278,11 @@ export default (state = initialState, action) => {
 				...state,
 				admin: action.payload,
 			};
+        case "SET_USER_INFO":
+			return{
+				...state,
+				user_info: action.payload.data
+			}
 		case "CLEAN_PRODUCT":
 			return { ...state, productDetail: {} };
 		case "CLEAN_CATALOGUE":

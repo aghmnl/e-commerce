@@ -5,7 +5,7 @@ server.post("/add_product", (req, res, next) => {
 	const addProducts = req.body.cart_items.map((cart_item)=>{
 		return Purchased_product.findOrCreate({
 			where: {
-				purchaseId: req.body.cart,
+				purchaseId: req.body.cartId,
 				productId: cart_item.id,
 			},
 			defaults: {

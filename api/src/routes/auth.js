@@ -93,7 +93,20 @@ server.post("/login", function (req, res, next) {
 		});
 	})(req, res, next);
 });
-
+server.get("/google/login", passport.authenticate("google", {
+	scope:
+	[
+        'https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/userinfo.email'
+    ]
+}))
+server.get("/github/login", passport.authenticate("github", {scope:["user:email"]}))
+server.get("/google/cb", passport.authenticate('google'),(req, res) => {
+    res.redirect("http://localhost:3000/")
+})
+server.get("/github/cb", passport.authenticate('github'),(req, res) => {
+    res.redirect("http://localhost:3000/")
+})
 server.get("/logout", function (req, res, next) {
 	// Acá le cambia el valor a isAuthenticated
 	req.logout();

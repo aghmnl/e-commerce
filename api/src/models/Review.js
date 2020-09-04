@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize");
+const moment = require("moment");
 
 module.exports = sequelize => {
 	// defino el modelo
@@ -13,7 +14,10 @@ module.exports = sequelize => {
         },
         date:{
             type: DataTypes.DATE,
-            allowNull:false
+            allowNull:false,
+            get: function () {
+				return moment.utc(this.getDataValue("date")).format("DD/MM/YYYY");
+			},
         }
 	});
 };

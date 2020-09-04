@@ -118,9 +118,13 @@ server.get("/users/:userId", (req, res, next) => {
 // S47 : Crear Ruta para modificar una Orden
 // OTRA OPCIÓN SERÍA
 
-server.put("/buy", (req, res, next) => {
+server.put("/checkout", (req, res, next) => {
 	Purchase.update(
-		{ statusId: 2,  date: Date.now() },
+		{ 
+			statusId: 2,  date: Date.now(),
+			address: req.body.dir,
+			payMethodId: req.body.pp
+		},
 		{
 			where: {
 				id: req.body.cartId,

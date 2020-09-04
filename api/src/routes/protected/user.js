@@ -28,7 +28,9 @@ server.get("/:id/purchase/", (req, res, next) => {
 		.catch(err => next(err));
 });
 server.get("/me",(req, res, next) =>{
-	User.findByPk(req.user.id)
+	User.findByPk(req.user.id,{
+		attributes:{ excludes: ["createAt", "updateAt","password","salt","phone","admin"] }
+	})
 		.then(user => res.json(user))
 		.catch(err => next(err));
 });
