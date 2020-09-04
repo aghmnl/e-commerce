@@ -1,6 +1,7 @@
 body {
 	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+		"Droid Sans", "Helvetica Neue", sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	background-attachment: fixed;
@@ -12,27 +13,30 @@ body {
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
-#main{
+#main {
 	display: flex;
 	flex-direction: column;
 }
-.alert{
+.alert {
 	position: fixed;
 	align-self: center;
 	width: 50rem;
 	z-index: 1000;
 }
-#bg_form{
-	background-image: var(--imgForm);
+#bg_cart {
+	background-image: var(--imgCart);
 }
-#bg_cat{
+#bg_cat {
 	background-image: var(--imgCat);
 }
-#bg_user{
+#bg_user {
 	background-image: var(--imgUser);
 }
-#bg_home{
+#bg_home {
 	background-image: var(--imgPrinc);
+}
+#bg_form {
+	background-image: var(--imgForm);
 }
 :root {
 	--color1: #2e1000;
@@ -44,10 +48,10 @@ code {
 	--rose: #f9bfb5;
 	--blanco: #d0c681;
 	--espumante: #f1e0aa;
-	--tinto:#800003;
-	--imgPrinc: url("https://i.ibb.co/sC870B7/G1-Low.jpg");
-	--imgForm: url("https://i.ibb.co/BrTmXKK/img-Forms-Low.jpg");
-	--imgCat: url("https://i.ibb.co/JjXH9rR/C-low.jpg");
-	--imgUser: url("https://i.ibb.co/vL2h5cp/J-low.jpg");
-	
+	--tinto: #800003;
+	--imgPrinc: url("./images/homeBackgroundLow.jpg");
+	--imgForm: url("./images/formBackgroundLow.jpg");
+	--imgCat: url("./images/catalogueBackgroundLow.jpg");
+	--imgUser: url("./images/userBackgroundLow.jpg");
+	--imgCart: url("./images/cartBackgroundLow.jpg");
 }

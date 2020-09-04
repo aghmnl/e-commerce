@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import { connect, useDispatch } from "react-redux";
-import { getCategories, getCatalogue, getProducts, cleanCatalogue, searchProduct, getStrain, getStrainsBy } from "../store/actions/index";
+import {
+	getCategories,
+	getCatalogue,
+	getProducts,
+	cleanCatalogue,
+	searchProduct,
+	getStrain,
+	getStrainsBy,
+} from "../store/actions/index";
 import { Nav, Spinner, Pagination, Container, Row, Col, Button, Form, Card } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router-dom";
 import "../styles/Catalogue.css";
@@ -31,25 +39,24 @@ function Catalogue({
 	useEffect(() => {
 		if (!category) return;
 		getProducts(category);
-		getStrainsBy(category)
-		setStrains(Array.from(new Set([])))
+		getStrainsBy(category);
+		setStrains(Array.from(new Set([])));
 	}, [category]);
 	useEffect(() => {
-		document.body.id="bg_cat";
+		document.body.id = "bg_cat";
 		getCategories();
-		
 	}, []);
 	useEffect(() => {
 		if (!location.search) return;
 		const searchParams = new URLSearchParams(location.search);
 		searchProduct(searchParams.get("search"));
 	}, [location]);
-	useEffect(()=>{
-		if(!Strains.length && !category) return;
+	useEffect(() => {
+		if (!Strains.length && !category) return;
 		getProducts(category, Strains);
-	},[Strains])
-	function handleChange(e){
-		setStrains(Array.from(new Set([...Strains, e.target.value])))
+	}, [Strains]);
+	function handleChange(e) {
+		setStrains(Array.from(new Set([...Strains, e.target.value])));
 	}
 	return (
 		<div style={{ marginTop: "8rem" }}>
@@ -64,7 +71,9 @@ function Catalogue({
 				{categories.map(category => (
 					<Nav.Item>
 						<Nav.Link>
-							<NavLink to={`/catalogue/category/${category.id}`} activeClassName={category.name.toLowerCase()} >{category.name}</NavLink>
+							<NavLink to={`/catalogue/category/${category.id}`} activeClassName={category.name.toLowerCase()}>
+								{category.name}
+							</NavLink>
 						</Nav.Link>
 					</Nav.Item>
 				))}
@@ -91,16 +100,23 @@ function Catalogue({
 										return <Spinner animation="border" />;
 								  })()}
 						</div>
-						{!!strains && <Card className="strains">
-							<Card.Body>
-								<Form onChange={handleChange}>
-									{strains.map(strain => (
-										<Form.Check custom type="checkbox" id={`strain_${strain.id}`} label={strain.name} value={strain.id} />
-									))}
-								</Form>
-							</Card.Body>
-						</Card>}
-						
+						{!!strains && (
+							<Card className="strains">
+								<Card.Body>
+									<Form onChange={handleChange}>
+										{strains.map(strain => (
+											<Form.Check
+												custom
+												type="checkbox"
+												id={`strain_${strain.id}`}
+												label={strain.name}
+												value={strain.id}
+											/>
+										))}
+									</Form>
+								</Card.Body>
+							</Card>
+						)}
 					</Col>
 				</Row>
 				<Row sm="1">
@@ -136,7 +152,7 @@ export default connect(
 			pags: catalogue.count,
 			products: !Object.values(catalogue).length ? products : catalogue.rows,
 			categories: categories,
-			strains: strains_by 
+			strains: strains_by,
 		};
 	},
 	{
@@ -145,6 +161,6 @@ export default connect(
 		cleanCatalogue,
 		getProducts,
 		searchProduct,
-		getStrainsBy
+		getStrainsBy,
 	}
 )(Catalogue);

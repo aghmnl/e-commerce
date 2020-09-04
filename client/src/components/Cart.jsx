@@ -90,18 +90,16 @@ function CartItem({
 			<Card id="total">
 				<Card.Title>
 					Total: $ {total}
+					<p></p>
 					<Button onClick={() => emptyCart()} className="btn-danger">
 						Vaciar carrito
 					</Button>
 				</Card.Title>
 			</Card>
 			{!!products.length && (
-				<Card style={{ width: "15rem", margin: "auto" }}>
+				<Card id="checkout">
 					<Card.Body>
-						<Button
-							onClick={() => history.replace("/checkout")}
-							variant="success"
-						>
+						<Button onClick={() => history.replace("/checkout")} variant="success">
 							Checkout
 						</Button>
 					</Card.Body>
