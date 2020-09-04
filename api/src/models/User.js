@@ -35,5 +35,20 @@ module.exports = sequelize => {
 			type: DataTypes.BOOLEAN,
 			allowNull: false,
 		},
+		provider:{
+			type: DataTypes.STRING,
+		},
+		providerId:{
+			type: DataTypes.STRING,
+		},
+		imgProfile:{
+			type: DataTypes.STRING
+		},
+		alias:{
+			type: DataTypes.VIRTUAL,
+			get(){
+				return this.getDataValue("first_name")[0] + this.getDataValue("last_name")[0];
+			}
+		}
 	});
 };

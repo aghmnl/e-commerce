@@ -60,6 +60,10 @@ export const getProducts = (categoryId, strains = []) => {
 			.catch(err => console.log(err));
 	};
 };
+export const setUserInfo = (user) => ({
+	type: "SET_USER_INFO",
+	payload: user
+})
 export const isAuth = () => {
 	return dispatch => {
 		const url = "http://localhost:3001/auth/isauth";

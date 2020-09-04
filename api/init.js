@@ -542,6 +542,9 @@ var status = [
 		// statusId:5,
 		name: "rechazada",
 	},
+	{
+		name: "despachada"
+	}
 ];
 
 var reviews = [
@@ -574,6 +577,15 @@ var pay_methods = [
 		// payMethodId:1,
 		name: "efectivo",
 	},
+	{
+		name: "visa"
+	},
+	{
+		name: "masterCard"
+	},
+	{
+		name: "mercadopago"
+	}
 ];
 
 var purchased_products = [
