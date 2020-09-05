@@ -50,7 +50,7 @@ function Login() {
 				.post(
 					"http://localhost:3001/purchased_products_protected/add_product",
 					{
-						cart: cartId,
+						cartId: cartId,
 						cart_items: purchased_products,
 					},
 					{

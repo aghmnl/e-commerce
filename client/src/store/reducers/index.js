@@ -136,14 +136,6 @@ export default (state = initialState, action) => {
 				purchased_products,
 			};
 		case EMPTY_CART:
-			if (state.logged) {
-				axios
-					.delete("http://localhost:3001/purchased_products_protected/empty_cart/" + state.cartId, {
-						withCredentials: true,
-					})
-					.then(res => console.log(res))
-					.catch(err => console.log(err));
-			}
 			return {
 				...state,
 				purchased_products: [],

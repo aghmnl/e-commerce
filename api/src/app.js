@@ -73,14 +73,24 @@ passport.use(new GoogleStrategy({
     admin: false,
     password: "not value",
     salt: "not salt",
+    providerId: profile.id,
     provider: profile.provider,
     imgProfile: profile.photos[0].value
   }
   User.findOrCreate({
-    where: { providerId: profile.id },
+    where: { email: profile.emails[0].value},
     defaults: newUser
   }) 
-    .then(([user]) => done(null, user))
+  .then(([user, created]) => {
+    if(!created){
+      if(user.providerId !== profile.id)
+      user.provider = profile.provider;
+      user.providerId = profile.id;
+      imgProfile = profile.photos[0].value;
+      user.save();
+    }
+    done(null, user)
+  })
     .catch(err => done(err, false))
 }))
 passport.use(new GitHubStrategy({
@@ -98,14 +108,24 @@ passport.use(new GitHubStrategy({
     admin: false,
     password: "not value",
     salt: "not salt",
+    providerId: profile.id,
     provider: profile.provider,
     imgProfile: profile.photos[0].value
   }
   User.findOrCreate({
-    where: { providerId: profile.id },
+    where: { email: profile.emails[0].value },
     defaults:newUser
   }) 
-    .then(([user]) => done(null, user))
+    .then(([user, created]) => {
+      if(!created){
+        if(user.providerId !== profile.id)
+        user.provider = profile.provider;
+        user.providerId = profile.id;
+        user.imgProfile = profile.photos[0].value;
+        user.save();
+      }
+      done(null, user)
+    })
     .catch(err => done(err, false)) 
 }))
 passport.serializeUser(function(user, done) {

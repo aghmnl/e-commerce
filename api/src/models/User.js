@@ -47,7 +47,10 @@ module.exports = sequelize => {
 		alias:{
 			type: DataTypes.VIRTUAL,
 			get(){
-				return this.getDataValue("first_name")[0] + this.getDataValue("last_name")[0];
+				const fullname = this.getDataValue("first_name") + this.getDataValue("last_name");
+				const elipcis = fullname.length > 7?"...":"" 
+				const alias = fullname.slice(0,7) + elipcis;
+				return alias;
 			}
 		}
 	});
