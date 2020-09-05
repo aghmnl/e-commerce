@@ -91,7 +91,15 @@ function CartItem({
 				<Card.Title>
 					Total: $ {total}
 					<p></p>
-					<Button onClick={() => emptyCart()} className="btn-danger">
+					<Button onClick={() => {
+						emptyCart();
+						if(logged) axios
+							.delete("http://localhost:3001/purchased_products_protected/empty_cart/" + cartId, {
+								withCredentials: true,
+							})
+							.then(res => console.log(res))
+							.catch(err => console.log(err));
+					}} className="btn-danger">
 						Vaciar carrito
 					</Button>
 				</Card.Title>

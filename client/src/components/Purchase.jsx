@@ -7,6 +7,35 @@ import { getPurchase } from "../store/actions";
 function Purchase({ id }) {
 	const dispatch = useDispatch();
 	const { purchaseDetail } = useSelector(state => state);
+	const Dispatch = ()=>{
+		axios.put("http://localhost:3001/purchase_private/dispatch",{
+			id,
+			userEmail: purchaseDetail.user.email,
+			address: purchaseDetail.address
+		},{ withCredentials: true })
+			.then(() =>{
+
+			})
+			.catch(err => console.log(err.response))
+	}
+	const Reject = ()=>{
+		axios.put("http://localhost:3001/purchase_private/reject",{
+			id,
+			userEmail: purchaseDetail.user.email
+		},{ withCredentials: true })
+			.then(() =>{
+			})
+			.catch(err => console.log(err.response))
+	}
+	const Delivered = ()=>{
+		axios.put("http://localhost:3001/purchase_private/delivered",{
+			id,
+		},{ withCredentials: true })
+			.then(() =>{
+
+			})
+			.catch(err => console.log(err.response))
+	}
 	useEffect(() => {
 		dispatch(getPurchase(id));
 	}, [id]);
@@ -26,6 +55,7 @@ function Purchase({ id }) {
 						<th>Nro</th>
 						<th>Fecha</th>
 						<th>Usuario</th>
+						<th>Entregar en</th>
 						<th>Metodo de pago</th>
 						<th>Estado</th>
 					</tr>
@@ -35,7 +65,8 @@ function Purchase({ id }) {
 						<td>{purchaseDetail.id}</td>
 						<td>{purchaseDetail.date}</td>
 						<td>{purchaseDetail.user.email}</td>
-						<td>{purchaseDetail.pay_method.name}</td>
+						<td>{purchaseDetail.address}</td>
+						<td>{!!purchaseDetail.pay_method && purchaseDetail.pay_method.name}</td>
 						<td>{purchaseDetail.status.name}</td>
 					</tr>
 				</tbody>
@@ -64,7 +95,23 @@ function Purchase({ id }) {
 			</Table>
 			<div>
 				<h2>Total: $ {purchaseDetail.total}</h2>
-				<Button onClick={() => goBack()}>Volver</Button>
+				{(()=>{
+					switch(purchaseDetail.status.name){
+						case "pagada":
+							return (
+								<div>
+									<Button variant="danger" onClick={Reject}>Rechazar</Button>
+									<Button variant="success" onClick={Dispatch}>Despachar</Button>
+								</div>
+							)
+				        case "despachada":
+							return (<div>
+								<Button variant="success" onClick={Delivered}>Entregada</Button>
+							</div>)
+						default:
+							return(<Button onClick={() => goBack()}>Volver</Button>)
+					}
+				})()}
 			</div>
 		</div>
 	);

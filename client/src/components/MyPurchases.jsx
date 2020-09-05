@@ -37,7 +37,7 @@ export default function Mypurchases() {
 								<Col sm="2" style={{ alignSelf: "center" }}>
 									<Card.Subtitle>{purchase.date}</Card.Subtitle>
 								</Col>
-								<Col>
+								{!!purchase.status && purchase.status.name === "entregada" && (<Col>
 									<Dropdown>
 										<Dropdown.Toggle variant="success" id="dropdown-basic"></Dropdown.Toggle>
 										<Dropdown.Menu>
@@ -46,7 +46,7 @@ export default function Mypurchases() {
 											</Dropdown.Item>
 										</Dropdown.Menu>
 									</Dropdown>
-								</Col>
+								</Col>)}
 							</Row>
 							<Row>
 								<Col>

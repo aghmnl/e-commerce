@@ -3,17 +3,35 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {Form, Button, Card, Col} from "react-bootstrap";
 import {Redirect, useHistory} from "react-router-dom";
+import {useFormik} from "formik";
+import {emptyCart, setCart} from "../store/actions"
 export default function Checkout(){
     const dispatch = useDispatch();
     const [pay_methods, setPayMethods] = useState([]);
-    const [errs, setErrs] = useState({
-        "dir": "",
-        "pm": ""
-    });
     const [values, setValues] = useState({
         "dir": "",
         "pm" : ""
-    }) 
+    })
+    const history = useHistory();
+    const { logged, purchased_products, cartId } = useSelector(state => state);
+    const getCartId = () =>{
+		axios.get("http://localhost:3001/purchase_protected/cart_id",{withCredentials:true})
+			.then(res => dispatch(setCart(res.data.cartId)))
+			.catch(err => console.log(err.response))
+	}
+    const formik = useFormik({
+        initialValues: values,
+        validate: values => {
+            const errors = {}
+            if(!values.dir)errors.dir = "Debe ingresar su dirección";
+            if(!values.pm)errors.pm ="Debe ingresar un metodo de pago";
+            return errors;
+        },
+        onSubmit: values => checkout(values),
+        onChange: (e) =>{
+            console.log(e.target)
+        }
+    })
     useEffect(()=>{
         (async()=>{
             const response = await axios.get("http://localhost:3001/purchase_protected/pay_methods",{
@@ -22,43 +40,43 @@ export default function Checkout(){
             !!response && setPayMethods(response.data);
         })()
     },[])
-    function validate({target}){
-        setValues({
-            ...values,
-            [target.id]: target.value
-        });
-        if(!target.value) return setErrs({
-            ...errs,
-            [target.id]: target.getAttribute("data-err")
-        })
-        setErrs({
-            dir:"",
-            pm:""
-        })
+    function checkout(values){
+        axios.put("http://localhost:3001/purchase_protected/checkout",{
+            cartId,
+            dir: values.dir,
+            pp: values.pm
+        }, { withCredentials: true })
+            .then(res => {
+                dispatch(emptyCart());
+                getCartId();
+            })
+            .catch(err => console.log(err.response))
     }
-    const history = useHistory();
-    const { logged, purchased_products } = useSelector(state => state);
     if(!logged) return (<Redirect to="/login" />);
     return(
         <div>
             <Card style={{width:"55rem", margin:"5rem auto", textAlign:"left"}} >
                 <Card.Body>
-                    <Form onChange={validate} onBlur={validate}>
+                    <Form onChange={formik.handleChange} onBlur={formik.handleBlur} onSubmit={formik.handleSubmit}>
                         <Form.Group as={Col}>
                             <Form.Label>Dirrección</Form.Label>
                             <Form.Control id="dir" 
-                                value={values.dir} 
-                                isInvalid={!!errs.dir} 
-                                data-err="Debe ingresar su dirección" />
-                            <Form.Control.Feedback type="invalid" tooltip>{errs.dir}</Form.Control.Feedback>
+                                value={formik.values.dir} 
+                                isInvalid={formik.touched.dir && !!formik.errors.dir} 
+                                />
+                            <Form.Control.Feedback type="invalid" tooltip>
+                                {!!formik.errors.dir && formik.touched.dir  && formik.errors.dir}
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group as={Col}>
                             <Form.Label>Metodo de Pago</Form.Label>
-                            <Form.Control as="select" id="pm" isInvalid={!!errs.pm} data-err="Debe ingresar un metodo de pago" >
+                            <Form.Control as="select" id="pm" isInvalid={formik.touched.pm && !!formik.errors.pm}>
                                 <option value="">Seleccione ...</option>
-                                {pay_methods.map(pm => (<option value={pm.id} selected={pm.id===values.pm?"selected":""}>{pm.name}</option>))}
+                                {pay_methods.map(pm => (<option value={pm.id} selected={pm.id===formik.values.pm?"selected":""}>{pm.name}</option>))}
                             </Form.Control>
-                            <Form.Control.Feedback type="invalid" tooltip>{errs.pm}</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid" tooltip>
+                                {!!formik.errors.pm && formik.touched.pm  && formik.errors.pm}
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group as={Col} >
                             <Button type="submit" variant="success">Finalizar Compra</Button>

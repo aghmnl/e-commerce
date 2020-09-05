@@ -2,6 +2,7 @@ const server = require("express").Router();
 const { Purchase, User, Pay_method, Status, Product } = require("../../db.js");
 const moment = require("moment");
 const { Op, literal } = require("sequelize");
+const mailgun = require("mailgun-js");
 // S44 : Crear ruta que retorne todas las órdenes
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
 // http://localhost:3001/purchase_protected/my_purchases
@@ -18,7 +19,7 @@ server.get("/my_purchases", (req, res, next) => {
 			"statusId",
 			"payMethodId"
 		],
-		include: {
+		include: [{
 			model: Product,
 			attributes:[
 				"id",
@@ -35,7 +36,12 @@ server.get("/my_purchases", (req, res, next) => {
 					"quantity",
 				],
 			},
-		},
+		},{
+			model: Status,
+			as: "status",
+			attributes:["id","name"]
+
+		}],
 	})
 		.then(purchases => {
 			res.json(purchases);
@@ -132,7 +138,50 @@ server.put("/checkout", (req, res, next) => {
 			},
 		}
 	)
-		.then(p => res.json(p))
+		.then(() => {
+
+			/*  */
+			Purchase.findByPk(req.body.cartId,{
+				include:{ 
+					model: Product,
+					attributes:[
+						"id",
+						"name",
+						[literal('(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'),"total"]
+					],
+				}
+			})
+				.then(purchase => {
+					const DOMAIN = "sandboxdffeb621bd62410eb7c2076e0be9741d.mailgun.org";
+					const mg = mailgun({apiKey: "21104ae61a01274914c25259682fe3d1-7cd1ac2b-37cc0e69", domain: DOMAIN});
+					const data = {
+						from: "Toni Wines Estamos despachando su compra <toniwines_recovery@sandboxe98883ab8de24b92a0e573e260891894.mailgun.org>",
+						to: req.user.email,
+						subject: "Toni Wines Compra",
+						html:`<html>
+							<title>Compra</title>
+							<meta charset='utf-8'>
+							<body>
+								<b> Usted a comprado  :</b>
+								${purchase.products.map(product => {
+									return `
+									${product.name}
+									~SubTotal: $${product.purchased_product.priceProduct} * ${product.purchased_product.quantity}
+									${product.total}<br>`
+								})}
+								<b>Ver en detalle</b>
+								<a href="http://localhost:3000/user/purchases">Mis compras</a>
+							</body>
+						</html>`
+					};
+					mg.messages().send(data, function (error, body) {
+						if(error) console.log("error", error)
+						console.log("body", body);
+						res.status(200).send("Le estaremos notificando, revise su casilla de spam")
+					});
+				})
+				.catch(err => next(err));
+		})
 		.catch(err => next(err));
 });
 // S40 : Crear Ruta para vaciar el carrito
