@@ -16,14 +16,14 @@ export default function SearchBar() {
 			>
 				<FormControl
 					type="text"
-					placeholder="Search"
+					placeholder="ej: Malbec"
 					className="mr-sm-2"
 					value={inputText}
 					id="inputSearch"
 					onChange={e => setinputText(e.target.value)}
 				/>
 				<Button variant="outline-info" type="submit">
-					Search
+					Buscar
 				</Button>
 			</Form>
 		</div>

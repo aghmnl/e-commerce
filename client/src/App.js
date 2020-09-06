@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Route, Redirect } from "react-router-dom";
+import { Switch ,Route, Redirect } from "react-router-dom";
 import Catalogue from "./components/Catalogue";
 import FormProduct from "./components/FormProduct";
 import Product from "./components/Product";
@@ -29,9 +29,10 @@ import Settings from "./components/Settings";
 import Checkout from "./components/Checkout";
 import axios from "axios";
 store.subscribe(() => {
-	const { purchased_products, total } = store.getState();
+	const { purchased_products, total, cookiesShown } = store.getState();
 	saveCart(purchased_products);
 	saveTotal(total);
+	localStorage.setItem("cookiesShown", JSON.stringify(cookiesShown))
 });
 function App({ getPurchases, isAuth, isAdmin, getCartItems, setCart, setUserInfo, cartId, purchased_products }) {
 	const getUserInfo = () =>{

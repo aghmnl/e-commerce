@@ -28,6 +28,12 @@ export const SET_CART = "SET_CART";
 export const GET_CART_ITEMS = "GET_CART_ITEMS";
 export const GET_MY_PURCHASES = "GET_MY_PURCHASES";
 export const SET_IS_ADMIN = "SET_IS_ADMIN";
+export const SET_COOKIES_SHOWN = "SET_COOKIES_SHOWN";
+
+export const setCookiesShown = () => ({
+	type: SET_COOKIES_SHOWN,
+});
+
 export const cleanProduct = () => ({
 	type: "CLEAN_PRODUCT",
 });
@@ -51,19 +57,21 @@ export const getProducts = (categoryId, strains = []) => {
 		const url = !categoryId
 			? "http://localhost:3001/product_public"
 			: `http://localhost:3001/product_public/category/${categoryId}`;
-		if(!strains.length)return axios
-			.get(url, { withCredentials: true })
-			.then(({ data: products }) => dispatch({ type: GET_PRODUCTS, payload: products }))
-			.catch(err => console.log(err));
-		axios.post("http://localhost:3001/product_public/strains",{strains: strains, categoryId: categoryId})
+		if (!strains.length)
+			return axios
+				.get(url, { withCredentials: true })
+				.then(({ data: products }) => dispatch({ type: GET_PRODUCTS, payload: products }))
+				.catch(err => console.log(err));
+		axios
+			.post("http://localhost:3001/product_public/strains", { strains: strains, categoryId: categoryId })
 			.then(({ data: products }) => dispatch({ type: GET_PRODUCTS, payload: products }))
 			.catch(err => console.log(err));
 	};
 };
-export const setUserInfo = (user) => ({
+export const setUserInfo = user => ({
 	type: "SET_USER_INFO",
-	payload: user
-})
+	payload: user,
+});
 export const isAuth = () => {
 	return dispatch => {
 		const url = "http://localhost:3001/auth/isauth";
@@ -231,12 +239,12 @@ export const getUser = id => {
 			.catch(err => console.log(err));
 	};
 };
-export const setCart =(cartId) =>{
+export const setCart = cartId => {
 	return {
 		type: SET_CART,
-		payload: cartId
-	}
-}
+		payload: cartId,
+	};
+};
 export const getCartItems = cartId => {
 	return dispatch => {
 		const url = "http://localhost:3001/purchased_products_protected/cart_items/" + cartId;

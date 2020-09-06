@@ -19,6 +19,9 @@ module.exports = sequelize => {
 				isEmail: true,
 			},
 		},
+		active:{
+			type: DataTypes.BOOLEAN,
+		},
 		password: {
 			type: DataTypes.TEXT,
 			allowNull: false,
@@ -49,7 +52,7 @@ module.exports = sequelize => {
 			get(){
 				const fullname = this.getDataValue("first_name") + this.getDataValue("last_name");
 				const elipcis = fullname.length > 7?"...":"" 
-				const alias = fullname.slice(0,7) + elipcis;
+				const alias = !!fullname && fullname.slice(0,7) + elipcis;
 				return alias;
 			}
 		}

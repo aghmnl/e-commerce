@@ -41,7 +41,7 @@ passport.use(new LocalStrategy({
 },
   async function(email, password, done) {
     try {
-      const user = await User.findOne({ where: { email: email } })
+      const user = await User.findOne({ where: { email: email, active: true } })
       console.log({user})
       if (!user) {
         return done(null, false, { message: 'Incorrect username.', input : "email" });
@@ -75,7 +75,8 @@ passport.use(new GoogleStrategy({
     salt: "not salt",
     providerId: profile.id,
     provider: profile.provider,
-    imgProfile: profile.photos[0].value
+    imgProfile: profile.photos[0].value,
+    active: true
   }
   User.findOrCreate({
     where: { email: profile.emails[0].value},
@@ -110,7 +111,8 @@ passport.use(new GitHubStrategy({
     salt: "not salt",
     providerId: profile.id,
     provider: profile.provider,
-    imgProfile: profile.photos[0].value
+    imgProfile: profile.photos[0].value,
+    active: true
   }
   User.findOrCreate({
     where: { email: profile.emails[0].value },

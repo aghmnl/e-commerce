@@ -27,6 +27,7 @@ import {
 	GET_MY_PURCHASES,
 	GET_PURCHASE,
 	SET_IS_ADMIN,
+	SET_COOKIES_SHOWN,
 } from "../actions";
 import axios from "axios";
 const initialState = {
@@ -270,11 +271,13 @@ export default (state = initialState, action) => {
 				...state,
 				admin: action.payload,
 			};
-        case "SET_USER_INFO":
-			return{
+		case SET_COOKIES_SHOWN:
+			return { ...state, cookiesShown: true };
+		case "SET_USER_INFO":
+			return {
 				...state,
-				user_info: action.payload.data
-			}
+				user_info: action.payload.data,
+			};
 		case "CLEAN_PRODUCT":
 			return { ...state, productDetail: {} };
 		case "CLEAN_CATALOGUE":

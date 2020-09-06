@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Nav, Button } from "react-bootstrap";
-import { RiLogoutBoxRLine } from "react-icons/ri";
+import { FaPowerOff } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { isAuth, isAdmin } from "../store/actions/index";
 import { useHistory } from "react-router-dom";
@@ -41,7 +41,7 @@ export default function Admin() {
 					<NavLink to="/admin/formPurchase">Compras</NavLink>
 				</Nav.Link>
 			</Nav.Item>
-			<Nav.Item style={{ marginLeft: "auto", paddingRight: "1rem", paddingTop: "0.2rem" }}>
+			<Nav.Item style={{ marginLeft: "auto", marginRight: "1rem", marginTop: "0.1rem", marginBottom: "0.1rem" }}>
 				<Button
 					variant="primary"
 					onClick={() => {
@@ -56,7 +56,7 @@ export default function Admin() {
 						return;
 					}}
 				>
-					<RiLogoutBoxRLine style={{ transform: "scale(1.4)", marginBottom: "0.3rem" }}></RiLogoutBoxRLine>
+					<FaPowerOff style={{ transform: "scale(1.3)" }}></FaPowerOff>
 				</Button>
 			</Nav.Item>
 		</Nav>
