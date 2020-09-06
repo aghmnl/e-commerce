@@ -12,23 +12,17 @@ export default function ProductCard({ id, name, cellar, price, img, raiting }) {
 		<NavLink to={`/product/${id}`}>
 			<Card style={{ width: "15rem", height: "25rem", margin: "5px" }} className="efecto">
 				<Card.Img variant="top" src={img} style={{ padding: "5px" }} />
-				<Card.Body>
+				<Card.Body style={{display:"flex", flexDirection:"column", justifyContent:"space-around"}} >
 					<Card.Title>{name}</Card.Title>
-					<ListGroupItem style={{ border: "0px", padding: "0px" }}>{cellar.name}</ListGroupItem>
-				</Card.Body>
-				<ListGroup className="list-group-flush">
-					<ListGroupItem>
+					<Card.Subtitle>{cellar.name}</Card.Subtitle>
+					<Card.Text style={{textAlign: "center !important"}} ><b>${price}</b></Card.Text>
 					<Rating
                         initialRating={raiting || 0}
                         emptySymbol={<RiStarLine/>}
                         fullSymbol={<RiStarFill/>}
                         readonly
                     />
-					</ListGroupItem>
-					<ListGroupItem>
-						<strong>{"$ "+price}</strong>
-					</ListGroupItem>
-				</ListGroup>
+				</Card.Body>
 			</Card>
 		</NavLink>
 	);

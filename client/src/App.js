@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Route, Redirect } from "react-router-dom";
+import { Switch ,Route, Redirect } from "react-router-dom";
 import Catalogue from "./components/Catalogue";
 import FormProduct from "./components/FormProduct";
 import Product from "./components/Product";

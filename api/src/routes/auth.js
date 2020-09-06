@@ -52,22 +52,23 @@ server.post("/register", async function (req, res, next) {
 			email: req.body.email,
 			phone: req.body.phone,
 			admin: false,
+			active: true,
 			password: password,
 			salt: salt,
 		});
 		if (user) {
-			passport.authenticate("local", function (err, user, info) {
+			 passport.authenticate("local", function (err, user, info) {
 				if (err) {
 					return next(err);
 				}
 				if (!user) {
-					return res.json({ status: "error", message: info.message });
+					return res.status(401).json({ status: "error", message: info.message });
 				}
 				req.login(user, function (err) {
 					if (err) {
 						return next(err);
 					}
-					return res.json({ status: "ok", user: req.user });
+					return res.json({ status: "ok", user: req.user, isAuth: req.isAuthenticated() });
 				});
 			})(req, res, next);
 		}

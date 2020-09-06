@@ -477,6 +477,7 @@ var users = [
 		password: "1234",
 		phone: 121312132,
 		admin: true,
+		active: true,
 		salt: "asdafasfd",
 	},
 	{
@@ -487,6 +488,7 @@ var users = [
 		password: "1234",
 		phone: 121312132,
 		admin: true,
+		active: true,
 		salt: "asdafasfd",
 	},
 	{
@@ -497,6 +499,7 @@ var users = [
 		password: "1234",
 		phone: 121312132,
 		admin: true,
+		active: true,
 		salt: "asdafasfd",
 	},
 	{
@@ -507,6 +510,7 @@ var users = [
 		password: "1234",
 		phone: 121312132,
 		admin: true,
+		active: true,
 		salt: "asdafasfd",
 	},
 	{
@@ -517,6 +521,7 @@ var users = [
 		password: "1234",
 		phone: 121312132,
 		admin: false,
+		active: true,
 		salt: "asdafasfd",
 	},
 ];

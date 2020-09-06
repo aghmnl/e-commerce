@@ -52,7 +52,7 @@ export default function Register(){
         },
         onSubmit: (values) =>{
             axios
-                .post("http://localhost:3001/auth/register", values)
+                .post("http://localhost:3001/auth/register", values, {withCredentials: true})
                 .then( async ()=>{
                     await dispatch(isAuth());
                     await dispatch(isAdmin());

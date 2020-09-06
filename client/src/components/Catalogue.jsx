@@ -27,7 +27,7 @@ function Catalogue({
 	pag,
 	pags,
 }) {
-	const [Strains, setStrains] = useState(Array.from(new Set([])));
+	const [Strains, setStrains] = useState([]);
 	const location = useLocation();
 	useEffect(() => {
 		if (!pag) return;
@@ -40,7 +40,7 @@ function Catalogue({
 		if (!category) return;
 		getProducts(category);
 		getStrainsBy(category);
-		setStrains(Array.from(new Set([])));
+		setStrains([]);
 	}, [category]);
 	useEffect(() => {
 		document.body.id = "bg_cat";
@@ -52,11 +52,13 @@ function Catalogue({
 		searchProduct(searchParams.get("search"));
 	}, [location]);
 	useEffect(() => {
-		if (!Strains.length && !category) return;
-		getProducts(category, Strains);
+		if (!category) return;
+		if (!Strains.length) getProducts(category);
+		else getProducts(category, Strains);
 	}, [Strains]);
 	function handleChange(e) {
-		setStrains(Array.from(new Set([...Strains, e.target.value])));
+		if(Strains.includes(e.target.value)) setStrains(Strains.filter(s => s!== e.target.value));
+		else setStrains([...Strains, e.target.value]);
 	}
 	return (
 		<div style={{ marginTop: "8rem" }}>

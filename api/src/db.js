@@ -65,7 +65,7 @@ Pay_method.hasMany(Purchase, {
 	onDelete: "NO ACTION",
 });
 Purchase.belongsTo(Pay_method);
-User.belongsToMany(Product, { through: Review });
+User.belongsToMany(Product, { through: Review, onDelete: "NO ACTION" });
 Product.belongsToMany(User, { through: Review });
 Status.hasMany(Purchase, {
 	onDelete: "NO ACTION",

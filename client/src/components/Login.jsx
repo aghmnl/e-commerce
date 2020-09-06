@@ -4,7 +4,7 @@ import axios from "axios";
 import "../styles/Login.css";
 import { useDispatch, useSelector, connect } from "react-redux";
 import { useFormik } from "formik";
-import { isAuth, isAdmin, emptyCart, setCart, getCartItems, setIsAdmin } from "../store/actions/index";
+import { isAuth, isAdmin, emptyCart, setCart, getCartItems, setIsAdmin, setUserInfo } from "../store/actions/index";
 import { Form, Card, Button, Col } from "react-bootstrap";
 import {FaGoogle} from "react-icons/fa"
 import {ImGithub} from "react-icons/im"
@@ -59,6 +59,9 @@ function Login() {
 				)
 				.catch(err => console.log(err));
 		await dispatch(getCartItems(cartId));
+		axios.get("http://localhost:3001/user/me",{ withCredentials: true })
+				.then(user => dispatch(setUserInfo(user)))
+				.catch(err => console.log(err.response))
 	}
 
 	if (logged) {
