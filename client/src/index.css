@@ -27,10 +27,10 @@ code {
 	background-image: var(--imgCart);
 }
 #bg_cat {
-	background-image: var(--imgCat);
+	background-image: var(--imgCart);
 }
 #bg_user {
-	background-image: var(--imgUser);
+	background-image: var(--imgCart);
 }
 #bg_home {
 	background-image: var(--imgPrinc);

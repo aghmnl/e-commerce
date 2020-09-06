@@ -20,7 +20,7 @@ function Purchases({ purchases, statuses, statusId, getStatuses, getPurchases })
 	}, [statusId]);
 	useEffect(() => {
 		getStatuses();
-		document.body.id="bg_form";
+		document.body.id = "bg_form";
 		if (!statusId) getPurchases();
 	}, []);
 	return (
@@ -47,7 +47,7 @@ function Purchases({ purchases, statuses, statusId, getStatuses, getPurchases })
 			<div className="col-10 purchases" style={{ marginTop: "10rem", textAlign: "left" }}>
 				{purchases.map(purchase => (
 					<NavLink to={`/admin/purchase/${purchase.id}`}>
-						<Card id="card" style={{ width: "40rem", marginTop: "1rem" }}>
+						<Card id="card" style={{ width: "45rem", marginTop: "1rem" }}>
 							<Container>
 								<Row>
 									<Col sm="6" style={{ alignSelf: "center" }}>
