@@ -12,3 +12,10 @@
 .login label {
 	text-align: right;
 }
+.btn-icon{
+	display: grid;
+	grid-template-columns: auto 90%;
+}
+.btn-icon svg{
+	margin-top: 0.3rem;
+}

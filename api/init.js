@@ -154,54 +154,67 @@ var cellars = [
 ];
 var strains = [
 	{
+		// strainId: 1
 		name: "Cabernet Franc",
 		categoryId: 1,
 	},
 	{
+		// strainId: 2
 		name: "Tempranillo",
 		categoryId: 1,
 	},
 	{
+		// strainId: 3
 		name: "Tannat",
 		categoryId: 1,
 	},
 	{
+		// strainId: 4
 		name: "Malbec",
 		categoryId: 1,
 	},
 	{
-		name: "Merlot",
-		categoryId: 1,
-	},
-	{
-		name: "Blend",
+		// strainId: 5
+		name: "Syrah",
 		categoryId: 3,
 	},
 	{
+		// strainId: 6
+		name: "Blend",
+		categoryId: 1,
+	},
+	{
+		// strainId: 7
 		name: "Chardonnay",
 		categoryId: 2,
 	},
 	{
+		// strainId: 8
 		name: "Torrentés",
 		categoryId: 2,
 	},
 	{
+		// strainId: 9
 		name: "Viognier",
 		categoryId: 4,
 	},
 	{
+		// strainId: 10
 		name: "Cinsault",
 		categoryId: 4,
 	},
 	{
+		// strainId: 11
 		name: "Asti",
 		categoryId: 4,
 	},
 	{
+		// strainId: 12
 		name: "Malbec",
 		categoryId: 3,
 	},
 	{
+		// strainId: 13
 		name: "Blend",
 		categoryId: 4,
 	},
@@ -250,7 +263,7 @@ var products = [
 		// productId: 3,
 	},
 	{
-		name: "Gran Corte",
+		name: "Amalaya Gran Corte",
 		price: 1440,
 		description:
 			"Brillante, con un profundo y penetrante color rubí. Frutas rojas y negras con notas especiadas y mentoladas, típicas de la región y suaves notas a vainilla, provenientes de su paso por barrica.",
@@ -260,7 +273,7 @@ var products = [
 		active: true,
 		categoryId: 1,
 		cellarId: 3,
-		strainId: 4,
+		strainId: 6,
 		// productId: 4,
 	},
 	{
@@ -273,7 +286,7 @@ var products = [
 		active: true,
 		categoryId: 1,
 		cellarId: 4,
-		strainId: 1,
+		strainId: 3,
 		// productId: 5,
 	},
 	{
@@ -332,7 +345,7 @@ var products = [
 		// productId: 9,
 	},
 	{
-		name: "Limited Edition Viogonier",
+		name: "Limited Edition Viognier",
 		price: 568,
 		description: "S/D",
 		img: "https://cdn.shopify.com/s/files/1/0042/8477/6517/products/BodegonesdelSur-Viognier_2000x.jpg?v=1562031542",
@@ -354,7 +367,7 @@ var products = [
 		active: true,
 		cellarId: 1,
 		categoryId: 3,
-		strainId: 4,
+		strainId: 12,
 		// productId: 11,
 	},
 	{
@@ -408,7 +421,7 @@ var products = [
 		active: true,
 		cellarId: 9,
 		categoryId: 3,
-		strainId: 12,
+		strainId: 5,
 		// productId: 15,
 	},
 	{
@@ -548,8 +561,8 @@ var status = [
 		name: "rechazada",
 	},
 	{
-		name: "despachada"
-	}
+		name: "despachada",
+	},
 ];
 
 var reviews = [
@@ -583,14 +596,14 @@ var pay_methods = [
 		name: "efectivo",
 	},
 	{
-		name: "visa"
+		name: "visa",
 	},
 	{
-		name: "masterCard"
+		name: "masterCard",
 	},
 	{
-		name: "mercadopago"
-	}
+		name: "mercadopago",
+	},
 ];
 
 var purchased_products = [

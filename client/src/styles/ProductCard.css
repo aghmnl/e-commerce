@@ -13,3 +13,8 @@ a > .card{
 a:hover > .card{
     text-decoration: none;
 }
+.card-body-pd{
+    display: grid;
+    grid-template-rows: 2.5rem 2rem 1.5rem;
+}
+.card-sub-pd{ margin-top: 0.9rem; }

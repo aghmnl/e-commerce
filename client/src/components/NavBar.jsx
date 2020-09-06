@@ -5,7 +5,9 @@ import { connect, useSelector } from "react-redux";
 import SearchBar from "./SearchBar";
 import "../styles/NavBar.css";
 import { FiShoppingCart } from "react-icons/fi";
-import { FaUser,FaSignInAlt  } from "react-icons/fa";
+import { FaUser, FaSignInAlt } from "react-icons/fa";
+import { AiOutlineUser } from "react-icons/ai";
+
 // https://react-icons.github.io/react-icons/
 
 function NavBar() {
@@ -32,21 +34,28 @@ function NavBar() {
 			<Nav id="navega">
 				<Nav>
 					<Navbar.Brand as={Link} to="/login">
-						{
-							(()=>{
-								if(logged){
-									if(!!user_info && !user_info.imgProfile)
-										return(<span><FaUser/>{user_info.alias}</span>);
-									return(!!user_info && 
+						{(() => {
+							if (logged) {
+								if (!!user_info && !user_info.imgProfile)
+									return (
 										<span>
-										<Image style={{width:"2rem"}} src={user_info.imgProfile} roundedCircle />
+											<AiOutlineUser
+												style={{ transform: "scale(1.4)", marginBottom: "0.2rem", marginRight: "0.2rem" }}
+											/>{" "}
+											{user_info.alias}
+										</span>
+									);
+								return (
+									!!user_info && (
+										<span>
+											<Image style={{ width: "2rem" }} src={user_info.imgProfile} roundedCircle /> &nbsp;
 											{user_info.alias}
 										</span>
 									)
-								}
-								return(<FaSignInAlt/>)
-							})()
-						}
+								);
+							}
+							return <AiOutlineUser style={{ transform: "scale(1.8)", marginBottom: "0.2rem" }} />;
+						})()}
 					</Navbar.Brand>
 				</Nav>
 				<SearchBar />

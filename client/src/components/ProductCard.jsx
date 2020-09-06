@@ -12,10 +12,10 @@ export default function ProductCard({ id, name, cellar, price, img, raiting }) {
 		<NavLink to={`/product/${id}`}>
 			<Card style={{ width: "15rem", height: "25rem", margin: "5px" }} className="efecto">
 				<Card.Img variant="top" src={img} style={{ padding: "5px" }} />
-				<Card.Body style={{display:"flex", flexDirection:"column", justifyContent:"space-around"}} >
+				<Card.Body className="card-body-pd" /* style={{display:"flex", flexDirection:"column", justifyContent:"space-around"}} */ >
 					<Card.Title>{name}</Card.Title>
-					<Card.Subtitle>{cellar.name}</Card.Subtitle>
-					<Card.Text style={{textAlign: "center !important"}} ><b>${price}</b></Card.Text>
+					<Card.Subtitle className="card-sub-pd">{cellar.name}</Card.Subtitle>
+					<p><b>${price}</b></p>
 					<Rating
                         initialRating={raiting || 0}
                         emptySymbol={<RiStarLine/>}
