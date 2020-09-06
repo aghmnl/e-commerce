@@ -18,7 +18,7 @@
 	text-align: left;
 	background-color: #ffffff6b;
 }
-.espumante {
+/* .espumante {
 	color: var(--espumante);
 }
 .rose {
@@ -29,7 +29,11 @@
 }
 .tinto {
 	color: var(--tinto);
+} */
+.categoriaElegida {
+	color: black !important;
 }
+
 #navegacion {
 	font-size: 17px !important;
 	background-color: #ffffffb0 !important;

@@ -4,8 +4,10 @@ import { Table, Button } from "react-bootstrap";
 import "../styles/Tabla.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getPurchase } from "../store/actions";
+import { useHistory } from "react-router-dom";
 function Purchase({ id }) {
 	const dispatch = useDispatch();
+	const history = useHistory();
 	const { purchaseDetail } = useSelector(state => state);
 	const Dispatch = () => {
 		axios
@@ -18,7 +20,9 @@ function Purchase({ id }) {
 				},
 				{ withCredentials: true }
 			)
-			.then(() => {})
+			.then(() => {
+				history.replace("/admin/formPurchase/status/3");
+			})
 			.catch(err => console.log(err.response));
 	};
 	const Reject = () => {
@@ -31,7 +35,9 @@ function Purchase({ id }) {
 				},
 				{ withCredentials: true }
 			)
-			.then(() => {})
+			.then(() => {
+				history.replace("/admin/formPurchase/status/5");
+			})
 			.catch(err => console.log(err.response));
 	};
 	const Delivered = () => {
@@ -43,7 +49,9 @@ function Purchase({ id }) {
 				},
 				{ withCredentials: true }
 			)
-			.then(() => {})
+			.then(() => {
+				history.replace("/admin/formPurchase/status/6");
+			})
 			.catch(err => console.log(err.response));
 	};
 	useEffect(() => {
@@ -114,11 +122,11 @@ function Purchase({ id }) {
 										Rechazar
 									</Button>
 									<Button variant="success" onClick={Dispatch}>
-										Despachar
+										Enviar
 									</Button>
 								</div>
 							);
-						case "despachada":
+						case "enviada":
 							return (
 								<div>
 									<Button variant="success" onClick={Delivered}>

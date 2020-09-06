@@ -57,7 +57,7 @@ function Catalogue({
 		else getProducts(category, Strains);
 	}, [Strains]);
 	function handleChange(e) {
-		if(Strains.includes(e.target.value)) setStrains(Strains.filter(s => s!== e.target.value));
+		if (Strains.includes(e.target.value)) setStrains(Strains.filter(s => s !== e.target.value));
 		else setStrains([...Strains, e.target.value]);
 	}
 	return (
@@ -73,7 +73,7 @@ function Catalogue({
 				{categories.map(category => (
 					<Nav.Item>
 						<Nav.Link>
-							<NavLink to={`/catalogue/category/${category.id}`} activeClassName={category.name.toLowerCase()}>
+							<NavLink to={`/catalogue/category/${category.id}`} activeClassName="categoriaElegida">
 								{category.name}
 							</NavLink>
 						</Nav.Link>
