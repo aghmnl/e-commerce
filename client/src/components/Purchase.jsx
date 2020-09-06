@@ -7,35 +7,45 @@ import { getPurchase } from "../store/actions";
 function Purchase({ id }) {
 	const dispatch = useDispatch();
 	const { purchaseDetail } = useSelector(state => state);
-	const Dispatch = ()=>{
-		axios.put("http://localhost:3001/purchase_private/dispatch",{
-			id,
-			userEmail: purchaseDetail.user.email,
-			address: purchaseDetail.address
-		},{ withCredentials: true })
-			.then(() =>{
-
-			})
-			.catch(err => console.log(err.response))
-	}
-	const Reject = ()=>{
-		axios.put("http://localhost:3001/purchase_private/reject",{
-			id,
-			userEmail: purchaseDetail.user.email
-		},{ withCredentials: true })
-			.then(() =>{
-			})
-			.catch(err => console.log(err.response))
-	}
-	const Delivered = ()=>{
-		axios.put("http://localhost:3001/purchase_private/delivered",{
-			id,
-		},{ withCredentials: true })
-			.then(() =>{
-
-			})
-			.catch(err => console.log(err.response))
-	}
+	const Dispatch = () => {
+		axios
+			.put(
+				"http://localhost:3001/purchase_private/dispatch",
+				{
+					id,
+					userEmail: purchaseDetail.user.email,
+					address: purchaseDetail.address,
+				},
+				{ withCredentials: true }
+			)
+			.then(() => {})
+			.catch(err => console.log(err.response));
+	};
+	const Reject = () => {
+		axios
+			.put(
+				"http://localhost:3001/purchase_private/reject",
+				{
+					id,
+					userEmail: purchaseDetail.user.email,
+				},
+				{ withCredentials: true }
+			)
+			.then(() => {})
+			.catch(err => console.log(err.response));
+	};
+	const Delivered = () => {
+		axios
+			.put(
+				"http://localhost:3001/purchase_private/delivered",
+				{
+					id,
+				},
+				{ withCredentials: true }
+			)
+			.then(() => {})
+			.catch(err => console.log(err.response));
+	};
 	useEffect(() => {
 		dispatch(getPurchase(id));
 	}, [id]);
@@ -48,7 +58,7 @@ function Purchase({ id }) {
 	if (!purchaseDetail) return <div>Espere</div>;
 	return (
 		<div className="tabla">
-			<h2 className="mb-5">Detalle de la orden</h2>
+			<h2 className="mb-5">Detalle de la compra</h2>
 			<Table>
 				<thead>
 					<tr>
@@ -95,21 +105,29 @@ function Purchase({ id }) {
 			</Table>
 			<div>
 				<h2>Total: $ {purchaseDetail.total}</h2>
-				{(()=>{
-					switch(purchaseDetail.status.name){
+				{(() => {
+					switch (purchaseDetail.status.name) {
 						case "pagada":
 							return (
 								<div>
-									<Button variant="danger" onClick={Reject}>Rechazar</Button>
-									<Button variant="success" onClick={Dispatch}>Despachar</Button>
+									<Button variant="danger" onClick={Reject}>
+										Rechazar
+									</Button>
+									<Button variant="success" onClick={Dispatch}>
+										Despachar
+									</Button>
 								</div>
-							)
-				        case "despachada":
-							return (<div>
-								<Button variant="success" onClick={Delivered}>Entregada</Button>
-							</div>)
+							);
+						case "despachada":
+							return (
+								<div>
+									<Button variant="success" onClick={Delivered}>
+										Entregada
+									</Button>
+								</div>
+							);
 						default:
-							return(<Button onClick={() => goBack()}>Volver</Button>)
+							return <Button onClick={() => goBack()}>Volver</Button>;
 					}
 				})()}
 			</div>

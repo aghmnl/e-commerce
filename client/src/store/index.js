@@ -19,6 +19,7 @@ const initialState = {
 	reviews: [],
 	users: [],
 	total,
+	cookiesShown: false,
 };
 const composeEnhancers = (typeof window !== "undefined" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 export default createStore(store, initialState, composeEnhancers(applyMiddleware(thunk)));

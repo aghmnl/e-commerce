@@ -7,26 +7,32 @@
 
 	margin-top: 20px;
 	margin-right: 80px;
-
 }
-.custom_checkbox{
+.custom_checkbox {
 	display: block;
 }
-.strains{
+.strains {
 	position: fixed;
 	left: 0;
 	top: 8rem;
 	text-align: left;
-	background-color: #ffffff6b ;
-
+	background-color: #ffffff6b;
 }
-.espumante{ color: var(--espumante) }
-.rose{ color: var(--rose) }
-.blanco{ color: var(--blanco) }
-.tinto{ color: var(--tinto) }
+.espumante {
+	color: var(--espumante);
+}
+.rose {
+	color: var(--rose);
+}
+.blanco {
+	color: var(--blanco);
+}
+.tinto {
+	color: var(--tinto);
+}
 #navegacion {
-	font-size: 20px !important;
-	background-color: #ffffff6b !important;
+	font-size: 17px !important;
+	background-color: #ffffffb0 !important;
 	position: fixed; /* Set the navbar to fixed position */
 	top: 50px; /* Position the navbar at the top of the page */
 	width: 100%; /* Full width */
@@ -43,6 +49,6 @@ body {
 	background-size: cover;
 }
 
-.page-item .active{
-	color:white !important;
+.page-item .active {
+	color: white !important;
 }

@@ -6,8 +6,8 @@ import { useDispatch, useSelector, connect } from "react-redux";
 import { useFormik } from "formik";
 import { isAuth, isAdmin, emptyCart, setCart, getCartItems, setIsAdmin } from "../store/actions/index";
 import { Form, Card, Button, Col } from "react-bootstrap";
-import {FaGoogle} from "react-icons/fa"
-import {ImGithub} from "react-icons/im"
+import { FaGoogle } from "react-icons/fa";
+import { ImGithub } from "react-icons/im";
 function Login() {
 	const dispatch = useDispatch();
 	const { logged, purchased_products } = useSelector(state => state);
@@ -59,6 +59,7 @@ function Login() {
 				)
 				.catch(err => console.log(err));
 		await dispatch(getCartItems(cartId));
+		history.replace("/");
 	}
 
 	if (logged) {
@@ -101,14 +102,14 @@ function Login() {
 							</Button>
 						</Form.Group>
 						<Form.Group as={Col} style={{ display: "flex", flexDirection: "column" }}>
-							<Button variant="primary" onClick={() =>window.location="http://localhost:3001/auth/google/login"}>
-								<FaGoogle/> 
+							<Button variant="primary" onClick={() => (window.location = "http://localhost:3001/auth/google/login")}>
+								<FaGoogle />
 								Iniciar Sesión con Google
 							</Button>
 						</Form.Group>
 						<Form.Group as={Col} style={{ display: "flex", flexDirection: "column" }}>
-							<Button variant="success" onClick={() =>window.location="http://localhost:3001/auth/github/login"}>
-								<ImGithub/> 
+							<Button variant="success" onClick={() => (window.location = "http://localhost:3001/auth/github/login")}>
+								<ImGithub />
 								Iniciar Sesión con GitHub
 							</Button>
 						</Form.Group>
