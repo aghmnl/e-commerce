@@ -26,6 +26,7 @@ function FormUser({ users, user, getUsers, getUser, admin }) {
 	}, []);
 	// Si recibe id, se fija si edit es true, y cambia el nombre del botón
 	function promote(id) {
+		if(!id) return;
 		axios
 			.put("http://localhost:3001/auth/promote/" + id, null, { withCredentials: true })
 			.then(res => {
@@ -83,8 +84,8 @@ function FormUser({ users, user, getUsers, getUser, admin }) {
 				update={id => {
 					getUser(id);
 					throwModal({
-						show: true,
-					});
+						show:true
+					})
 				}}
 				deletePk="id"
 				handleDelete={id => {
