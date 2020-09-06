@@ -14,6 +14,13 @@ server.get("/", (req, res, next) => {
 });
 // Para borrar un usuario
 // http://localhost:3001/user_private/1
+server.get("/:id", (req, res, next) => {
+	User.findByPk(req.params.id,{
+		attributes : ["id","first_name","last_name","email","admin","phone"],
+	})
+		.then((user) => res.json(user))
+		.catch(err => next(err));
+})
 server.delete("/:id", (req, res, next) => {
 	User.update({ active: false },{
 		where: { id: parseInt(req.params.id) },

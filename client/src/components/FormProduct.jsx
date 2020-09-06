@@ -45,9 +45,16 @@ function FormProduct({
 		initialValues: initialInputs,
 		validate: values => {
 			const errors = {};
-			for (let value in values) {
+			if(!values.name) errors.name = "se requiere un nombre"
+			if(!values.price) errors.price = "se requiere un precio"
+			if(!values.stock) errors.stock = "se requiere cantidad de productos"
+			if(!values.img) errors.img = "Por favor seleccione una imagen"
+			if(!values.categoryId) errors.categoryId = "Por favor seleccione una categoria"
+			if(!values.cellarId) errors.cellarId = "Por favor seleccione una bodega"
+			if(!values.strainId) errors.strainId = "Por favor seleccione una cepa"
+			/* for (let value in values) {
 				if (value !== "active" && !values[value]) errors[value] = "se requiere este campo";
-			}
+			} */
 			return errors;
 		},
 		onSubmit: values => handleSubmit(values),
@@ -79,8 +86,12 @@ function FormProduct({
 		formik.setValues(values, false);
 	}, [handle, productDetail]);
 	function handleSubmit(values) {
+		//values.preventDefault()
 		// Acá manda mensaje del dato que falta y hace foco en el mismo (sitúa el cursor en ese campo)
+		//console.log("submit");
+		//console.log("Entra en handle")
 		if (!!id) {
+			console.log("Entra en if")
 			axios
 				.put(`http://localhost:3001/product_private/${id}`, values, { withCredentials: true })
 				.then(() => {
@@ -170,11 +181,27 @@ function FormProduct({
 								<Form.File.Input
 									onChange={e => {
 										const input = e.target;
+										const img = new Image();
+										img.src = window.URL.createObjectURL(input.files[0]);
 										const reader = new FileReader();
-										reader.onloadend = () => {
-											formik.setFieldValue("img", reader.result);
+										img.onload = function() {
+											var width = img.naturalWidth,
+											  height = img.naturalHeight;
+										
+											// unload it
+											window.URL.revokeObjectURL(img.src);
+										
+											// check its dimensions
+											if (width <= 800 && height <= 800) {
+												reader.onloadend = () => {
+													formik.setFieldValue("img", reader.result);
+												};
+												reader.readAsDataURL(input.files[0]);
+											} else {
+											  formik.setFieldError("img","Solo imagenes con maximo de 800x800")
+											  return;
+											}
 										};
-										reader.readAsDataURL(input.files[0]);
 									}}
 									isInvalid={!!formik.errors.img}
 									accept="image/png, image/jpeg, image/gif"

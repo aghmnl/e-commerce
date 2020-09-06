@@ -6,6 +6,7 @@ server.post("/", (req, res, next) => {
 		.then(() => res.sendStatus(200))
 		.catch(err => next(err));
 });
+server
 server.put("/:id", (req, res, next) => {
 	// delete req.body["nombreBoton"];
 	Product.update(req.body, { where: { id: parseInt(req.params.id) } })
