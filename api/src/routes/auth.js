@@ -57,7 +57,7 @@ server.post("/register", async function (req, res, next) {
 			salt: salt,
 		});
 		if (user) {
-			 passport.authenticate("local", function (err, user, info) {
+			passport.authenticate("local", function (err, user, info) {
 				if (err) {
 					return next(err);
 				}
@@ -94,20 +94,19 @@ server.post("/login", function (req, res, next) {
 		});
 	})(req, res, next);
 });
-server.get("/google/login", passport.authenticate("google", {
-	scope:
-	[
-        'https://www.googleapis.com/auth/userinfo.profile',
-        'https://www.googleapis.com/auth/userinfo.email'
-    ]
-}))
-server.get("/github/login", passport.authenticate("github", {scope:["user:email"]}))
-server.get("/google/cb", passport.authenticate('google'),(req, res) => {
-    res.redirect("http://localhost:3000/")
-})
-server.get("/github/cb", passport.authenticate('github'),(req, res) => {
-    res.redirect("http://localhost:3000/")
-})
+server.get(
+	"/google/login",
+	passport.authenticate("google", {
+		scope: ["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"],
+	})
+);
+server.get("/github/login", passport.authenticate("github", { scope: ["user:email"] }));
+server.get("/google/cb", passport.authenticate("google"), (req, res) => {
+	res.redirect("http://localhost:3000/");
+});
+server.get("/github/cb", passport.authenticate("github"), (req, res) => {
+	res.redirect("http://localhost:3000/");
+});
 server.get("/logout", function (req, res, next) {
 	// Acá le cambia el valor a isAuthenticated
 	req.logout();
@@ -139,35 +138,36 @@ server.put("/promote/:id", isAuthenticated, isAdmin, (req, res, next) => {
 		.then(() => res.sendStatus(201))
 		.catch(err => next(err));
 });
-server.post("/recovery", async (req, res, next) =>{
-	const user = await User.findOne({ where: {email: req.body.email} });
-	if(!user) return res.status(404).json({ input:"email", message:"No tenemos registrado ningún usuario con ese email" })
+server.post("/recovery", async (req, res, next) => {
+	const user = await User.findOne({ where: { email: req.body.email } });
+	if (!user)
+		return res.status(404).json({ input: "email", message: "No tenemos registrado ningún usuario con ese email" });
 	const newSalt = crypto.randomBytes(64).toString("hex");
-	const tempPass = crypto.randomBytes(8).toString('hex');
+	const tempPass = crypto.randomBytes(8).toString("hex");
 	const tempPassHash = crypto.pbkdf2Sync(tempPass, newSalt, 10000, 64, "sha512").toString("base64");
 	user.salt = newSalt;
 	user.password = tempPassHash;
 	await user.save();
 	const DOMAIN = "sandboxdffeb621bd62410eb7c2076e0be9741d.mailgun.org";
-	const mg = mailgun({apiKey: "21104ae61a01274914c25259682fe3d1-7cd1ac2b-37cc0e69", domain: DOMAIN});
+	const mg = mailgun({ apiKey: "21104ae61a01274914c25259682fe3d1-7cd1ac2b-37cc0e69", domain: DOMAIN });
 	const data = {
 		from: "Toni Wines Recovery <toniwines_recovery@sandboxe98883ab8de24b92a0e573e260891894.mailgun.org>",
 		to: user.email,
 		subject: "Recovery",
-		html:`<html>
+		html: `<html>
 			<title>Recovery</title>
 			<meta charset='utf-8'>
 			<body>
-				<b> Su contraseña es  :</b>${tempPass}</br>
-				<i>Cambiarla por una de su gusto</i>
+				<p><b> Su contraseña es:  </b>${tempPass}</p>
+				<p><i>Ingrese al <a href="http://localhost:3000/login">sitio ToniWines</a> para cambiarla por una nueva contraseña</i></p>
 			</body>
-		</html>`
+		</html>`,
 	};
 	mg.messages().send(data, function (error, body) {
-		if(error) console.log("error", error)
+		if (error) console.log("error", error);
 		console.log("body", body);
-		console.log(crypto.randomBytes(8).toString('ascii'))
-		res.status(200).send("Enviamos un email con su nueva contraseña, revise su casilla de spam")
+		console.log(crypto.randomBytes(8).toString("ascii"));
+		res.status(200).send("Enviamos un email con su nueva contraseña, revise su casilla de spam");
 	});
-})
+});
 module.exports = { server, isAuthenticated, isAdmin };
