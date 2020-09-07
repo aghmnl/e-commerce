@@ -178,15 +178,16 @@ var strains = [
 		name: "Syrah",
 		categoryId: 3,
 	},
+
 	{
 		// strainId: 6
-		name: "Blend",
-		categoryId: 1,
+		name: "Chardonnay",
+		categoryId: 2,
 	},
 	{
 		// strainId: 7
-		name: "Chardonnay",
-		categoryId: 2,
+		name: "Blend",
+		categoryId: 1,
 	},
 	{
 		// strainId: 8
@@ -200,14 +201,15 @@ var strains = [
 	},
 	{
 		// strainId: 10
-		name: "Cinsault",
+		name: "Asti",
 		categoryId: 4,
 	},
 	{
 		// strainId: 11
-		name: "Asti",
+		name: "Cinsault",
 		categoryId: 4,
 	},
+
 	{
 		// strainId: 12
 		name: "Malbec",
@@ -273,7 +275,7 @@ var products = [
 		active: true,
 		categoryId: 1,
 		cellarId: 3,
-		strainId: 6,
+		strainId: 7,
 		// productId: 4,
 	},
 	{
@@ -313,7 +315,7 @@ var products = [
 		active: true,
 		categoryId: 1,
 		cellarId: 6,
-		strainId: 6,
+		strainId: 7,
 		// productId: 7,
 	},
 	{
@@ -327,7 +329,7 @@ var products = [
 		active: true,
 		categoryId: 2,
 		cellarId: 1,
-		strainId: 7,
+		strainId: 6,
 		// productId: 8,
 	},
 	{
@@ -394,7 +396,7 @@ var products = [
 		active: true,
 		cellarId: 7,
 		categoryId: 3,
-		strainId: 10,
+		strainId: 11,
 		// productId: 13,
 	},
 	{
@@ -449,7 +451,7 @@ var products = [
 		active: true,
 		cellarId: 11,
 		categoryId: 4,
-		strainId: 11,
+		strainId: 10,
 		// productId: 17,
 	},
 	{
@@ -550,7 +552,7 @@ var status = [
 	},
 	{
 		// statusId:3,
-		name: "entregada",
+		name: "enviada",
 	},
 	{
 		// statusId:4,
@@ -561,7 +563,8 @@ var status = [
 		name: "rechazada",
 	},
 	{
-		name: "despachada",
+		// statusId:6
+		name: "entregada",
 	},
 ];
 
@@ -593,16 +596,16 @@ var reviews = [
 var pay_methods = [
 	{
 		// payMethodId:1,
-		name: "efectivo",
+		name: "Efectivo",
 	},
 	{
-		name: "visa",
+		name: "Visa",
 	},
 	{
-		name: "masterCard",
+		name: "MasterCard",
 	},
 	{
-		name: "mercadopago",
+		name: "MercadoPago",
 	},
 ];
 
