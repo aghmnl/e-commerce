@@ -74,6 +74,7 @@ var purchases = [
 		userId: 3,
 		payMethodId: 1,
 		statusId: 2,
+		address: "Av. Cabildo 2400"
 	},
 
 	{
@@ -82,6 +83,7 @@ var purchases = [
 		userId: 1,
 		payMethodId: 1,
 		statusId: 3,
+		address: "Antártida Argentina 201"
 	},
 	{
 		// purchaseId:5,
@@ -89,6 +91,7 @@ var purchases = [
 		userId: 2,
 		payMethodId: 1,
 		statusId: 4,
+		address: "República Argentina 82"
 	},
 
 	{
@@ -97,6 +100,7 @@ var purchases = [
 		userId: 3,
 		payMethodId: 1,
 		statusId: 5,
+		address: "Alt. Brown 1196"
 	},
 ];
 

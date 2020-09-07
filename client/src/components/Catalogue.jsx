@@ -102,7 +102,7 @@ function Catalogue({
 										return <Spinner animation="border" />;
 								  })()}
 						</div>
-						{!!strains && (
+						{!pag && !!strains && (
 							<Card className="strains">
 								<Card.Body>
 									<Form onChange={handleChange}>

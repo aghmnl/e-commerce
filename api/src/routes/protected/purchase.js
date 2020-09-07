@@ -149,6 +149,12 @@ server.put("/checkout", (req, res, next) => {
 						"name",
 						[literal('(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'),"total"]
 					],
+					through: {
+						attributes: [
+							"priceProduct", 
+							"quantity",
+						],
+					},
 				}
 			})
 				.then(purchase => {
@@ -165,10 +171,11 @@ server.put("/checkout", (req, res, next) => {
 								<b> Usted a comprado  :</b>
 								${purchase.products.map(product => {
 									return `
-									${product.name}
-									~SubTotal: $${product.purchased_product.priceProduct} * ${product.purchased_product.quantity}
-									${product.total}<br>`
+									<br>${product.name}
+									~SubTotal: $ ${product.purchased_product.priceProduct} * ${product.purchased_product.quantity}
+									<br>`
 								})}
+								Total: $ ${purchase.products[0]["dataValues"]["total"]}
 								<b>Ver en detalle</b>
 								<a href="http://localhost:3000/user/purchases">Mis compras</a>
 							</body>
