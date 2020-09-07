@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form, Button, Card, Col } from "react-bootstrap";
 import { Redirect, useHistory } from "react-router-dom";
 import { useFormik } from "formik";
-import { emptyCart, setCart } from "../store/actions";
+import { emptyCart, setCart, getMyPurchases } from "../store/actions";
 export default function Checkout() {
 	const dispatch = useDispatch();
 	const [pay_methods, setPayMethods] = useState([]);
@@ -60,6 +60,7 @@ export default function Checkout() {
 			.then(res => {
 				dispatch(emptyCart());
 				getCartId();
+				dispatch(getMyPurchases());
 			})
 			.catch(err => console.log(err.response));
 	}

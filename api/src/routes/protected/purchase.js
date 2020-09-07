@@ -158,7 +158,13 @@ server.put("/checkout", (req, res, next) => {
 							"total",
 						],
 					],
-				},
+					through: {
+						attributes: [
+							"priceProduct", 
+							"quantity",
+						],
+					},
+				}
 			})
 				.then(purchase => {
 					const DOMAIN = "sandboxdffeb621bd62410eb7c2076e0be9741d.mailgun.org";
@@ -175,10 +181,11 @@ server.put("/checkout", (req, res, next) => {
 								<b> Usted a comprado  :</b>
 								${purchase.products.map(product => {
 									return `
-									${product.name}
-									~SubTotal: $${product.purchased_product.priceProduct} * ${product.purchased_product.quantity}
-									${product.total}<br>`;
+									<br>${product.name}
+									~SubTotal: $ ${product.purchased_product.priceProduct} * ${product.purchased_product.quantity}
+									<br>`
 								})}
+								Total: $ ${purchase.products[0]["dataValues"]["total"]}
 								<b>Ver en detalle</b>
 								<a href="http://localhost:3000/user/purchases">Mis compras</a>
 							</body>
