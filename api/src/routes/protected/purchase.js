@@ -179,7 +179,7 @@ server.put("/checkout", (req, res, next) => {
 							<title>Compra</title>
 							<meta charset='utf-8'>
 							<body>
-								<b> Usted a comprado  :</b>
+								<b> Usted ha comprado  :</b>
 								${purchase.products.map(product => {
 									return `
 									<br>${product.name}
