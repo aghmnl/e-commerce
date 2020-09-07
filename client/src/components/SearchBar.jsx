@@ -11,7 +11,7 @@ export default function SearchBar() {
 				onSubmit={e => {
 					e.preventDefault();
 					setinputText(" ");
-					history.replace("/catalogue?search=" + inputText);
+					history.replace("/catalogue?search=" + inputText.trim());
 				}}
 			>
 				<FormControl

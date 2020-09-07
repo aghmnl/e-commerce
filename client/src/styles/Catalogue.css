@@ -16,7 +16,7 @@
 	left: 0;
 	top: 8rem;
 	text-align: left;
-	background-color: #ffffff6b;
+	background-color: #ffffff9b; 
 }
 /* .espumante {
 	color: var(--espumante);
@@ -36,7 +36,7 @@
 
 #navegacion {
 	font-size: 17px !important;
-	background-color: #ffffffb0 !important;
+	background-color: #ffffff9b !important;
 	position: fixed; /* Set the navbar to fixed position */
 	top: 50px; /* Position the navbar at the top of the page */
 	width: 100%; /* Full width */

@@ -48,18 +48,18 @@ export function ProductRating({raiting, stadistics}){
                     <div className="stadist">
                         {(()=>{
                             let results= [];
-                            for(let st of stadistics)
+                            stadistics.forEach((st, i) =>
                                 results.push(
                                     <div>
                                         {<span style={{marginRight:"0.5rem"}} >
                                             {st || 0}
                                         </span>}
-                                        <Rating initialRating={st || 0} 
+                                        <Rating initialRating={i+1} 
                                             emptySymbol={<RiStarLine/>} 
                                             fullSymbol={<RiStarFill/>} 
                                             readonly />
                                     </div>
-                                );
+                                ));
                             return results.map((e)=>e);
                         })()}
                     </div>

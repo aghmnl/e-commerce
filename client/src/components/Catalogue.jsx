@@ -28,6 +28,7 @@ function Catalogue({
 	pags,
 }) {
 	const [Strains, setStrains] = useState([]);
+	const [despensa, setDespensa] = useState(<Spinner animation="border" />);
 	const location = useLocation();
 	useEffect(() => {
 		if (!pag) return;
@@ -84,7 +85,7 @@ function Catalogue({
 				<Row>
 					<Col>
 						<div className="catalogue">
-							{!!products
+							{products.length
 								? products.map(product => (
 										<ProductCard
 											id={product.id}
@@ -97,9 +98,9 @@ function Catalogue({
 								  ))
 								: (() => {
 										setInterval(() => {
-											return "Catálogo vacío";
-										}, 1000);
-										return <Spinner animation="border" />;
+											setDespensa(<h1>Sin resultados :C</h1>);
+										}, 3000);
+										return (<Card style={{margin:"8rem auto"}} ><Card.Body>{despensa}</Card.Body></Card>);
 								  })()}
 						</div>
 						{!pag && !!strains && (

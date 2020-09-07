@@ -201,7 +201,7 @@ var strains = [
 	{
 		// strainId: 9
 		name: "Viognier",
-		categoryId: 4,
+		categoryId: 2,
 	},
 	{
 		// strainId: 10
@@ -213,7 +213,6 @@ var strains = [
 		name: "Cinsault",
 		categoryId: 4,
 	},
-
 	{
 		// strainId: 12
 		name: "Malbec",
@@ -223,6 +222,11 @@ var strains = [
 		// strainId: 13
 		name: "Blend",
 		categoryId: 4,
+	},
+	{
+		// strainId: 14
+		name: "Cinsault",
+		categoryId: 3,
 	},
 ];
 var products = [
@@ -400,7 +404,7 @@ var products = [
 		active: true,
 		cellarId: 7,
 		categoryId: 3,
-		strainId: 11,
+		strainId: 14,
 		// productId: 13,
 	},
 	{
@@ -498,6 +502,8 @@ var users = [
 		admin: true,
 		active: true,
 		salt: "asdafasfd",
+		provider: null,
+		providerId: null,
 	},
 	{
 		// userId:2,
@@ -509,6 +515,8 @@ var users = [
 		admin: true,
 		active: true,
 		salt: "asdafasfd",
+		provider: null,
+		providerId: null,
 	},
 	{
 		// userId:3,
@@ -520,6 +528,8 @@ var users = [
 		admin: true,
 		active: true,
 		salt: "asdafasfd",
+		provider: null,
+		providerId: null,
 	},
 	{
 		// userId:4,
@@ -531,6 +541,8 @@ var users = [
 		admin: true,
 		active: true,
 		salt: "asdafasfd",
+		provider: null,
+		providerId: null,
 	},
 	{
 		// userId:4,
@@ -542,6 +554,8 @@ var users = [
 		admin: false,
 		active: true,
 		salt: "asdafasfd",
+		provider: null,
+		providerId: null,
 	},
 ];
 

@@ -3,7 +3,7 @@ import axios from "axios";
 import { Table, Button } from "react-bootstrap";
 import "../styles/Tabla.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getPurchase } from "../store/actions";
+import { getMyPurchase } from "../store/actions";
 import { useHistory, Link } from "react-router-dom";
 function Purchase({ id }) {
 	const dispatch = useDispatch();
@@ -27,7 +27,7 @@ function Purchase({ id }) {
 	};
 
 	useEffect(() => {
-		dispatch(getPurchase(id));
+		dispatch(getMyPurchase(id));
 	}, [id]);
 	useEffect(() => {
 		document.body.id = "bg_cart";

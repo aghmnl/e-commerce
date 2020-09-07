@@ -27,6 +27,7 @@ export const IS_AUTH = "IS_AUTH";
 export const SET_CART = "SET_CART";
 export const GET_CART_ITEMS = "GET_CART_ITEMS";
 export const GET_MY_PURCHASES = "GET_MY_PURCHASES";
+export const GET_MY_PURCHASE = "GET_MY_PURCHASE";
 export const SET_IS_ADMIN = "SET_IS_ADMIN";
 export const SET_COOKIES_SHOWN = "SET_COOKIES_SHOWN";
 
@@ -263,6 +264,16 @@ export const getPurchases = statusId => {
 		return axios
 			.get(url, { withCredentials: true })
 			.then(({ data: purchases }) => dispatch({ type: GET_PURCHASES, payload: purchases }))
+			.catch(err => console.log(err));
+	};
+};
+export const getMyPurchase = id => {
+	console.log("Llama a getMyPurchase (action)");
+	return dispatch => {
+		const url = `http://localhost:3001/purchase_protected/detail/${id}`;
+		return axios
+			.get(url, { withCredentials: true })
+			.then(({ data: purchase }) => dispatch({ type: GET_MY_PURCHASE, payload: purchase }))
 			.catch(err => console.log(err));
 	};
 };

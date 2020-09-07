@@ -25,6 +25,7 @@ import {
 	IS_ADMIN,
 	IS_AUTH,
 	GET_MY_PURCHASES,
+	GET_MY_PURCHASE,
 	GET_PURCHASE,
 	SET_IS_ADMIN,
 	SET_COOKIES_SHOWN,
@@ -241,6 +242,11 @@ export default (state = initialState, action) => {
 				purchases: action.payload,
 			};
 		case GET_PURCHASE:
+			return {
+				...state,
+				purchaseDetail: { ...action.payload.purchase, total: action.payload.total },
+			};
+		case GET_MY_PURCHASE:
 			return {
 				...state,
 				purchaseDetail: { ...action.payload.purchase, total: action.payload.total },

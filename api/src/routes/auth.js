@@ -46,7 +46,7 @@ server.post("/register", async function (req, res, next) {
 	}
 
 	try {
-		const user = await User.create({
+		/* const user = await User.create({
 			first_name: req.body.first_name,
 			last_name: req.body.last_name,
 			email: req.body.email,
@@ -56,7 +56,32 @@ server.post("/register", async function (req, res, next) {
 			password: password,
 			salt: salt,
 		});
-		if (user) {
+		 */
+		const [user, created] = await User.findOrCreate({
+			where: {email: req.body.email},
+			defaults:{
+				first_name: req.body.first_name,
+				last_name: req.body.last_name,
+				email: req.body.email,
+				phone: req.body.phone,
+				admin: false,
+				active: true,
+				password: password,
+				salt: salt,
+			}
+		});
+		if(!created){
+			user.first_name= req.body.first_name,
+			user.last_name = req.body.last_name,
+			user.password = password;
+			user.salt = salt;
+			user.phone = req.body.phone;
+			user.provider = null;
+			user.providerId = null;
+			user.imgProfile = null;
+			await user.save();
+		}
+		/* if (user) {
 			passport.authenticate("local", function (err, user, info) {
 				if (err) {
 					return next(err);
@@ -71,7 +96,21 @@ server.post("/register", async function (req, res, next) {
 					return res.json({ status: "ok", user: req.user, isAuth: req.isAuthenticated() });
 				});
 			})(req, res, next);
-		}
+		} */
+		passport.authenticate("local", function (err, user, info) {
+			if (err) {
+				return next(err);
+			}
+			if (!user) {
+				return res.status(401).json({ status: "error", message: info.message });
+			}
+			req.login(user, function (err) {
+				if (err) {
+					return next(err);
+				}
+				return res.json({ status: "ok", user: req.user, isAuth: req.isAuthenticated() });
+			});
+		})(req, res, next);
 	} catch (err) {
 		console.log({ err });
 		return res.status(500).json({ status: "error", message: "Error, el email ya existe.", input: "email", err });
@@ -139,7 +178,7 @@ server.put("/promote/:id", isAuthenticated, isAdmin, (req, res, next) => {
 		.catch(err => next(err));
 });
 server.post("/recovery", async (req, res, next) => {
-	const user = await User.findOne({ where: { email: req.body.email } });
+	const user = await User.findOne({ where: { email: req.body.email, provider: null, providerId:null } });
 	if (!user)
 		return res.status(404).json({ input: "email", message: "No tenemos registrado ningún usuario con ese email" });
 	const newSalt = crypto.randomBytes(64).toString("hex");
@@ -158,7 +197,8 @@ server.post("/recovery", async (req, res, next) => {
 			<title>Recovery</title>
 			<meta charset='utf-8'>
 			<body>
-				<p><b> Su contraseña es:  </b>${tempPass}</p>
+				<p><b> Su contraseña es:</b></p>
+				<p>${tempPass}</p>
 				<p><i>Ingrese al <a href="http://localhost:3000/login">sitio ToniWines</a> para cambiarla por una nueva contraseña</i></p>
 			</body>
 		</html>`,

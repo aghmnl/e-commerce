@@ -206,7 +206,10 @@ function FormProduct({
 									isInvalid={!!formik.errors.img}
 									accept="image/png, image/jpeg, image/gif"
 								/>
-								<Form.File.Label>Seleccione Imagen</Form.File.Label>
+								<Form.File.Label>{
+									!formik.values.img?"Seleccione una imagen":
+									"Imagen cargada"
+								}</Form.File.Label>
 								<Form.Control.Feedback type="invalid" tooltip>
 									{formik.errors.img && formik.errors.img}
 								</Form.Control.Feedback>
