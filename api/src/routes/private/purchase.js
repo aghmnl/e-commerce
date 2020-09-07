@@ -10,9 +10,11 @@ const mailgun = require("mailgun-js");
 // http://localhost:3001/purchase_private/
 server.get("/", (req, res, next) => {
 	Purchase.findAll({
-		where: {
-			userId: { [Op.not]: req.user.id },
-		},
+
+		// where: {
+		// 	userId : {[Op.not]:req.user.id}
+		// },
+
 		include: [
 			{
 				model: User,
@@ -91,7 +93,8 @@ server.get("/detail/:id", (req, res, next) => {
 server.put("/dispatch", (req, res, next) => {
 	Purchase.update(
 		{
-			statusId: 6,
+
+			statusId: 3,
 		},
 		{
 			where: {
@@ -160,7 +163,8 @@ server.put("/reject", (req, res, next) => {
 server.put("/delivered", (req, res, next) => {
 	Purchase.update(
 		{
-			statusId: 3,
+
+			statusId: 6,
 		},
 		{
 			where: {
