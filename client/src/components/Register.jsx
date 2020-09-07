@@ -3,13 +3,23 @@ import { Form, Card, Button, Col } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useHistory, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { isAuth, isAdmin } from "../store/actions";
+import { isAuth, isAdmin, setUserInfo, setCart } from "../store/actions";
 import axios from "axios";
 export default function Register(){
     useEffect(()=>{
 
 		document.body.id="bg_user";
     },[])
+    const getUserInfo = () =>{
+		return axios.get("http://localhost:3001/user/me",{ withCredentials: true })
+			.then(user => dispatch(setUserInfo(user)))
+			.catch(err => console.log(err.response))
+	}
+	const getCartId = () =>{
+		return axios.get("http://localhost:3001/purchase_protected/cart_id",{withCredentials:true})
+			.then(res => dispatch(setCart(res.data.cartId)))
+			.catch(err => console.log(err.response))
+	}
     const dispatch = useDispatch();
     const history = useHistory();
     const formik = useFormik({
@@ -56,6 +66,8 @@ export default function Register(){
                 .then( async ()=>{
                     await dispatch(isAuth());
                     await dispatch(isAdmin());
+                    await getUserInfo();
+                    await getCartId();
                     history.replace("/user");
                 })
                 .catch(err => formik.setFieldError(err.response.data.input, err.response.data.message))
