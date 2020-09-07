@@ -15,7 +15,7 @@ export default function Mypurchases() {
 	if (!logged) return <Redirect to="/login" />;
 	return (
 		<div style={{ marginTop: "5rem" }}>
-			{!!my_purchases ? (
+			{!!my_purchases && my_purchases.length ? (
 				my_purchases.map(purchase => (
 					<NavLink to={`/user/purchase/${purchase.id}`}>
 						<Card id="card" style={{ width: "45rem", marginTop: "1rem" }}>
@@ -46,7 +46,9 @@ export default function Mypurchases() {
 					</NavLink>
 				))
 			) : (
-				<div>No hay nada</div>
+				<div style={{ marginTop: "20rem", color: "white", fontSize: "2rem" }}>
+					Todavía no ha efectuado ninguna compra
+				</div>
 			)}
 		</div>
 	);

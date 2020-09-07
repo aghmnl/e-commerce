@@ -34,9 +34,10 @@ function ControlledCarousel({ products, getProducts }) {
 
 	return (
 		<div className="ajust">
-			<div className={"p-5 text-center"}>
+			{/* <div className={"p-5 text-center"}>
 				<h2 style={{ color: "white" }}>Más vendidos</h2>
-			</div>
+			</div> */}
+			<br />
 			<Carousel
 				swipeable={true}
 				draggable={false}
