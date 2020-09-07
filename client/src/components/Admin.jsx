@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "../styles/Admin.css";
 import { Nav, Button } from "react-bootstrap";
 import { FaPowerOff } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
@@ -13,32 +14,32 @@ export default function Admin() {
 		<Nav id="navegacion">
 			<Nav.Item>
 				<Nav.Link>
-					<NavLink to="/admin/formProduct">Productos</NavLink>
+					<NavLink to="/admin/formProduct" activeClassName="formSel">Productos</NavLink>
 				</Nav.Link>
 			</Nav.Item>
 			<Nav.Item>
 				<Nav.Link>
-					<NavLink to="/admin/formCategory">Categorías</NavLink>
+					<NavLink to="/admin/formCategory" activeClassName="formSel">Categorías</NavLink>
 				</Nav.Link>
 			</Nav.Item>
 			<Nav.Item>
 				<Nav.Link>
-					<NavLink to="/admin/formCellar">Bodegas</NavLink>
+					<NavLink to="/admin/formCellar" activeClassName="formSel">Bodegas</NavLink>
 				</Nav.Link>
 			</Nav.Item>
 			<Nav.Item>
 				<Nav.Link>
-					<NavLink to="/admin/formStrain">Cepas</NavLink>
+					<NavLink to="/admin/formStrain" activeClassName="formSel">Cepas</NavLink>
 				</Nav.Link>
 			</Nav.Item>
 			<Nav.Item>
 				<Nav.Link>
-					<NavLink to="/admin/formUser">Usuarios</NavLink>
+					<NavLink to="/admin/formUser" activeClassName="formSel">Usuarios</NavLink>
 				</Nav.Link>
 			</Nav.Item>
 			<Nav.Item>
 				<Nav.Link>
-					<NavLink to="/admin/formPurchase">Compras</NavLink>
+					<NavLink to="/admin/formPurchase" activeClassName="formSel">Compras</NavLink>
 				</Nav.Link>
 			</Nav.Item>
 			<Nav.Item style={{ marginLeft: "auto", marginRight: "1rem", marginTop: "0.1rem", marginBottom: "0.1rem" }}>

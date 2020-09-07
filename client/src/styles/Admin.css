@@ -1,7 +1,10 @@
 #navegacion {
-	background-color: #ffffff46 !important;
+	background-color: #ffffff9b !important;
 	position: fixed; /* Set the navbar to fixed position */
 	top: 50px; /* Position the navbar at the top of the page */
 	width: 100%; /* Full width */
 	z-index: 100;
+}
+.formSel{
+	color: black !important;
 }

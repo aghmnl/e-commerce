@@ -87,7 +87,7 @@ passport.use(new GoogleStrategy({
       if(user.providerId !== profile.id)
       user.provider = profile.provider;
       user.providerId = profile.id;
-      imgProfile = profile.photos[0].value;
+      user.imgProfile = profile.photos[0].value;
       user.save();
     }
     done(null, user)

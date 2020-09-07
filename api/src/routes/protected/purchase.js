@@ -247,15 +247,29 @@ server.get("/cart_id", (req, res, next) => {
 		.then(([cart]) => res.json({ cartId: cart.id }))
 		.catch(err => next(err));
 });
-// crea un nuevo carrito
-/* server.post("/new_cart", (req, res, next) => {
-	Purchase.create({
-		userId: req.user.id,
-		statusId: 1,
-		date: req.body.date,
+server.get("/detail/:id", (req, res, next) => {
+	Purchase.findByPk(req.params.id, {
+		include: [
+			{
+				model: User,
+				as: "user",
+			},
+			{
+				model: Pay_method,
+				as: "pay_method",
+			},
+			{
+				model: Status,
+				as: "status",
+			},
+			{
+				model: Product,
+			},
+		],
 	})
-		.then(purchase => res.json(purchase.id))
+		.then(purchase => {
+			res.json({ purchase, total: purchase.getTotal() });
+		})
 		.catch(err => next(err));
-}); */
-
+});
 module.exports = server;

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Card, Button, Col } from "react-bootstrap";
-import axios from "axios"; 
+import axios from "axios";
+import { Link } from "react-router-dom"
 export default function Reset() {
 	const [email, setEmail] = useState();
 	const [error, setError] = useState(false)
@@ -41,7 +42,7 @@ export default function Reset() {
 							 value={email}
 						/>
 						<Form.Control.Feedback type="invalid" tooltip>{msgError}</Form.Control.Feedback>
-						<Form.Control.Feedback type="valid">{msg}</Form.Control.Feedback>
+						<Form.Control.Feedback type="valid">{msg && (<div>{msg}&nbsp;<Link to="/login">inicio de sesión</Link></div>)}</Form.Control.Feedback>
 					</Form.Group>
 					<Form.Text className="text-muted">
 							En el caso de coincidir con un email registrado, se le enviarán instrucciones para resetear su contraseña.
