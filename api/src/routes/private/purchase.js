@@ -3,14 +3,18 @@ const { Purchase, User, Pay_method, Status, Product } = require("../../db.js");
 const { Op } = require("sequelize");
 const moment = require("moment");
 const mailgun = require("mailgun-js");
+// PRIVATE SON RUTAS DEL ADMIN
+
 // S44 : Crear ruta que retorne todas las órdenes
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
 // http://localhost:3001/purchase_private/
 server.get("/", (req, res, next) => {
 	Purchase.findAll({
+
 		// where: {
 		// 	userId : {[Op.not]:req.user.id}
 		// },
+
 		include: [
 			{
 				model: User,
@@ -89,6 +93,7 @@ server.get("/detail/:id", (req, res, next) => {
 server.put("/dispatch", (req, res, next) => {
 	Purchase.update(
 		{
+
 			statusId: 3,
 		},
 		{
@@ -120,20 +125,7 @@ server.put("/dispatch", (req, res, next) => {
 		})
 		.catch(err => next(err));
 });
-server.put("/cancel", (req, res, next) => {
-	Purchase.update(
-		{
-			statusId: 4,
-		},
-		{
-			where: {
-				id: req.body.id,
-			},
-		}
-	)
-		.then(() => res.sendStatus(201))
-		.catch(err => next(err));
-});
+
 server.put("/reject", (req, res, next) => {
 	Purchase.update(
 		{
@@ -171,6 +163,7 @@ server.put("/reject", (req, res, next) => {
 server.put("/delivered", (req, res, next) => {
 	Purchase.update(
 		{
+
 			statusId: 6,
 		},
 		{

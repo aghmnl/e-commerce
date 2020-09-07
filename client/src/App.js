@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Switch ,Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Catalogue from "./components/Catalogue";
 import FormProduct from "./components/FormProduct";
 import Product from "./components/Product";
@@ -12,7 +12,7 @@ import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import CarouselSlider from "./components/CarouselSlider";
-import { getPurchases, isAuth, isAdmin, getCartItems, setCart, setUserInfo  } from "./store/actions/index";
+import { getPurchases, isAuth, isAdmin, getCartItems, setCart, setUserInfo } from "./store/actions/index";
 import Admin from "./components/Admin";
 import FormPurchase from "./components/FormPurchase";
 import { connect } from "react-redux";
@@ -27,33 +27,39 @@ import store from "./store/index";
 import FormReview from "./components/FormReview";
 import Settings from "./components/Settings";
 import Checkout from "./components/Checkout";
+import PurchaseDetail from "./components/PurchaseDetail";
 import axios from "axios";
 store.subscribe(() => {
 	const { purchased_products, total, cookiesShown } = store.getState();
 	saveCart(purchased_products);
 	saveTotal(total);
-	localStorage.setItem("cookiesShown", JSON.stringify(cookiesShown))
+	localStorage.setItem("cookiesShown", JSON.stringify(cookiesShown));
 });
 function App({ getPurchases, isAuth, isAdmin, getCartItems, setCart, setUserInfo, cartId, purchased_products }) {
-	const getUserInfo = () =>{
-		axios.get("http://localhost:3001/user/me",{ withCredentials: true })
+	const getUserInfo = () => {
+		axios
+			.get("http://localhost:3001/user/me", { withCredentials: true })
 			.then(user => setUserInfo(user))
-			.catch(err => console.log(err.response))
-	}
-	const getCartId = () =>{
-		axios.get("http://localhost:3001/purchase_protected/cart_id",{withCredentials:true})
+			.catch(err => console.log(err.response));
+	};
+	const getCartId = () => {
+		axios
+			.get("http://localhost:3001/purchase_protected/cart_id", { withCredentials: true })
 			.then(res => setCart(res.data.cartId))
-			.catch(err => console.log(err.response))
-	}
-	const setCartItems = async () =>{
-		return axios.post("http://localhost:3001/purchased_products_protected/add_product",
+			.catch(err => console.log(err.response));
+	};
+	const setCartItems = async () => {
+		return axios.post(
+			"http://localhost:3001/purchased_products_protected/add_product",
 			{
 				cartId: cartId,
-				cart_items: purchased_products
-			},{
-				withCredentials: true
-			})
-	} 
+				cart_items: purchased_products,
+			},
+			{
+				withCredentials: true,
+			}
+		);
+	};
 	useEffect(() => {
 		getUserInfo();
 		getCartId();
@@ -61,14 +67,14 @@ function App({ getPurchases, isAuth, isAdmin, getCartItems, setCart, setUserInfo
 		isAdmin();
 		getPurchases();
 	}, []);
-	useEffect(()=>{
-		if(!cartId) return;
-		if(!purchased_products) return;
-		console.log(cartId)
+	useEffect(() => {
+		if (!cartId) return;
+		if (!purchased_products) return;
+		console.log(cartId);
 		setCartItems()
 			.then(() => getCartItems(cartId))
-			.catch(err => console.log(err.response))
-	},[cartId])
+			.catch(err => console.log(err.response));
+	}, [cartId]);
 	return (
 		<div className="App">
 			<Route path="/" render={() => <NavBar />} />
@@ -122,22 +128,23 @@ function App({ getPurchases, isAuth, isAdmin, getCartItems, setCart, setUserInfo
 			<Route exact path="/reset" component={Reset} />
 			<Route exact path="/register" component={Register} />
 			<Route exact path="/user/purchases" component={Mypurchases} />
+			<Route exact path="/user/purchase/:id" render={({ match }) => <PurchaseDetail id={match.params.id} />} />
 			<Route exact path="/admin/purchase/:id" render={({ match }) => <Purchase id={match.params.id} />} />
-			<Route exact path="/checkout" render={()=> <Checkout/>}/>
+			<Route exact path="/checkout" render={() => <Checkout />} />
 		</div>
 	);
 }
-export default connect(({
-	cartId,
-	purchased_products,
-})=>({
-	cartId,
-	purchased_products
-}), {
-	getPurchases,
-	getCartItems,
-	isAuth,
-	isAdmin,
-	setCart,
-	setUserInfo
-})(App);
+export default connect(
+	({ cartId, purchased_products }) => ({
+		cartId,
+		purchased_products,
+	}),
+	{
+		getPurchases,
+		getCartItems,
+		isAuth,
+		isAdmin,
+		setCart,
+		setUserInfo,
+	}
+)(App);
