@@ -262,6 +262,7 @@ export default (state = initialState, action) => {
 				purchased_products: action.payload.cart_items,
 				total: action.payload.total,
 			};
+
 		case GET_MY_PURCHASES:
 			return {
 				...state,

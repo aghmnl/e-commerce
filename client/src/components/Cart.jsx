@@ -71,29 +71,47 @@ function CartItem({
 							<Col sm="1" style={{ alignSelf: "center" }}>
 								{" "}
 								{product.quantity < product.stock && (
-									<Button onClick={() => {
-										if(logged)axios.post("http://localhost:3001/purchased_products_protected/increase_product",{
-											cartId,
-											id: product.id,
-										}, { withCredentials: true })
-										.then(res => console.log(res))
-										.catch(err => console.log(err));
-										increseProduct(product)
-									}} className="btn-sm">
+									<Button
+										onClick={() => {
+											if (logged)
+												axios
+													.post(
+														"http://localhost:3001/purchased_products_protected/increase_product",
+														{
+															cartId,
+															id: product.id,
+														},
+														{ withCredentials: true }
+													)
+													.then(res => console.log(res))
+													.catch(err => console.log(err));
+											increseProduct(product);
+										}}
+										className="btn-sm"
+									>
 										<VscAdd />
 										{/* <PlusCircleIcon width={"20px"}/> */}
 									</Button>
 								)}
 								{product.quantity > 1 && (
-									<Button onClick={() => {
-											if(logged)axios.post("http://localhost:3001/purchased_products_protected/decrease_product",{
-												cartId,
-												id: product.id,
-											}, { withCredentials: true })
-											.then(res => console.log(res))
-											.catch(err => console.log(err));
-											decreseProduct(product)
-										}} className="btn-danger btn-sm">
+									<Button
+										onClick={() => {
+											if (logged)
+												axios
+													.post(
+														"http://localhost:3001/purchased_products_protected/decrease_product",
+														{
+															cartId,
+															id: product.id,
+														},
+														{ withCredentials: true }
+													)
+													.then(res => console.log(res))
+													.catch(err => console.log(err));
+											decreseProduct(product);
+										}}
+										className="btn-danger btn-sm"
+									>
 										<GrSubtract />
 										{/* <MinusCircleIcon width={"20px"}/> */}
 									</Button>
@@ -107,15 +125,19 @@ function CartItem({
 				<Card.Title>
 					Total: $ {total}
 					<p></p>
-					<Button onClick={() => {
-						emptyCart();
-						if(logged) axios
-							.delete("http://localhost:3001/purchased_products_protected/empty_cart/" + cartId, {
-								withCredentials: true,
-							})
-							.then(res => console.log(res))
-							.catch(err => console.log(err));
-					}} className="btn-danger">
+					<Button
+						onClick={() => {
+							emptyCart();
+							if (logged)
+								axios
+									.delete("http://localhost:3001/purchased_products_protected/empty_cart/" + cartId, {
+										withCredentials: true,
+									})
+									.then(res => console.log(res))
+									.catch(err => console.log(err));
+						}}
+						className="btn-danger"
+					>
 						Vaciar carrito
 					</Button>
 				</Card.Title>

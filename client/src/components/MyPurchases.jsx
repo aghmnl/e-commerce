@@ -46,7 +46,9 @@ export default function Mypurchases() {
 					</NavLink>
 				))
 			) : (
-				<div>No hay nada</div>
+				<div style={{ marginTop: "20rem", color: "white", fontSize: "2rem" }}>
+					Todavía no ha efectuado ninguna compra
+				</div>
 			)}
 		</div>
 	);

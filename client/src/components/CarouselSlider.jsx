@@ -34,7 +34,6 @@ function ControlledCarousel({ products, getProducts }) {
 
 	return (
 		<div className="ajust">
-			
 			<Carousel
 				swipeable={true}
 				draggable={false}
