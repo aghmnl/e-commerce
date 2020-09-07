@@ -141,10 +141,10 @@ server.get(
 );
 server.get("/github/login", passport.authenticate("github", { scope: ["user:email"] }));
 server.get("/google/cb", passport.authenticate("google"), (req, res) => {
-	res.redirect("http://localhost:3000/");
+	res.redirect("http://localhost:3000/external_login");
 });
 server.get("/github/cb", passport.authenticate("github"), (req, res) => {
-	res.redirect("http://localhost:3000/");
+	res.redirect("http://localhost:3000/external_login");
 });
 server.get("/logout", function (req, res, next) {
 	// Acá le cambia el valor a isAuthenticated
