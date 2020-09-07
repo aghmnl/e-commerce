@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 import Catalogue from "./components/Catalogue";
 import FormProduct from "./components/FormProduct";
 import Product from "./components/Product";
@@ -15,7 +15,7 @@ import CarouselSlider from "./components/CarouselSlider";
 import { getPurchases, isAuth, isAdmin, getCartItems, setCart, setUserInfo } from "./store/actions/index";
 import Admin from "./components/Admin";
 import FormPurchase from "./components/FormPurchase";
-import { connect } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import Cart from "./components/Cart";
 import User from "./components/User";
 import Mypurchases from "./components/MyPurchases";
@@ -35,6 +35,52 @@ store.subscribe(() => {
 	saveTotal(total);
 	localStorage.setItem("cookiesShown", JSON.stringify(cookiesShown));
 });
+function ExternalLogin(){
+	const setCartItems = async () => {
+		return axios.post(
+			"http://localhost:3001/purchased_products_protected/add_product",
+			{
+				cartId: cartId,
+				cart_items: purchased_products,
+			},
+			{
+				withCredentials: true,
+			}
+		);
+	};
+	const getUserInfo = () => {
+		axios
+			.get("http://localhost:3001/user/me", { withCredentials: true })
+			.then(user => dispatch(setUserInfo(user)))
+			.catch(err => console.log(err.response));
+	};
+	const getCartId = () => {
+		axios
+			.get("http://localhost:3001/purchase_protected/cart_id", { withCredentials: true })
+			.then(res => dispatch(setCart(res.data.cartId)))
+			.catch(err => console.log(err.response));
+	};
+	const dispatch = useDispatch();
+	const {cartId, purchased_products} = useSelector(state => state);
+	const history = useHistory();
+	useEffect(() => {
+		getUserInfo();
+		getCartId();
+		dispatch(isAuth());
+		dispatch(isAdmin());
+	}, []);
+	useEffect(() => {
+		if (!cartId) return;
+		if (!purchased_products) return;
+		setCartItems()
+			.then(async () => {
+				await dispatch(getCartItems(cartId));
+				history.replace("/");
+			})
+			.catch(err => console.log(err.response));
+	}, [cartId]);
+	return(<></>);
+}
 function App({ getPurchases, isAuth, isAdmin, getCartItems, setCart, setUserInfo, cartId, purchased_products }) {
 	const getUserInfo = () => {
 		axios
@@ -67,14 +113,7 @@ function App({ getPurchases, isAuth, isAdmin, getCartItems, setCart, setUserInfo
 		isAdmin();
 		getPurchases();
 	}, []);
-	useEffect(() => {
-		if (!cartId) return;
-		if (!purchased_products) return;
-		console.log(cartId);
-		setCartItems()
-			.then(() => getCartItems(cartId))
-			.catch(err => console.log(err.response));
-	}, [cartId]);
+	
 	return (
 		<div className="App">
 			<Route path="/" render={() => <NavBar />} />
@@ -119,7 +158,7 @@ function App({ getPurchases, isAuth, isAdmin, getCartItems, setCart, setUserInfo
 				path="/admin/formStrain/edit/:id"
 				render={({ match }) => <FormStrain id={match.params.id} edit={true} />}
 			/>
-
+			<Route exact path="/external_login" component={ExternalLogin} />
 			<Route exact path="/product/:id" render={({ match }) => <Product id={match.params.id} />} />
 			<Route exact path="/formReview/:id" render={({ match }) => <FormReview id={match.params.id} />} />
 			<Route exact path="/admin/formUser" render={() => <FormUser />} />
