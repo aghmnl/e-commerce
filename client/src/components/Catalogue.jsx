@@ -103,7 +103,7 @@ function Catalogue({
 										return (<Card style={{margin:"8rem auto"}} ><Card.Body>{despensa}</Card.Body></Card>);
 								  })()}
 						</div>
-						{!pag && !!strains && (
+						{!pag && !location.search && !!strains && (
 							<Card className="strains">
 								<Card.Body>
 									<Form onChange={handleChange}>

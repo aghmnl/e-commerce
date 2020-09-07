@@ -36,7 +36,9 @@ server.post("/increase_product", (req, res, next) => {
 	}).then(purchased_product => {
 		purchased_product.quantity += 1;
 		purchased_product.save();
-	});
+		res.json(purchased_product)
+	})
+		.catch(err => next(err));
 });
 server.delete("/empty_cart/:cartId", (req, res, next) => {
 	Purchased_product.destroy({
@@ -45,7 +47,8 @@ server.delete("/empty_cart/:cartId", (req, res, next) => {
 		},
 	}).then(purchased_product => {
 		res.json(purchased_product);
-	});
+	})
+		.catch(err => next(err));
 });
 // Para decrementar en uno el producto dentro del carrito en la DB
 // "http://localhost:3001/purchased_products_protected/decrease_product"
@@ -58,7 +61,9 @@ server.post("/decrease_product", (req, res, next) => {
 	}).then(purchased_product => {
 		purchased_product.quantity -= 1;
 		purchased_product.save();
-	});
+		res.json(purchased_product)
+	})
+		.catch(err => next(err));
 });
 server.put("/delete_product", (req, res, next) => {
 	Purchased_product.destroy({
