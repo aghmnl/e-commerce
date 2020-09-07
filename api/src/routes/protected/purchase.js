@@ -3,6 +3,8 @@ const { Purchase, User, Pay_method, Status, Product } = require("../../db.js");
 const moment = require("moment");
 const { Op, literal } = require("sequelize");
 const mailgun = require("mailgun-js");
+// PROTECTED SON RUTAS DEL USUARIO
+
 // S44 : Crear ruta que retorne todas las órdenes
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
 // http://localhost:3001/purchase_protected/my_purchases
@@ -12,36 +14,38 @@ server.get("/my_purchases", (req, res, next) => {
 			userId: req.user.id,
 			statusId: { [Op.not]: 1 },
 		},
-		attributes:[
-			"id",
-			"date",
-			"userId",
-			"statusId",
-			"payMethodId"
-		],
-		include: [{
-			model: Product,
-			attributes:[
-				"id",
-				"img",
-				"name",
-				"categoryId",
-				"cellarId",
-				"strainId",
-				[literal('(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'),"total"]
-			],
-			through: {
+		attributes: ["id", "date", "userId", "statusId", "payMethodId"],
+		include: [
+			{
+				model: Product,
 				attributes: [
-					"priceProduct", 
-					"quantity",
+					"id",
+					"img",
+					"name",
+					"categoryId",
+					"cellarId",
+					"strainId",
+					[
+						literal(
+							'(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'
+						),
+						"total",
+					],
 				],
+				through: {
+					attributes: ["priceProduct", "quantity"],
+				},
 			},
-		},{
-			model: Status,
-			as: "status",
-			attributes:["id","name"]
-
-		}],
+			{
+				model: Status,
+				as: "status",
+				attributes: ["id", "name"],
+			},
+			{
+				model: User,
+				as: "user",
+			},
+		],
 	})
 		.then(purchases => {
 			res.json(purchases);
@@ -93,11 +97,11 @@ server.get("/status?:statusId", (req, res, next) => {
 		.then(purchases => res.json(purchases))
 		.catch(err => next(err));
 });
-server.get("/pay_methods",(req, res, next) => {
+server.get("/pay_methods", (req, res, next) => {
 	Pay_method.findAll()
 		.then(pm => res.json(pm))
-		.catch(err => next(err))
-})
+		.catch(err => next(err));
+});
 // S45 : Crear Ruta que retorne todas las Ordenes de los usuarios
 server.get("/users/:userId", (req, res, next) => {
 	Purchase.findAll({ where: { userId: parseInt(req.params.userId) } })
@@ -126,10 +130,11 @@ server.get("/users/:userId", (req, res, next) => {
 
 server.put("/checkout", (req, res, next) => {
 	Purchase.update(
-		{ 
-			statusId: 2,  date: Date.now(),
+		{
+			statusId: 2,
+			date: Date.now(),
 			address: req.body.dir,
-			payMethodId: req.body.pp
+			payMethodId: req.body.pp,
 		},
 		{
 			where: {
@@ -139,26 +144,31 @@ server.put("/checkout", (req, res, next) => {
 		}
 	)
 		.then(() => {
-
 			/*  */
-			Purchase.findByPk(req.body.cartId,{
-				include:{ 
+			Purchase.findByPk(req.body.cartId, {
+				include: {
 					model: Product,
-					attributes:[
+					attributes: [
 						"id",
 						"name",
-						[literal('(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'),"total"]
+						[
+							literal(
+								'(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'
+							),
+							"total",
+						],
 					],
-				}
+				},
 			})
 				.then(purchase => {
 					const DOMAIN = "sandboxdffeb621bd62410eb7c2076e0be9741d.mailgun.org";
-					const mg = mailgun({apiKey: "21104ae61a01274914c25259682fe3d1-7cd1ac2b-37cc0e69", domain: DOMAIN});
+					const mg = mailgun({ apiKey: "21104ae61a01274914c25259682fe3d1-7cd1ac2b-37cc0e69", domain: DOMAIN });
 					const data = {
-						from: "Toni Wines Estamos despachando su compra <toniwines_recovery@sandboxe98883ab8de24b92a0e573e260891894.mailgun.org>",
+						from:
+							"Toni Wines Estamos despachando su compra <toniwines_recovery@sandboxe98883ab8de24b92a0e573e260891894.mailgun.org>",
 						to: req.user.email,
 						subject: "Toni Wines Compra",
-						html:`<html>
+						html: `<html>
 							<title>Compra</title>
 							<meta charset='utf-8'>
 							<body>
@@ -167,23 +177,41 @@ server.put("/checkout", (req, res, next) => {
 									return `
 									${product.name}
 									~SubTotal: $${product.purchased_product.priceProduct} * ${product.purchased_product.quantity}
-									${product.total}<br>`
+									${product.total}<br>`;
 								})}
 								<b>Ver en detalle</b>
 								<a href="http://localhost:3000/user/purchases">Mis compras</a>
 							</body>
-						</html>`
+						</html>`,
 					};
 					mg.messages().send(data, function (error, body) {
-						if(error) console.log("error", error)
+						if (error) console.log("error", error);
 						console.log("body", body);
-						res.status(200).send("Le estaremos notificando, revise su casilla de spam")
+						res.status(200).send("Le estaremos notificando, revise su casilla de spam");
 					});
 				})
 				.catch(err => next(err));
 		})
 		.catch(err => next(err));
 });
+
+// para cancelar una compra por el usuario
+// http://localhost:3001/purchase_protected/cancel
+server.put("/cancel", (req, res, next) => {
+	Purchase.update(
+		{
+			statusId: 4,
+		},
+		{
+			where: {
+				id: req.body.id,
+			},
+		}
+	)
+		.then(() => res.sendStatus(201))
+		.catch(err => next(err));
+});
+
 // S40 : Crear Ruta para vaciar el carrito
 // ATENCIÓN, el trello pedía DELETE /users/:idUser/cart/
 server.delete("/:id/cart", (req, res, next) => {

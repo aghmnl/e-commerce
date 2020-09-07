@@ -44,7 +44,10 @@ function Purchases({ purchases, statuses, statusId, getStatuses, getPurchases })
 					</Nav.Item>
 				))}
 			</Nav>
-			<div className="col-10 purchases" style={{ marginTop: "10rem", textAlign: "left" }}>
+			<div
+				className="col-10 purchases"
+				style={{ marginTop: "10rem", textAlign: "left", marginLeft: "auto", marginRight: "auto" }}
+			>
 				{purchases.map(purchase => (
 					<NavLink to={`/admin/purchase/${purchase.id}`}>
 						<Card id="card" style={{ width: "45rem", marginTop: "1rem" }}>
