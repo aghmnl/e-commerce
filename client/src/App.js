@@ -121,7 +121,7 @@ function App({ getPurchases, isAuth, isAdmin, getCartItems, setCart, setUserInfo
 			/>
 
 			<Route exact path="/product/:id" render={({ match }) => <Product id={match.params.id} />} />
-			<Route exact path="/formReview/:product" render={({ match }) => <FormReview product={match.params.product} />} />
+			<Route exact path="/formReview/:id" render={({ match }) => <FormReview id={match.params.id} />} />
 			<Route exact path="/admin/formUser" render={() => <FormUser />} />
 			<Route exact path="/login" component={Login} />
 			<Route exact path="/user" component={User} />

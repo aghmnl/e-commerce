@@ -45,6 +45,10 @@ server.get("/my_purchases", (req, res, next) => {
 				model: User,
 				as: "user",
 			},
+			{
+				model: Pay_method,
+				as: "pay_method",
+			},
 		],
 	})
 		.then(purchases => {
@@ -159,12 +163,9 @@ server.put("/checkout", (req, res, next) => {
 						],
 					],
 					through: {
-						attributes: [
-							"priceProduct", 
-							"quantity",
-						],
+						attributes: ["priceProduct", "quantity"],
 					},
-				}
+				},
 			})
 				.then(purchase => {
 					const DOMAIN = "sandboxdffeb621bd62410eb7c2076e0be9741d.mailgun.org";
@@ -183,7 +184,7 @@ server.put("/checkout", (req, res, next) => {
 									return `
 									<br>${product.name}
 									~SubTotal: $ ${product.purchased_product.priceProduct} * ${product.purchased_product.quantity}
-									<br>`
+									<br>`;
 								})}
 								Total: $ ${purchase.products[0]["dataValues"]["total"]}
 								<b>Ver en detalle</b>

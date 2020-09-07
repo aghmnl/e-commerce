@@ -4,7 +4,7 @@ import { Table, Button } from "react-bootstrap";
 import "../styles/Tabla.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getPurchase } from "../store/actions";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 function Purchase({ id }) {
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -42,7 +42,7 @@ function Purchase({ id }) {
 			<Table>
 				<thead>
 					<tr>
-						<th>Nro</th>
+						<th>#Compra</th>
 						<th>Fecha</th>
 						<th>Usuario</th>
 						<th>Entregar en</th>
@@ -64,21 +64,27 @@ function Purchase({ id }) {
 			<Table striped bordered hover>
 				<thead>
 					<tr>
-						<th>ID</th>
 						<th>Nombre</th>
 						<th>Precio</th>
 						<th>Cantidad</th>
 						<th>Subtotal</th>
+						{purchaseDetail.status.id === 6 && <th>Review</th>}
 					</tr>
 				</thead>
 				<tbody>
 					{purchaseDetail.products.map(e => (
 						<tr>
-							<td scope="row">{e.id}</td>
-							<td>{e.name}</td>
+							<td>
+								<Link to={`/product/${e.id}`}>{e.name}</Link>
+							</td>
 							<td>{"$ " + e.purchased_product.priceProduct}</td>
 							<td>{e.purchased_product.quantity}</td>
 							<td>{"$ " + e.purchased_product.priceProduct}</td>
+							{purchaseDetail.status.id === 6 && (
+								<th>
+									<Link to={`/formReview/${e.id}`}>Review</Link>
+								</th>
+							)}
 						</tr>
 					))}
 				</tbody>
@@ -93,6 +99,7 @@ function Purchase({ id }) {
 									<Button variant="danger" onClick={Cancel}>
 										Cancelar Compra
 									</Button>
+									<Button onClick={() => goBack()}>Volver</Button>
 								</div>
 							);
 
