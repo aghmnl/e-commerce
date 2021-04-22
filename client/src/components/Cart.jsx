@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-//import { PlusCircleIcon, MinusCircleIcon, TrashIcon } from '../components/icons'
-//import  '../store/reducers/index';
 import { BsTrash } from "react-icons/bs";
 import { VscAdd } from "react-icons/vsc";
 import { GrSubtract } from "react-icons/gr";
@@ -44,7 +42,6 @@ function CartItem({
 							<Col sm="1" style={{ alignSelf: "center" }}>
 								<Button onClick={() => deleteProduct(product)} className="btn-danger btn-sm">
 									<BsTrash />
-									{/* <TrashIcon width={"20px"}/> */}
 								</Button>
 							</Col>
 							<Col sm="2" style={{ alignSelf: "center" }}>
@@ -90,7 +87,6 @@ function CartItem({
 										className="btn-sm"
 									>
 										<VscAdd />
-										{/* <PlusCircleIcon width={"20px"}/> */}
 									</Button>
 								)}
 								{product.quantity > 1 && (
@@ -113,7 +109,6 @@ function CartItem({
 										className="btn-danger btn-sm"
 									>
 										<GrSubtract />
-										{/* <MinusCircleIcon width={"20px"}/> */}
 									</Button>
 								)}
 							</Col>
