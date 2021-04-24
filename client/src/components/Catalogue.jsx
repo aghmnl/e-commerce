@@ -142,7 +142,6 @@ function Catalogue({
 							</div>
 						);
 						return paginationBasic;
-						// return buttons.map(button => button);
 					})()}
 				</Row>
 			</Container>

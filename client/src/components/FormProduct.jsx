@@ -52,9 +52,6 @@ function FormProduct({
 			if(!values.categoryId) errors.categoryId = "Por favor seleccione una categoria"
 			if(!values.cellarId) errors.cellarId = "Por favor seleccione una bodega"
 			if(!values.strainId) errors.strainId = "Por favor seleccione una cepa"
-			/* for (let value in values) {
-				if (value !== "active" && !values[value]) errors[value] = "se requiere este campo";
-			} */
 			return errors;
 		},
 		onSubmit: values => handleSubmit(values),
@@ -86,12 +83,9 @@ function FormProduct({
 		formik.setValues(values, false);
 	}, [handle, productDetail]);
 	function handleSubmit(values) {
-		//values.preventDefault()
 		// Acá manda mensaje del dato que falta y hace foco en el mismo (sitúa el cursor en ese campo)
-		//console.log("submit");
-		//console.log("Entra en handle")
+
 		if (!!id) {
-			console.log("Entra en if")
 			axios
 				.put(`http://localhost:3001/product_private/${id}`, values, { withCredentials: true })
 				.then(() => {
