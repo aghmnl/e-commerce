@@ -8,15 +8,16 @@ export default function Reset() {
 	const [msgError, setMsgError] = useState("Debe ingresar su email");
 	const [success, setSuccess] = useState(false);
 	const [msg, setMsg] = useState("");
-	function validate({target:{value}}){
+	function validate({ target: { value } }) {
 		setEmail(value);
 		setError(!email);
 	}
-	function recovery(e){
+	function handleSubmit(e){
 		e.preventDefault();
 		validate(e);
-		if(!email) return;
-		axios.post("http://localhost:3001/auth/recovery",{email})
+		console.log(email)
+		if (!email) return;
+		axios.post("http://localhost:3001/auth/recovery", { email } )
 			.then(({data}) => {
 				setSuccess(true);
 				setMsg(data)
@@ -30,7 +31,7 @@ export default function Reset() {
 		<Card bg="warning" style={{ width: "18rem", margin: "auto", marginTop: "100px" }}>
 			<Card.Body>
 				<Card.Title>Reseteo de contraseña</Card.Title>
-				<Form onSubmit={recovery}>
+				<Form onSubmit={handleSubmit}>
 					<Form.Group style={{ textAlign: "justify" }} as={Col}>
 						<Form.Label>Email</Form.Label>
 						<Form.Control type="email"
