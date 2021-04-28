@@ -79,9 +79,9 @@ function Home({ categories, getCategories, cookiesShown, setCookiesShown }) {
 					</p>
 				</Alert>
 			)}
-			<CardGroup id="categorias">
+			<CardGroup id="categorias" >
 				{cats.map(cat => (
-					<Card>
+					<Card bsPrefix="categorias">
 						<Nav.Link>
 							<Link to={`/catalogue/category/${cat.id}`}>
 								<Card.Img variant="top" src={cat.img} className="imagenes" />

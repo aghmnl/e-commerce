@@ -8,45 +8,40 @@
 	border: transparent;
 }
 
-#categorias {
-	background-color: transparent !important;
-	margin-top: 15rem;
-	width: 100%;
-	height: 10%;
+.categorias {
+	background-color: 'transparent' !important;
+	border: 'none';
+	display: flex;
+	margin: auto;
 }
 
-
-.card{
-	background-color: transparen;
-	border: transparen;
-
-}
-
-.colorText{
+.colorText {
 	color: black;
+	text-shadow: 1px 1px 2px white;
 	font-size: 30px;
-	border: solid wheat 0.5;
-	
+	/* border: solid wheat 0.5; */
 }
 
-.colorText:link, .colorText:visited, .colorText:active{
+.colorText:link,
+.colorText:visited,
+.colorText:active {
 	text-decoration: none;
 }
 
-
-.imagenes{
+.imagenes {
 	width: 250px;
 	height: 200px;
 	margin: 20px;
 	border: 3px solid white;
-	-webkit-box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
-	-moz-box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
-	box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
+	-webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
+	box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
 	-webkit-transition: all 0.5s ease-out;
 	-moz-transition: all 0.5s ease;
 	-ms-transition: all 0.5s ease;
 }
 
-.imagenes:hover{
-	-webkit-transform:scale(1.3);transform:scale(1.29);
+.imagenes:hover {
+	-webkit-transform: scale(1.3);
+	transform: scale(1.29);
 }
