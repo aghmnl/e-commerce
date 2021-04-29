@@ -32,7 +32,6 @@ function ControlledCarousel({ products, getProducts }) {
 	};
 
 	return (
-		<div className="ajust">
 			<Carousel
 				swipeable={true}
 				draggable={false}
@@ -52,13 +51,10 @@ function ControlledCarousel({ products, getProducts }) {
 			>
 				{products.map(e => {
 					return (
-						<div>
 							<ProductCardCarousel id={e.id} name={e.name} img={e.img}></ProductCardCarousel>
-						</div>
 					);
 				})}
 			</Carousel>
-		</div>
 	);
 }
 export default connect(

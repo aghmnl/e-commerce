@@ -51,24 +51,23 @@ function CartItem({
 							</Col>
 							<Col sm="3" style={{ alignSelf: "center" }}>
 								<NavLink to={`/product/${product.id}`}>
-									<Card.Title>{product.name}</Card.Title>
+									<Card.Title style={{marginBottom: 0}}>{product.name}</Card.Title>
 								</NavLink>
 							</Col>
-							<Col sm="2" style={{ alignSelf: "center" }}>
-								<Card.Subtitle>$ {product.price}</Card.Subtitle>
+							<Col sm="2" style={{ alignSelf: "center", fontSize: "25px" }}>
+								$ {product.price}
 							</Col>
 
 							<Col sm="2" style={{ alignSelf: "center" }}>
 								Stock: {product.stock}
 							</Col>
-							<Col sm="1" style={{ alignSelf: "center" }}>
-								<Card.Title> {product.quantity}</Card.Title>
+							<Col sm="1" style={{ alignSelf: "center", fontSize: "20px", background: "lightgray" }}>
+								 {product.quantity}
 							</Col>
 
 							<Col sm="1" style={{ alignSelf: "center" }}>
-								{" "}
-								{product.quantity < product.stock && (
-									<Button
+								<Button
+									disabled={product.quantity >= product.stock}
 										onClick={() => {
 											if (logged)
 												axios
@@ -86,11 +85,10 @@ function CartItem({
 										}}
 										className="btn-sm"
 									>
-										<VscAdd />
-									</Button>
-								)}
-								{product.quantity > 1 && (
-									<Button
+									<VscAdd />
+								</Button>
+								<Button
+									disabled={product.quantity <= 0}
 										onClick={() => {
 											if (logged)
 												axios
@@ -108,9 +106,9 @@ function CartItem({
 										}}
 										className="btn-danger btn-sm"
 									>
-										<GrSubtract />
-									</Button>
-								)}
+									<GrSubtract />
+								</Button>
+						
 							</Col>
 						</Row>
 					</Container>

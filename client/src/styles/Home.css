@@ -19,13 +19,13 @@
 	color: black;
 	text-shadow: 1px 1px 2px white;
 	font-size: 30px;
-	/* border: solid wheat 0.5; */
 }
 
 .colorText:link,
 .colorText:visited,
 .colorText:active {
-	text-decoration: none;
+	text-decoration: overline;
+	text-decoration-color: red;
 }
 
 .imagenes {

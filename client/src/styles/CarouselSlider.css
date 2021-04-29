@@ -1,11 +1,5 @@
-.carousel img {
-    margin-top: 20px;
-    width: 30% !important;
-    height: 300px !important;
-    
-
-}
-
-.ajust{
-    margin-bottom: 50px;
+.carousel-container {
+	width: 1200px;
+	margin: auto;
+	margin-bottom: 50px;
 }
