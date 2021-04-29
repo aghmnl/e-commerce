@@ -98,7 +98,7 @@ function Catalogue({
 								  ))
 								: (() => {
 										setInterval(() => {
-											setDespensa(<h1>Sin resultados :C</h1>);
+											setDespensa(<h1>No se encontraron resultados</h1>);
 										}, 3000);
 										return (<Card style={{margin:"8rem auto"}} ><Card.Body>{despensa}</Card.Body></Card>);
 								  })()}

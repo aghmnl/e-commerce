@@ -15,7 +15,7 @@ export default function Reset() {
 	function handleSubmit(e){
 		e.preventDefault();
 		validate(e);
-		console.log(email)
+		console.log("this is the email: " + email)
 		if (!email) return;
 		axios.post("http://localhost:3001/auth/recovery", { email } )
 			.then(({data}) => {

@@ -11,7 +11,7 @@ export default function Mypurchases() {
 	useEffect(() => {
 		dispatch(getMyPurchases());
 		document.body.id = "bg_user";
-	}, []);
+	}, [my_purchases]);
 	if (!logged) return <Redirect to="/login" />;
 	return (
 		<div style={{ marginTop: "5rem" }}>

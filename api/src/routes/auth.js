@@ -219,7 +219,8 @@ server.put('/promote/:id', isAuthenticated, isAdmin, (req, res, next) => {
 server.post('/recovery', async (req, res, next) => {
 	console.log('This is the email!cl: ' + req.body.email)
 	const user = await User.findOne({
-		where: { email: req.body.email, provider: null, providerId: null },
+		// where: { email: req.body.email, provider: null, providerId: null },
+		where: { email: req.body.email },
 	})
 	if (!user)
 		return res.status(404).json({
