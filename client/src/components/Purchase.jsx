@@ -9,6 +9,9 @@ function Purchase({ id }) {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const { purchaseDetail } = useSelector(state => state);
+	useEffect(() => {
+
+	}, [purchaseDetail]);
 	const Dispatch = () => {
 		axios
 			.put(

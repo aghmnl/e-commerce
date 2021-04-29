@@ -115,10 +115,21 @@ function CartItem({
 				</Card>
 			))}
 			<Card id="total">
-				<Card.Title>
-					Total: $ {total}
-					<p></p>
-					<Button
+
+
+						<Card.Title style={{ width: "15rem", fontSize: "40px"}}>
+							Total: $ {total}
+						</Card.Title>
+
+
+					   {!!products.length && (
+							<Card id="checkout">
+								<Button onClick={() => history.replace("/checkout")} variant="success">Checkout</Button>
+							</Card>
+					)}
+									<br/>
+			
+								<Button id="emptyCart"
 						onClick={() => {
 							emptyCart();
 							if (logged)
@@ -133,17 +144,11 @@ function CartItem({
 					>
 						Vaciar carrito
 					</Button>
-				</Card.Title>
+
+
+
 			</Card>
-			{!!products.length && (
-				<Card id="checkout">
-					<Card.Body>
-						<Button onClick={() => history.replace("/checkout")} variant="success">
-							Checkout
-						</Button>
-					</Card.Body>
-				</Card>
-			)}
+
 		</div>
 	);
 }

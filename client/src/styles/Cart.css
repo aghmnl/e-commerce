@@ -1,20 +1,17 @@
 #card {
-	display: block;
 	margin-left: auto;
 	margin-right: auto;
-
 	width: 50rem;
 	margin-top: 1rem;
-	/* background-color: transparent; */
-	/*border: transparent; */
 }
 
 #total {
-	display: block;
+	display: flex;
+	justify-content: center;
 	margin-left: auto;
 	margin-right: auto;
-	width: 10rem;
-	margin-top: 5rem;
+	width: 15rem;
+	margin-top: 3rem;
 	background-color: transparent;
 	color: white;
 	border-color: transparent;
@@ -25,4 +22,9 @@
 	margin: auto;
 	background-color: transparent;
 	border-color: transparent;
+}
+
+#emptyCart {
+	width: 10rem;
+	margin: auto;
 }
