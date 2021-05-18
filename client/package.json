@@ -8,7 +8,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^3.4.1",
     "formik": "^2.1.5",
     "react": "^16.13.1",
@@ -47,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^7.3.0",
     "prettier": "2.2.1"
   }
 }
