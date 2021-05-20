@@ -11,10 +11,11 @@
 
 ### Testing
 
-If you want to run the tests done with Cypress you can run them using `npm test`
-**Notes**:
+If you want to run the tests done with Cypress you can run going to **client** folder and using the command `npm test`
 
--  all the tests were checked used Chrome.
+#### Notes
+
+-  all the tests were checked using Chrome.
 -  the text of the e-commerce is Spanish but the tests were written in English
 
 # Henry
