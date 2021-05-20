@@ -11,7 +11,7 @@
 
 ### Testing
 
-If you want to run the tests done with Cypress you can run going to **client** folder and using the command `npm test`
+If you want to run the tests done with Cypress you can run them going to **client** folder and using the command `npm test`
 
 #### Notes
 
