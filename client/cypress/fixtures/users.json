@@ -6,6 +6,7 @@
 	},
 	"admin": {
 		"email": "agustin.minetto@gmail.com",
-		"password": "1234"
+		"password": "1234",
+		"name": "Agustín..."
 	}
 }

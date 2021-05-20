@@ -12,6 +12,7 @@ const { MAILGUN_APIKEY, MAILGUN_DOMAIN, MAILGUN_EMAIL } = process.env
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
 // http://localhost:3001/purchase_protected/my_purchases
 server.get('/my_purchases', (req, res, next) => {
+	console.log('this is the id: ', req.user.id)
 	Purchase.findAll({
 		where: {
 			userId: req.user.id,
@@ -29,9 +30,7 @@ server.get('/my_purchases', (req, res, next) => {
 					'cellarId',
 					'strainId',
 					[
-						literal(
-							'(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'
-						),
+						literal('(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'),
 						'total',
 					],
 				],
@@ -135,6 +134,7 @@ server.get('/users/:userId', (req, res, next) => {
 // S47 : Crear Ruta para modificar una Orden
 // OTRA OPCIÓN SERÍA
 
+// http://localhost:3001/purchase_protected/checkout
 server.put('/checkout', (req, res, next) => {
 	Purchase.update(
 		{
@@ -159,9 +159,7 @@ server.put('/checkout', (req, res, next) => {
 						'id',
 						'name',
 						[
-							literal(
-								'(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'
-							),
+							literal('(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'),
 							'total',
 						],
 					],
@@ -197,9 +195,7 @@ server.put('/checkout', (req, res, next) => {
 					mg.messages().send(data, function (error, body) {
 						if (error) console.log('error', error)
 						console.log('body', body)
-						res.status(200).send(
-							'Le estaremos notificando, revise su casilla de spam'
-						)
+						res.status(200).send('Le estaremos notificando, revise su casilla de spam')
 					})
 				})
 				.catch((err) => next(err))

@@ -30,8 +30,7 @@ router.use('/user', isAuthenticated, userRouter)
 router.use('/user_private', isAuthenticated, isAdmin, userPrivateRouter)
 router.use('/purchase_protected', isAuthenticated, purchaseProtectedRouter)
 router.use('/purchase_private', isAuthenticated, isAdmin, purchasePrivateRouter)
-// router.use('/purchased_products_protected', isAuthenticated, purchProdProtectedRouter) // ATENCIÓN, esta línea es la correcta pero tiene problemas Cypress en detectar que está logueado
-router.use('/purchased_products_protected', purchProdProtectedRouter)
+router.use('/purchased_products_protected', isAuthenticated, purchProdProtectedRouter)
 router.use('/status_private', isAuthenticated, isAdmin, statusPrivateRouter)
 router.use('/review', isAuthenticated, reviewRouter)
 module.exports = router
