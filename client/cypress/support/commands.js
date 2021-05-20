@@ -29,7 +29,6 @@ Cypress.Commands.add('login', (email, password) => {
 	cy.get('#emailLogin').type(email)
 	cy.get('#passwordLogin').type(password)
 	cy.get('#iniciarSesion').click()
-	cy.wait(1000)
 })
 
 Cypress.Commands.add('loginUser', () => {
@@ -48,4 +47,8 @@ Cypress.Commands.add('loginAdmin', () => {
 		cy.get('.close').click()
 		cy.contains('.navbar-brand', usersData.admin.name).should('be.visible')
 	})
+})
+
+Cypress.Commands.add('logout', () => {
+	cy.visit('/settings')
 })
