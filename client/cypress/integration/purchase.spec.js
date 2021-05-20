@@ -3,7 +3,7 @@ context('Actions', () => {
 		// cy.logout()
 	})
 
-	xit('The user has to buy a product Malbec', () => {
+	it('The user has to buy a product Malbec', () => {
 		cy.loginUser()
 		cy.get('#inputSearch').type('malbec')
 		cy.contains('.btn', 'Buscar').click()
@@ -15,7 +15,7 @@ context('Actions', () => {
 		cy.get('#finalizePurchase').click()
 	})
 
-	xit('The admin has to send the product to the user', () => {
+	it('The admin has to send the product to the user', () => {
 		cy.loginAdmin()
 		cy.visit('/admin/formPurchase/')
 		cy.contains('.btn', 'pagada').click()
@@ -23,7 +23,7 @@ context('Actions', () => {
 		cy.contains('.btn-success', 'Enviar').click()
 	})
 
-	xit('The admin has to confirm that the product was delivered', () => {
+	it('The admin has to confirm that the product was delivered', () => {
 		cy.loginAdmin()
 		cy.visit('/admin/formPurchase/')
 		cy.contains('.btn', 'enviada').click()
@@ -37,6 +37,12 @@ context('Actions', () => {
 		cy.contains('.card-title', 'Compra: 7').click()
 		cy.contains('a', 'Review').click()
 		cy.get('h2 :nth-child(4)').click()
-		cy.get('.form-control').type('Very nice wine! I reccomend it')
+		cy.get(':nth-child(2) > .form-control').type(
+			'Very nice wine! I recommend it'
+		)
+		cy.contains('.btn-success', 'Enviar Review').click()
+		cy.get(
+			':nth-child(5) > .content-review > .card-body > .card-text'
+		).contains('Very nice wine! I recommend it')
 	})
 })

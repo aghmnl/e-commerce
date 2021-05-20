@@ -51,4 +51,5 @@ Cypress.Commands.add('loginAdmin', () => {
 
 Cypress.Commands.add('logout', () => {
 	cy.visit('/settings')
+	cy.get('.btn > svg').click()
 })
