@@ -6,12 +6,15 @@
 
 ## How to run the e-commerce
 
-1. go to **api** folder and use the command `npm start`
-2. go to **client** folder and use the command `npm start`
+1. go to **api** folder and use the command `npm i` to install all the dependencies and then `npm start`
+2. go to **client** folder and use the command `npm i` to install all the dependencies and then `npm start`
+
+I'm using **node v14.17.0**
 
 ### Testing
 
 If you want to run the tests done with Cypress you can run them going to **client** folder and using the command `npm test`
+Take into account that some parts of the test requires to reset the data base (purchase test). To accomplish that, it's enough to restart the api (stop the process in api and then `npm start` in **api** folder)
 
 #### Notes
 
