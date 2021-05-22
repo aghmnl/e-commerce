@@ -1,6 +1,10 @@
 # https://es.wikipedia.org/wiki/.DS_Store
 .DS_Store  
 
+# Cypress
+test/cypress/screenshots/*
+test/cypress/videos/*
+
 # Logs
 logs
 *.log

@@ -1,39 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { useFormik } from "formik";
-import { useHistory } from "react-router-dom";
-import Rating from "react-rating";
-import { connect } from "react-redux";
-import { FaStar, FaRegStar } from "react-icons/fa";
-import { getProduct } from "../store/actions/index";
-import { Form, Card, Col, Button, Container, Row, ListGroup, ListGroupItem } from "react-bootstrap";
-import axios from "axios";
+import React, { useState, useEffect } from 'react'
+import { useFormik } from 'formik'
+import { useHistory } from 'react-router-dom'
+import Rating from 'react-rating'
+import { connect } from 'react-redux'
+import { FaStar, FaRegStar } from 'react-icons/fa'
+import { getProduct } from '../store/actions/index'
+import {
+	Form,
+	Card,
+	Col,
+	Button,
+	Container,
+	Row,
+	ListGroup,
+	ListGroupItem,
+} from 'react-bootstrap'
+import axios from 'axios'
 function FormReview({ id, productDetail, getProduct }) {
 	useEffect(() => {
-		getProduct(id);
-	}, []);
-	const history = useHistory();
-	const [edit, setEdit] = useState(false);
+		getProduct(id)
+	}, [])
+	const history = useHistory()
+	const [edit, setEdit] = useState(false)
 	const [inputs, setInputs] = useState({
 		stars: 0,
-		description: "",
-	});
+		description: '',
+	})
 	const formik = useFormik({
 		initialValues: inputs,
 		initialErrors: {
-			stars: "Por Favor Asigne una valoración",
+			stars: 'Por Favor Asigne una valoración',
 		},
 		validateOnMount: true,
-		validates: values => {
-			const errors = {};
-			!values.stars && (errors.stars = "Por Favor Asigne una valoración");
-			return errors;
+		validates: (values) => {
+			const errors = {}
+			!values.stars && (errors.stars = 'Por Favor Asigne una valoración')
+			return errors
 		},
-		onSubmit: values => {
-			if (!values.stars) return alert(formik.initialErrors.stars);
+		onSubmit: (values) => {
+			if (!values.stars) return alert(formik.initialErrors.stars)
 			if (edit) {
 				axios
 					.put(
-						"http://localhost:3001/review/" + id,
+						'http://localhost:3001/review/' + id,
 						{
 							...values,
 							productId: id,
@@ -41,13 +50,13 @@ function FormReview({ id, productDetail, getProduct }) {
 						},
 						{ withCredentials: true }
 					)
-					.then(() => history.replace("/product/" + id))
-					.catch(err => console.log(err));
-				return;
+					.then(() => history.replace('/product/' + id))
+					.catch((err) => console.log(err))
+				return
 			}
 			axios
 				.post(
-					"http://localhost:3001/review",
+					'http://localhost:3001/review',
 					{
 						...values,
 						productId: id,
@@ -55,36 +64,36 @@ function FormReview({ id, productDetail, getProduct }) {
 					},
 					{ withCredentials: true }
 				)
-				.then(() => history.replace("/product/" + id))
-				.catch(err => console.log(err));
+				.then(() => history.replace('/product/' + id))
+				.catch((err) => console.log(err))
 		},
-	});
+	})
 	function goBack() {
-		window.history.back();
+		window.history.back()
 	}
 	useEffect(() => {
 		axios
-			.get("http://localhost:3001/review/" + id, { withCredentials: true })
+			.get('http://localhost:3001/review/' + id, { withCredentials: true })
 			.then(({ data }) => {
 				if (data !== null) {
-					setEdit(true);
+					setEdit(true)
 					setInputs({
 						stars: data.stars,
 						description: data.description,
-					});
+					})
 				}
 			})
-			.catch(err => console.log(err));
-	}, []);
+			.catch((err) => console.log(err))
+	}, [])
 	useEffect(() => {
-		formik.resetForm(inputs);
-	}, [inputs]);
+		formik.resetForm(inputs)
+	}, [inputs])
 	return (
 		<div>
-			<Card style={{ margin: "5rem auto", width: "55rem" }}>
+			<Card style={{ margin: '5rem auto', width: '55rem' }}>
 				<Container>
 					<Row>
-						<Col style={{ alignSelf: "center" }}>
+						<Col style={{ alignSelf: 'center' }}>
 							<Card.Img src={productDetail.img} />
 						</Col>
 						<Col>
@@ -98,10 +107,13 @@ function FormReview({ id, productDetail, getProduct }) {
 									<Form.Label>Valoración</Form.Label>
 									<h2>
 										<Rating
+											id="rating"
 											initialRating={formik.values.stars}
 											emptySymbol={<FaRegStar />}
 											fullSymbol={<FaStar />}
-											onChange={value => formik.setFieldValue("stars", value)}
+											onChange={(value) =>
+												formik.setFieldValue('stars', value)
+											}
 										/>
 									</h2>
 									<Form.Control.Feedback type="invalid">
@@ -111,15 +123,28 @@ function FormReview({ id, productDetail, getProduct }) {
 								<Form.Group as={Col}>
 									<Form.Label>Comentario</Form.Label>
 									<Form.Control
+										id="review"
 										as="textarea"
 										value={formik.values.description}
-										onChange={e => formik.setFieldValue("description", e.target.value)}
+										onChange={(e) =>
+											formik.setFieldValue(
+												'description',
+												e.target.value
+											)
+										}
 									/>
 								</Form.Group>
-								<Button style={{ marginBottom: "2rem" }} onClick={() => goBack()}>
+								<Button
+									style={{ marginBottom: '2rem' }}
+									onClick={() => goBack()}
+								>
 									Volver
 								</Button>
-								<Button style={{ marginBottom: "2rem" }} variant="success" type="submit">
+								<Button
+									style={{ marginBottom: '2rem' }}
+									variant="success"
+									type="submit"
+								>
 									Enviar Review
 								</Button>
 							</Form>
@@ -128,14 +153,14 @@ function FormReview({ id, productDetail, getProduct }) {
 				</Container>
 			</Card>
 		</div>
-	);
+	)
 }
 
 export default connect(
 	function ({ productDetail }) {
 		return {
 			productDetail,
-		};
+		}
 	},
 	{ getProduct }
-)(FormReview);
+)(FormReview)

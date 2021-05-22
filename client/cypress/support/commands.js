@@ -24,6 +24,8 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+import 'cypress-wait-until'
+
 Cypress.Commands.add('login', (email, password) => {
 	cy.visit('/login')
 	cy.get('#emailLogin').type(email)
@@ -35,7 +37,9 @@ Cypress.Commands.add('loginUser', () => {
 	cy.fixture('users.json').as('usersData') // Para usar los datos definidos en users.json y darle un alias
 	cy.get('@usersData').then((usersData) => {
 		cy.login(usersData.user.email, usersData.user.password)
-		cy.get('.close').click()
+		cy.get('.close')
+			.should('be.visible')
+			.then(() => cy.get('.close').click())
 		cy.contains('.navbar-brand', usersData.user.name).should('be.visible')
 	})
 })
@@ -44,7 +48,9 @@ Cypress.Commands.add('loginAdmin', () => {
 	cy.fixture('users.json').as('usersData') // Para usar los datos definidos en users.json y darle un alias
 	cy.get('@usersData').then((usersData) => {
 		cy.login(usersData.admin.email, usersData.admin.password)
-		cy.get('.close').click()
+		cy.get('.close')
+			.should('be.visible')
+			.then(() => cy.get('.close').click())
 		cy.contains('.navbar-brand', usersData.admin.name).should('be.visible')
 	})
 })
