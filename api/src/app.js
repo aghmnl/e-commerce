@@ -18,20 +18,12 @@ server.use(
 	cors({
 		origin: 'http://localhost:3000',
 		credentials: true,
-		allowedHeaders:
-			'Authorization, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method',
+		allowedHeaders: 'Authorization, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method',
 		methods: 'GET, POST, OPTIONS, PUT, DELETE',
 	})
 )
 server.name = 'API'
-const {
-	GOOGLE_CLIENT_ID,
-	GOOGLE_CLIENT_SECRET,
-	GOOGLE_CALLBACK,
-	GITHUB_CLIENT_ID,
-	GITHUB_CLIENT_SECRET,
-	GITHUB_CALLBACK,
-} = process.env
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_CALLBACK } = process.env
 // Configure the local strategy for use by Passport.
 //
 // The local strategy require a `verify` function which receives the credentials
@@ -49,16 +41,14 @@ passport.use(
 				const user = await User.findOne({
 					where: { email: email, active: true },
 				})
-				console.log({ user })
+				// console.log({ user })
 				if (!user) {
 					return done(null, false, {
 						message: 'Incorrect username.',
 						input: 'email',
 					})
 				}
-				const passwordKey = crypto
-					.pbkdf2Sync(password, user.salt, 10000, 64, 'sha512')
-					.toString('base64')
+				const passwordKey = crypto.pbkdf2Sync(password, user.salt, 10000, 64, 'sha512').toString('base64')
 				if (passwordKey === user.password) {
 					return done(null, user)
 				} else {
@@ -81,7 +71,7 @@ passport.use(
 			callbackURL: GOOGLE_CALLBACK,
 		},
 		(accessToken, refreshToken, profile, done) => {
-			console.log(profile)
+			// console.log(profile)
 			const newUser = {
 				first_name: profile.name.givenName,
 				last_name: profile.name.familyName,
@@ -101,8 +91,7 @@ passport.use(
 			})
 				.then(([user, created]) => {
 					if (!created) {
-						if (user.providerId !== profile.id)
-							user.provider = profile.provider
+						if (user.providerId !== profile.id) user.provider = profile.provider
 						user.providerId = profile.id
 						user.imgProfile = profile.photos[0].value
 						user.save()
@@ -122,7 +111,7 @@ passport.use(
 			scope: ['user:email'],
 		},
 		(accessToken, refreshToken, profile, done) => {
-			console.log(profile)
+			// console.log(profile)
 			const newUser = {
 				first_name: profile.username,
 				last_name: profile.username,
@@ -142,8 +131,7 @@ passport.use(
 			})
 				.then(([user, created]) => {
 					if (!created) {
-						if (user.providerId !== profile.id)
-							user.provider = profile.provider
+						if (user.providerId !== profile.id) user.provider = profile.provider
 						user.providerId = profile.id
 						user.imgProfile = profile.photos[0].value
 						user.save()
@@ -187,13 +175,9 @@ server.use((err, req, res, next) => {
 	const status = err.status || 500
 	let message = ''
 	let errTable = ''
-	if (!!err.original && err.original.table === 'products')
-		errTable = 'Productos'
+	if (!!err.original && err.original.table === 'products') errTable = 'Productos'
 	if (!!err.original && err.original.table === 'strains') errTable = 'Cepas'
-	if (!!err.original && err.original.code === '23503')
-		message = `No se puede eliminar este dato, se necesita en ${
-			errTable || err.original.table
-		}`
+	if (!!err.original && err.original.code === '23503') message = `No se puede eliminar este dato, se necesita en ${errTable || err.original.table}`
 	console.log(err)
 	res.status(status).send(message || err.message)
 })

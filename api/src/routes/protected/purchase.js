@@ -12,7 +12,7 @@ const { MAILGUN_APIKEY, MAILGUN_DOMAIN, MAILGUN_EMAIL } = process.env
 // Esta ruta puede recibir el query string `status` y deberá devolver sólo las ordenes con ese status.
 // http://localhost:3001/purchase_protected/my_purchases
 server.get('/my_purchases', (req, res, next) => {
-	console.log('this is the id: ', req.user.id)
+	// console.log('this is the id: ', req.user.id)
 	Purchase.findAll({
 		where: {
 			userId: req.user.id,
@@ -29,10 +29,7 @@ server.get('/my_purchases', (req, res, next) => {
 					'categoryId',
 					'cellarId',
 					'strainId',
-					[
-						literal('(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'),
-						'total',
-					],
+					[literal('(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'), 'total'],
 				],
 				through: {
 					attributes: ['priceProduct', 'quantity'],
@@ -155,14 +152,7 @@ server.put('/checkout', (req, res, next) => {
 			Purchase.findByPk(req.body.cartId, {
 				include: {
 					model: Product,
-					attributes: [
-						'id',
-						'name',
-						[
-							literal('(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'),
-							'total',
-						],
-					],
+					attributes: ['id', 'name', [literal('(SELECT (SUM("priceProduct" * "quantity") ) FROM purchased_products WHERE "purchaseId" = "purchase"."id" GROUP BY "purchaseId")'), 'total']],
 					through: {
 						attributes: ['priceProduct', 'quantity'],
 					},
@@ -194,7 +184,7 @@ server.put('/checkout', (req, res, next) => {
 					}
 					mg.messages().send(data, function (error, body) {
 						if (error) console.log('error', error)
-						console.log('body', body)
+						// console.log('body', body)
 						res.status(200).send('Le estaremos notificando, revise su casilla de spam')
 					})
 				})
@@ -231,7 +221,7 @@ server.delete('/:id/cart', (req, res, next) => {
 
 // Bsca en base de datos el carrito para un usuario determinado (lo saca de req.user)
 server.get('/cart_id', (req, res, next) => {
-	console.log(req.user.id)
+	// console.log(req.user.id)
 	Purchase.findOrCreate({
 		attributes: ['id'],
 		where: {

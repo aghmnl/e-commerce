@@ -123,7 +123,7 @@ server.put('/dispatch', (req, res, next) => {
 			}
 			mg.messages().send(data, function (error, body) {
 				if (error) console.log('error', error)
-				console.log('body', body)
+				// console.log('body', body)
 				res.sendStatus(201)
 			})
 		})
@@ -161,7 +161,7 @@ server.put('/reject', (req, res, next) => {
 			}
 			mg.messages().send(data, function (error, body) {
 				if (error) console.log('error', error)
-				console.log('body', body)
+				// console.log('body', body)
 				res.sendStatus(201)
 			})
 		})

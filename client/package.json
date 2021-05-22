@@ -30,7 +30,8 @@
 		"build": "react-scripts build",
 		"test1": "react-scripts test",
 		"test": "npx cypress open",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"init": "cd ../api && node init"
 	},
 	"eslintConfig": {
 		"extends": "react-app"

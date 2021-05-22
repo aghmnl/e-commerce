@@ -25,6 +25,7 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import 'cypress-wait-until'
+import store from '../../../client/src/store/index'
 
 Cypress.Commands.add('login', (email, password) => {
 	cy.visit('/login')
@@ -37,9 +38,14 @@ Cypress.Commands.add('loginUser', () => {
 	cy.fixture('users.json').as('usersData') // Para usar los datos definidos en users.json y darle un alias
 	cy.get('@usersData').then((usersData) => {
 		cy.login(usersData.user.email, usersData.user.password)
+		console.log(
+			'Show cookies consentment: ',
+			JSON.parse(localStorage.getItem('cookiesShown'))
+		)
+		cy.wait(500)
 		cy.get('.close')
 			.should('be.visible')
-			.then(() => cy.get('.close').click())
+			.then(() => cy.get('.close').click({ force: true }))
 		cy.contains('.navbar-brand', usersData.user.name).should('be.visible')
 	})
 })
@@ -48,6 +54,11 @@ Cypress.Commands.add('loginAdmin', () => {
 	cy.fixture('users.json').as('usersData') // Para usar los datos definidos en users.json y darle un alias
 	cy.get('@usersData').then((usersData) => {
 		cy.login(usersData.admin.email, usersData.admin.password)
+		console.log(
+			'Show cookies consentment: ',
+			JSON.parse(localStorage.getItem('cookiesShown'))
+		)
+		cy.wait(500)
 		cy.get('.close')
 			.should('be.visible')
 			.then(() => cy.get('.close').click())

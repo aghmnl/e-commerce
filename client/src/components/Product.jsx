@@ -99,7 +99,7 @@ function Product({
 									<Button
 										id="addToCart"
 										onClick={() => {
-											console.log('login status: ', logged)
+											// console.log('login status: ', logged)
 											if (logged) {
 												axios
 													.post(

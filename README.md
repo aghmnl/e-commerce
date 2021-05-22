@@ -16,6 +16,10 @@ I'm using **node v14.17.0**
 If you want to run the tests done with Cypress you can run them going to **client** folder and using the command `npm test`
 Take into account that some parts of the test requires to reset the data base (purchase test). To accomplish that, it's enough to restart the api (stop the process in api and then `npm start` in **api** folder)
 
+#### Screenshots
+
+If you want screenshots of each of the test's steps to be taken, `client/cypress/fixtures/screenshots.json` should have `"take": true`
+
 #### Notes
 
 -  all the tests were checked using Chrome.

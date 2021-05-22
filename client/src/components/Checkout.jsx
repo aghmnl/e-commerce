@@ -35,7 +35,7 @@ export default function Checkout() {
 			history.replace('/user/purchases')
 		},
 		onChange: (e) => {
-			console.log(e.target)
+			// console.log(e.target)
 		},
 	})
 	useEffect(() => {

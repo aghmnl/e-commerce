@@ -14,16 +14,12 @@ async function isAdmin(req, res, next) {
 		attributes: ['admin'],
 	})
 	if (admin) return next()
-	return res
-		.status(403)
-		.send('No esta autorizado, por favor reinicie su sessión')
+	return res.status(403).send('No esta autorizado, por favor reinicie su sessión')
 }
 function isAuthenticated(req, res, next) {
 	// isAuthenticated devuelve true cuando está autenticado
 	if (req.isAuthenticated()) return next()
-	return res
-		.status(401)
-		.send('No esta autorizado, por favor reinicie su sessión')
+	return res.status(401).send('No esta autorizado, por favor reinicie su sessión')
 }
 function isValidPassword(password) {
 	if (password.length >= 8) {
@@ -41,9 +37,7 @@ function isValidEmail(email) {
 //handles register POST
 server.post('/register', async function (req, res, next) {
 	const salt = crypto.randomBytes(64).toString('hex')
-	const password = crypto
-		.pbkdf2Sync(req.body.password, salt, 10000, 64, 'sha512')
-		.toString('base64')
+	const password = crypto.pbkdf2Sync(req.body.password, salt, 10000, 64, 'sha512').toString('base64')
 
 	if (!isValidPassword(req.body.password)) {
 		return res.status(500).json({
@@ -86,9 +80,7 @@ server.post('/register', async function (req, res, next) {
 			},
 		})
 		if (!created) {
-			;(user.first_name = req.body.first_name),
-				(user.last_name = req.body.last_name),
-				(user.password = password)
+			;(user.first_name = req.body.first_name), (user.last_name = req.body.last_name), (user.password = password)
 			user.salt = salt
 			user.phone = req.body.phone
 			user.provider = null
@@ -117,9 +109,7 @@ server.post('/register', async function (req, res, next) {
 				return next(err)
 			}
 			if (!user) {
-				return res
-					.status(401)
-					.json({ status: 'error', message: info.message })
+				return res.status(401).json({ status: 'error', message: info.message })
 			}
 			req.login(user, function (err) {
 				if (err) {
@@ -166,16 +156,10 @@ server.post('/login', function (req, res, next) {
 server.get(
 	'/google/login',
 	passport.authenticate('google', {
-		scope: [
-			'https://www.googleapis.com/auth/userinfo.profile',
-			'https://www.googleapis.com/auth/userinfo.email',
-		],
+		scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'],
 	})
 )
-server.get(
-	'/github/login',
-	passport.authenticate('github', { scope: ['user:email'] })
-)
+server.get('/github/login', passport.authenticate('github', { scope: ['user:email'] }))
 server.get('/google/cb', passport.authenticate('google'), (req, res) => {
 	res.redirect('http://localhost:3000/external_login')
 })
@@ -209,15 +193,12 @@ server.get('/isadmin', async (req, res, next) => {
 // ATENCIÓN, LO IMPLEMENTAMOS COMO PUT YA QUE TENEMOS CAMPO BOOLEAN DE ADMIN
 // Y lo que hay que cambiar es el valor del campo admin a true
 server.put('/promote/:id', isAuthenticated, isAdmin, (req, res, next) => {
-	User.update(
-		{ admin: literal('NOT admin') },
-		{ where: { id: parseInt(req.params.id) } }
-	)
+	User.update({ admin: literal('NOT admin') }, { where: { id: parseInt(req.params.id) } })
 		.then(() => res.sendStatus(201))
 		.catch((err) => next(err))
 })
 server.post('/recovery', async (req, res, next) => {
-	console.log('This is the email!cl: ' + req.body.email)
+	// console.log('This is the email!cl: ' + req.body.email)
 	const user = await User.findOne({
 		// where: { email: req.body.email, provider: null, providerId: null },
 		where: { email: req.body.email },
@@ -229,9 +210,7 @@ server.post('/recovery', async (req, res, next) => {
 		})
 	const newSalt = crypto.randomBytes(64).toString('hex')
 	const tempPass = crypto.randomBytes(8).toString('hex')
-	const tempPassHash = crypto
-		.pbkdf2Sync(tempPass, newSalt, 10000, 64, 'sha512')
-		.toString('base64')
+	const tempPassHash = crypto.pbkdf2Sync(tempPass, newSalt, 10000, 64, 'sha512').toString('base64')
 	user.salt = newSalt
 	user.password = tempPassHash
 	await user.save()
@@ -255,9 +234,7 @@ server.post('/recovery', async (req, res, next) => {
 		if (error) console.log('error', error)
 		console.log('body', body)
 		console.log(crypto.randomBytes(8).toString('ascii'))
-		res.status(200).send(
-			'Enviamos un email con su nueva contraseña, revise su casilla de spam'
-		)
+		res.status(200).send('Enviamos un email con su nueva contraseña, revise su casilla de spam')
 	})
 })
 module.exports = { server, isAuthenticated, isAdmin }

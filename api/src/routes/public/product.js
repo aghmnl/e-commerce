@@ -1,111 +1,110 @@
-const server = require("express").Router();
-const {Op, literal} = require("sequelize");
-const { Product, Cellar, Strain, Category, Review, User } = require("../../db.js");
-
+const server = require('express').Router()
+const { Op, literal } = require('sequelize')
+const { Product, Cellar, Strain, Category, Review, User } = require('../../db.js')
 
 // Este get devuelve todos los productos para generar el catálogo
-server.get("/", (req, res, next) => {
+server.get('/', (req, res, next) => {
 	Product.findAll({
-		attributes:[
-			"id",
-			"name",
-			"img",
-			"cellarId",
-			"price",
-			"description",
-			"categoryId",
-			"strainId",
-			"active",
-			"stock",
-			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'),"raiting"],
+		attributes: [
+			'id',
+			'name',
+			'img',
+			'cellarId',
+			'price',
+			'description',
+			'categoryId',
+			'strainId',
+			'active',
+			'stock',
+			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'), 'raiting'],
 		],
 		where: { active: true },
 		include: [
 			{
 				model: Cellar,
-				as: "cellar",
-				attributes : {exclude : ["createdAt","updatedAt"]},
+				as: 'cellar',
+				attributes: { exclude: ['createdAt', 'updatedAt'] },
 			},
 			{
 				model: Strain,
-				as: "strain",
-				attributes : {exclude : ["createdAt","updatedAt"]},
+				as: 'strain',
+				attributes: { exclude: ['createdAt', 'updatedAt'] },
 			},
 			{
 				model: Category,
-				as: "category",
-				attributes : {exclude : ["createdAt","updatedAt"]},
+				as: 'category',
+				attributes: { exclude: ['createdAt', 'updatedAt'] },
 			},
 		],
 		//order: [["raiting","DESC"]]
 	})
-		.then(products => {
-			res.json(products);
+		.then((products) => {
+			res.json(products)
 		})
-		.catch(err => next(err));
-});
-server.get("/catalogue?:pag", (req, res, next) => {
-	const pag = !parseInt(req.query.pag) ? 0 : parseInt(req.query.pag);
-	const pagsize = 12;
-	const offset = pagsize * (pagsize - (pagsize - pag));
-	console.log(offset);
+		.catch((err) => next(err))
+})
+server.get('/catalogue?:pag', (req, res, next) => {
+	const pag = !parseInt(req.query.pag) ? 0 : parseInt(req.query.pag)
+	const pagsize = 12
+	const offset = pagsize * (pagsize - (pagsize - pag))
+	// console.log(offset);
 	Product.findAndCountAll({
-		attributes:[
-			"id",
-			"name",
-			"img",
-			"cellarId",
-			"price",
-			"description",
-			"categoryId",
-			"strainId",
-			"active",
-			"stock",
-			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'),"raiting"],
+		attributes: [
+			'id',
+			'name',
+			'img',
+			'cellarId',
+			'price',
+			'description',
+			'categoryId',
+			'strainId',
+			'active',
+			'stock',
+			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'), 'raiting'],
 		],
 		where: { active: true },
 		include: [
 			{
 				model: Cellar,
-				as: "cellar",
+				as: 'cellar',
 			},
 			{
 				model: Strain,
-				as: "strain",
+				as: 'strain',
 			},
 			{
 				model: Category,
-				as: "category",
+				as: 'category',
 			},
 		],
-		order: [["id", "ASC"]],
+		order: [['id', 'ASC']],
 		limit: pagsize,
 		offset,
 	})
-		.then(products => {
-			res.json(products);
+		.then((products) => {
+			res.json(products)
 		})
-		.catch(err => next(err));
-});
-server.get("/detail/:id", (req, res, next) => {
+		.catch((err) => next(err))
+})
+server.get('/detail/:id', (req, res, next) => {
 	Product.findOne({
-		attributes:[
-			"id",
-			"name",
-			"img",
-			"cellarId",
-			"price",
-			"description",
-			"categoryId",
-			"strainId",
-			"active",
-			"stock",
-			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'),"raiting"],
-			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 1 GROUP BY "productId" )'),"1star"],
-			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 2 GROUP BY "productId" )'),"2star"],
-			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 3 GROUP BY "productId" )'),"3star"],
-			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 4 GROUP BY "productId" )'),"4star"],
-			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 5 GROUP BY "productId" )'),"5star"],
+		attributes: [
+			'id',
+			'name',
+			'img',
+			'cellarId',
+			'price',
+			'description',
+			'categoryId',
+			'strainId',
+			'active',
+			'stock',
+			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'), 'raiting'],
+			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 1 GROUP BY "productId" )'), '1star'],
+			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 2 GROUP BY "productId" )'), '2star'],
+			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 3 GROUP BY "productId" )'), '3star'],
+			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 4 GROUP BY "productId" )'), '4star'],
+			[literal('(SELECT  COUNT("stars") FROM reviews WHERE "productId" = "product"."id" AND "stars" = 5 GROUP BY "productId" )'), '5star'],
 		],
 		where: {
 			active: true,
@@ -114,125 +113,124 @@ server.get("/detail/:id", (req, res, next) => {
 		include: [
 			{
 				model: Cellar,
-				as: "cellar",
+				as: 'cellar',
 			},
 			{
 				model: Strain,
-				as: "strain",
+				as: 'strain',
 			},
 			{
 				model: Category,
-				as: "category",
+				as: 'category',
 			},
 			{
 				model: User,
-				attributes: ["email"],
-				through:{
-					attributes: ["date", "stars", "description"]
-				}
-				
+				attributes: ['email'],
+				through: {
+					attributes: ['date', 'stars', 'description'],
+				},
 			},
 		],
 	})
-		.then(products => {
-			res.json(products);
+		.then((products) => {
+			res.json(products)
 		})
-		.catch(err => next(err));
-});
-server.post("/strains",(req, res, next) =>{
+		.catch((err) => next(err))
+})
+server.post('/strains', (req, res, next) => {
 	Product.findAll({
-		attributes:[
-			"id",
-			"name",
-			"img",
-			"cellarId",
-			"price",
-			"description",
-			"categoryId",
-			"strainId",
-			"active",
-			"stock",
-			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'),"raiting"],
+		attributes: [
+			'id',
+			'name',
+			'img',
+			'cellarId',
+			'price',
+			'description',
+			'categoryId',
+			'strainId',
+			'active',
+			'stock',
+			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'), 'raiting'],
 		],
 		include: [
 			{
 				model: Cellar,
-				as: "cellar",
+				as: 'cellar',
 			},
 			{
 				model: Strain,
-				as: "strain",
+				as: 'strain',
 			},
 			{
 				model: Category,
-				as: "category",
+				as: 'category',
 			},
 		],
-		where:{
-			strainId:{
-				[Op.in]: req.body.strains
+		where: {
+			strainId: {
+				[Op.in]: req.body.strains,
 			},
-			categoryId:req.body.categoryId
-		}
+			categoryId: req.body.categoryId,
+		},
 	})
-		.then(products => res.json(products))
-		.catch(err => next(err))
+		.then((products) => res.json(products))
+		.catch((err) => next(err))
 })
 // http://localhost:3001/products/category/1
-server.get("/category/:categoryId", (req, res, next) => {
+server.get('/category/:categoryId', (req, res, next) => {
 	Product.findAll({
-		attributes:[
-			"id",
-			"name",
-			"img",
-			"cellarId",
-			"price",
-			"description",
-			"categoryId",
-			"strainId",
-			"active",
-			"stock",
-			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'),"raiting"],
+		attributes: [
+			'id',
+			'name',
+			'img',
+			'cellarId',
+			'price',
+			'description',
+			'categoryId',
+			'strainId',
+			'active',
+			'stock',
+			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'), 'raiting'],
 		],
 		include: [
 			{
 				model: Cellar,
-				as: "cellar",
+				as: 'cellar',
 			},
 			{
 				model: Strain,
-				as: "strain",
+				as: 'strain',
 			},
 			{
 				model: Category,
-				as: "category",
+				as: 'category',
 			},
 		],
 		where: {
 			categoryId: parseInt(req.params.categoryId),
 		},
 	})
-		.then(products => res.json(products))
-		.catch(err => next(err));
-});
+		.then((products) => res.json(products))
+		.catch((err) => next(err))
+})
 
 // http://localhost:3001/products/search?query=agus
-server.get("/search?:query", (req, res, next) => {
-	const value = "%" + req.query.query + "%";
-	console.log(value);
+server.get('/search?:query', (req, res, next) => {
+	const value = '%' + req.query.query + '%'
+	// console.log(value)
 	Product.findAll({
-		attributes:[
-			"id",
-			"name",
-			"img",
-			"cellarId",
-			"price",
-			"description",
-			"categoryId",
-			"strainId",
-			"active",
-			"stock",
-			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'),"raiting"],
+		attributes: [
+			'id',
+			'name',
+			'img',
+			'cellarId',
+			'price',
+			'description',
+			'categoryId',
+			'strainId',
+			'active',
+			'stock',
+			[literal('(SELECT (SUM("stars") / COUNT(*)) FROM reviews WHERE "productId" = "product"."id" GROUP BY "productId" )'), 'raiting'],
 		],
 		where: {
 			[Op.or]: [
@@ -247,17 +245,17 @@ server.get("/search?:query", (req, res, next) => {
 					},
 				},
 				{
-					"$category.name$": {
+					'$category.name$': {
 						[Op.iLike]: value,
 					},
 				},
 				{
-					"$strain.name$": {
+					'$strain.name$': {
 						[Op.iLike]: value,
 					},
 				},
 				{
-					"$cellar.name$": {
+					'$cellar.name$': {
 						[Op.iLike]: value,
 					},
 				},
@@ -266,19 +264,19 @@ server.get("/search?:query", (req, res, next) => {
 		include: [
 			{
 				model: Cellar,
-				as: "cellar",
+				as: 'cellar',
 			},
 			{
 				model: Strain,
-				as: "strain",
+				as: 'strain',
 			},
 			{
 				model: Category,
-				as: "category",
+				as: 'category',
 			},
 		],
 	})
-		.then(products => res.json(products))
-		.catch(err => next(err));
-});
-module.exports = server;
+		.then((products) => res.json(products))
+		.catch((err) => next(err))
+})
+module.exports = server
