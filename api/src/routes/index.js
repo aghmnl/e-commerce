@@ -13,6 +13,7 @@ const purchaseProtectedRouter = require('./protected/purchase.js')
 const purchasePrivateRouter = require('./private/purchase.js')
 const purchProdProtectedRouter = require('./protected/purchProd.js')
 const statusPrivateRouter = require('./private/status.js')
+const manageDatabase = require('./private/dbData.js')
 const authRouter = require('./auth.js').server
 const { isAuthenticated, isAdmin } = require('./auth.js')
 const reviewRouter = require('./protected/review.js')
@@ -33,4 +34,5 @@ router.use('/purchase_private', isAuthenticated, isAdmin, purchasePrivateRouter)
 router.use('/purchased_products_protected', isAuthenticated, purchProdProtectedRouter)
 router.use('/status_private', isAuthenticated, isAdmin, statusPrivateRouter)
 router.use('/review', isAuthenticated, reviewRouter)
+router.use('/db_private', isAuthenticated, isAdmin, manageDatabase)
 module.exports = router

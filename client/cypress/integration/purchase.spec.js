@@ -1,7 +1,4 @@
 context('Actions', () => {
-	before(() => {
-		cy.exec('npm run init')
-	})
 	beforeEach(() => {
 		cy.fixture('screenshots.json').as('screenshots')
 	})
@@ -30,6 +27,7 @@ context('Actions', () => {
 			cy.visit('/admin/formPurchase/')
 			cy.contains('.btn', 'pagada').click()
 			if (screenshots.take) cy.screenshot('Paid-purchases')
+			cy.wait(500)
 			cy.get('#card7').click({ force: true })
 			cy.contains('.btn-success', 'Enviar').click()
 		})
@@ -41,6 +39,7 @@ context('Actions', () => {
 			cy.visit('/admin/formPurchase/')
 			cy.contains('.btn', 'enviada').click()
 			if (screenshots.take) cy.screenshot('Sent-purchases')
+			cy.wait(500)
 			cy.get('#card7').click({ force: true })
 			cy.contains('.btn', 'Entregada').click()
 		})

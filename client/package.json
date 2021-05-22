@@ -50,7 +50,6 @@
 	},
 	"devDependencies": {
 		"cypress": "^7.3.0",
-		"cypress-wait-until": "^1.7.1",
 		"prettier": "2.2.1"
 	}
 }

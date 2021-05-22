@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { getPurchases, getStatuses } from '../store/actions/index'
-import { Card, Container, Row, Col, Nav } from 'react-bootstrap'
+import { Card, Container, Row, Col, Nav, Button } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import '../styles/FormPurchase.css'
+import axios from 'axios'
 
 // S43 : Crear Componente Tabla de Ordenes
 // Tabla que muestra una lista de ordenes.
@@ -24,11 +25,24 @@ function Purchases({
 
 		getPurchases(statusId)
 	}, [statusId])
+
 	useEffect(() => {
 		getStatuses()
 		document.body.id = 'bg_form'
 		if (!statusId) getPurchases()
 	}, [])
+
+	function eliminarTodas() {
+		console.log('Solicitando eliminar todas las compras')
+		axios
+			.delete('http://localhost:3001/db_private/allPurchases', {
+				withCredentials: true,
+			})
+			.then(() => {
+				getPurchases()
+			})
+			.catch((err) => console.log(err))
+	}
 	return (
 		<div>
 			<Nav id="navegacion2">
@@ -103,6 +117,16 @@ function Purchases({
 						</Card>
 					</NavLink>
 				))}
+
+				<Button
+					style={{
+						marginTop: '1rem',
+					}}
+					variant="danger"
+					onClick={eliminarTodas}
+				>
+					Eliminar todas las compras
+				</Button>
 			</div>
 		</div>
 	)

@@ -21,7 +21,10 @@ const initialState = {
 	total,
 	cookiesShown: JSON.parse(localStorage.getItem('cookiesShown')) || false,
 }
-console.log('Mostrar consentimiento de cookies: ', initialState.cookiesShown)
+console.log(
+	'Consentimiento de cookies ya mostradas: ',
+	initialState.cookiesShown
+)
 const composeEnhancers =
 	(typeof window !== 'undefined' &&
 		window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||

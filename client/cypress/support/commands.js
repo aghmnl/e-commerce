@@ -24,9 +24,6 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-import 'cypress-wait-until'
-import store from '../../../client/src/store/index'
-
 Cypress.Commands.add('login', (email, password) => {
 	cy.visit('/login')
 	cy.get('#emailLogin').type(email)
@@ -38,14 +35,14 @@ Cypress.Commands.add('loginUser', () => {
 	cy.fixture('users.json').as('usersData') // Para usar los datos definidos en users.json y darle un alias
 	cy.get('@usersData').then((usersData) => {
 		cy.login(usersData.user.email, usersData.user.password)
-		console.log(
-			'Show cookies consentment: ',
-			JSON.parse(localStorage.getItem('cookiesShown'))
+		const consentment = JSON.parse(
+			window.localStorage.getItem('cookiesShown')
 		)
-		cy.wait(500)
-		cy.get('.close')
-			.should('be.visible')
-			.then(() => cy.get('.close').click({ force: true }))
+		if (!consentment) {
+			cy.get('.close')
+				.should('be.visible')
+				.then(() => cy.get('.close').click())
+		}
 		cy.contains('.navbar-brand', usersData.user.name).should('be.visible')
 	})
 })
@@ -54,14 +51,14 @@ Cypress.Commands.add('loginAdmin', () => {
 	cy.fixture('users.json').as('usersData') // Para usar los datos definidos en users.json y darle un alias
 	cy.get('@usersData').then((usersData) => {
 		cy.login(usersData.admin.email, usersData.admin.password)
-		console.log(
-			'Show cookies consentment: ',
-			JSON.parse(localStorage.getItem('cookiesShown'))
+		const consentment = JSON.parse(
+			window.localStorage.getItem('cookiesShown')
 		)
-		cy.wait(500)
-		cy.get('.close')
-			.should('be.visible')
-			.then(() => cy.get('.close').click())
+		if (!consentment) {
+			cy.get('.close')
+				.should('be.visible')
+				.then(() => cy.get('.close').click())
+		}
 		cy.contains('.navbar-brand', usersData.admin.name).should('be.visible')
 	})
 })
